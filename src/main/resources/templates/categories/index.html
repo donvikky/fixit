@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html th:replace="~{layouts/layout :: layout(~{::title}, ~{::section})}" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Towns</title>
+</head>
+<body>
+<div class="container">
+    <h2>Towns</h2>
+    <section>
+        <div class="row">
+            <div class="col-12" th:if="${categories}">
+                <table  class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="category, iter: ${categories}">
+                        <td th:text="${iter.count}"></td>
+                        <td th:text="${category.name}"></td>
+                        <td>
+                            <a th:href="@{/categories/edit/{id}(id=${category.id})}"  class="btn btn-info">Edit</a>
+                            <a th:href="@{/categories/delete/{id}(id=${category.id})}"  class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-12" th:unless="${categories}">
+                <p class="alert alert-warning">There are no categories in the database</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <a th:href="@{/categories/create}" class="btn btn-primary">Create Category</a>
+            </div>
+        </div>
+    </section>
+
+</div>
+</body>
+</html>

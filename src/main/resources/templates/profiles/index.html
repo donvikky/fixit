@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html th:replace="~{layouts/layout :: layout(~{::title}, ~{::section})}" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profiles</title>
+</head>
+<body>
+<div class="container">
+    <h2>Profiles</h2>
+    <section>
+        <div class="row">
+            <div class="col-12" th:if="${profiles}">
+                <table  class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="profile, iter: ${profiles}">
+                        <td th:text="${iter.count}"></td>
+                        <td th:text="${profile.firstName}"></td>
+                        <td th:text="${profile.lastName}"></td>
+                        <td th:text="${profile.email}"></td>
+                        <td>
+                            <a th:href="@{/profiles/edit/{id}(id=${profile.id})}"  class="btn btn-info">Edit</a>
+                            <a th:href="@{/profiles/delete/{id}(id=${profile.id})}"  class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-12" th:unless="${profiles}">
+                <p class="alert alert-warning">There are no profiles in the database</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <a th:href="@{/profiles/create}" class="btn btn-primary">Create Profile</a>
+            </div>
+        </div>
+    </section>
+
+</div>
+</body>
+</html>

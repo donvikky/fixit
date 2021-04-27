@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html th:replace="~{layouts/layout :: layout(~{::title}, ~{::section})}" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit State</title>
+</head>
+<body>
+<section>
+    <h2>Edit State</h2>
+    <form method="post" action="#" th:action="@{/states/edit}" th:object="${state}">
+        <input type="hidden" th:field="*{id}">
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" th:field="*{name}" class="form-control"/>
+            <span class="validationError" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name error</span>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-info">Submit</button>
+        </div>
+    </form>
+</section>
+</body>
+</html>

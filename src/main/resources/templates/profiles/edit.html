@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html th:replace="~{layouts/admin_layout :: layout(~{::title}, ~{::style}, ~{::section})}" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Profile</title>
+    <style>
+        section{
+
+        }
+    </style>
+</head>
+<body>
+<section>
+    <!-- Dashboard Headline -->
+    <div class="dashboard-headline">
+        <h3>Settings</h3>
+
+        <!-- Breadcrumbs -->
+        <nav id="breadcrumbs" class="dark">
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a href="#">Dashboard</a></li>
+                <li>Settings</li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Row -->
+    <div class="row">
+        <form method="post" th:object="${profile}" th:action="@{/profiles/edit}" enctype="multipart/form-data">
+            <input type="hidden" th:field="*{id}">
+            <!-- Dashboard Box -->
+            <div class="col-xl-12">
+                <div class="dashboard-box margin-top-0">
+
+                    <!-- Headline -->
+                    <div class="headline">
+                        <h3><i class="icon-material-outline-account-circle"></i> My Account</h3>
+                    </div>
+
+                    <div class="content with-padding padding-bottom-0">
+
+                        <div class="row">
+
+                            <div class="col-auto">
+                                <div class="avatar-wrapper" data-tippy-placement="bottom" title="Change Avatar">
+                                    <img class="profile-pic" th:src="@{/images/user-avatar-placeholder.png}" alt="" />
+                                    <div class="upload-button"></div>
+                                    <input class="file-upload" type="file" th:field="*{file}" accept="image/jpeg,image/png"/>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="row">
+
+                                    <div class="col-xl-6">
+                                        <div class="submit-field">
+                                            <h5>First Name</h5>
+                                            <input type="text" th:field="*{firstName}" class="with-border" placeholder="Tom">
+                                            <span class="validationError" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">first name error</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-6">
+                                        <div class="submit-field">
+                                            <h5>Last Name</h5>
+                                            <input type="text" th:field="*{lastName}" class="with-border" placeholder="Smith">
+                                            <span class="validationError" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">last name error</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-6">
+                                        <div class="submit-field">
+                                            <h5>Email</h5>
+                                            <input type="text" th:field="*{email}" class="with-border" placeholder="tom@example.com">
+                                            <span class="validationError" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email error</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-6">
+                                        <div class="submit-field">
+                                            <h5>Mobile Number</h5>
+                                            <input type="text" th:field="*{mobileNumber}" class="with-border" placeholder="08067231456">
+                                            <span class="validationError" th:if="${#fields.hasErrors('mobileNumber')}" th:errors="*{mobileNumber}">mobile number error</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-12">
+                                        <div class="submit-field">
+                                            <h5>Address</h5>
+                                            <textarea th:field="*{address}" class="with-border"></textarea>
+                                            <span class="validationError" th:if="${#fields.hasErrors('address')}" th:errors="*{address}">address error</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Box -->
+            <div class="col-xl-12">
+                <div class="dashboard-box">
+
+                    <!-- Headline -->
+                    <div class="headline">
+                        <h3><i class="icon-material-outline-face"></i> My Profile</h3>
+                    </div>
+
+                    <div class="content">
+                        <ul class="fields-ul">
+                            <li>
+                                <div class="row">
+                                    <div class="col-xl-6">
+                                        <div class="submit-field">
+                                            <div class="bidding-widget">
+                                                <!-- Headline -->
+                                                <span class="bidding-detail">Set your <strong>minimal hourly rate</strong></span>
+
+                                                <!-- Slider -->
+                                                <div class="bidding-value margin-bottom-10">$<span id="biddingVal"></span></div>
+                                                <input th:field="*{hourlyRate}" class="bidding-slider" type="text" value="${profile.hourlyRate}" data-slider-handle="custom" data-slider-currency="$" data-slider-min="5" data-slider-max="150" th:data-slider-value="${profile.hourlyRate}" data-slider-step="1" data-slider-tooltip="hide" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-6">
+                                        <div class="submit-field">
+                                            <h5>Skills <i class="help-icon" data-tippy-placement="right" title="Add up to 10 skills"></i></h5>
+
+                                            <!-- Skills List -->
+                                            <select th:field="*{crafts}" class="selectpicker default" multiple data-selected-text-format="count" data-size="7" title="All Categories" >
+                                                <option th:each="craft: ${crafts}" th:value="${craft.id}" th:text="${#strings.capitalize(#strings.toLowerCase(craft.name))}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="row">
+                                    <div class="col-xl-6">
+                                        <div class="submit-field">
+                                            <h5>Tagline</h5>
+                                            <input th:field="*{shortDescription}" type="text" class="with-border" value="iOS Expert + Node Dev">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-6">
+                                        <div class="submit-field">
+                                            <h5>State</h5>
+                                            <select th:field="*{state}" class="selectpicker with-border" data-size="7" title="State of Residence" data-live-search="true">
+                                                <option th:each="s: ${states}" th:value="${s.id}" th:text="${s.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-12">
+                                        <div class="submit-field">
+                                            <h5>Introduce Yourself</h5>
+                                            <textarea th:field="*{longDescription}" cols="30" rows="5" class="with-border">
+                                            Leverage agile frameworks to provide a robust synopsis for high level overviews.
+                                            Iterative approaches to corporate strategy foster collaborative thinking to further
+                                            the overall value proposition. Organically grow the holistic world view of disruptive
+                                            innovation via workplace diversity and empowerment.
+                                        </textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Button -->
+            <div class="col-xl-12">
+                <button class="button ripple-effect big margin-top-30">Save Changes</button>
+            </div>
+        </form>
+    </div>
+    <!-- Row / End -->
+
+</section>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html th:replace="~{layouts/layout :: layout(~{::title}, ~{::section})}" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Town</title>
+</head>
+<body>
+<section>
+    <h2>Create Category</h2>
+    <form method="post" action="#" th:action="@{/categories/create}" th:object="${category}">
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" th:field="*{name}" class="form-control"/>
+            <span class="validationError" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name error</span>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-info">Submit</button>
+        </div>
+    </form>
+</section>
+</body>
+</html>

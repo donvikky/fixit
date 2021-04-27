@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html th:replace="~{layouts/layout :: layout(~{::title}, ~{::section})}" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Towns</title>
+</head>
+<body>
+<div class="container">
+    <h2>Towns</h2>
+    <section>
+        <div class="row">
+            <div class="col-12" th:if="${towns}">
+                <table  class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Lga</th>
+                        <th>State</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="town: ${towns}">
+                        <td th:text="${town.name}"></td>
+                        <td th:text="${town.lga.name}"></td>
+                        <td th:text="${town.state.name}"></td>
+                        <td>
+                            <a th:href="@{/towns/edit/{id}(id=${town.id})}"  class="btn btn-info">Edit</a>
+                            <a th:href="@{/towns/delete/{id}(id=${town.id})}"  class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-12" th:unless="${towns}">
+                <p class="alert alert-warning">There are no towns in the database</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <a th:href="@{/towns/create}" class="btn btn-primary">Create Town</a>
+            </div>
+        </div>
+    </section>
+
+</div>
+</body>
+</html>

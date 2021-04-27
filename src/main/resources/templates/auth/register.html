@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <h2>Register</h2>
+        <form method="post" action="#" th:action="@{/register}" th:object="${user}">
+            <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input type="text" th:field="*{username}" class="form-control"/>
+                <span class="validationError" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">name error</span>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" th:field="*{password}" class="form-control"/>
+                <span class="validationError" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">name error</span>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Password Confirm</label>
+                <input type="password" th:field="*{confirm}" class="form-control"/>
+                <span class="validationError" th:if="${#fields.hasErrors('confirm')}" th:errors="*{confirm}">name error</span>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Roles</label>
+                <select th:field="*{roles}" class="form-control" multiple>
+                    <option th:each="role: ${roles}" th:value="${role.id}" th:text="${role.name}">
+                    </option>
+                </select>
+                <span class="validationError" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}">roles error</span>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-info">Submit</button>
+            </div>
+        </form>
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+</body>
+</html>

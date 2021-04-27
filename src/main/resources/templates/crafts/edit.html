@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html th:replace="~{layouts/layout :: layout(~{::title}, ~{::section})}" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Category</title>
+</head>
+<body>
+<section>
+    <h2>Edit Category</h2>
+    <form method="post" action="#" th:action="@{/crafts/edit}" th:object="${craft}">
+        <input type="hidden" th:field="*{id}">
+        <div class="mb-3">
+            <label class="form-label">Category</label>
+            <select th:field="*{category}" class="form-control">
+                <option th:each="c: ${categories}" th:value="${c.id}" th:text="${c.name}">
+                </option>
+            </select>
+            <span class="validationError" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">category error</span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" th:field="*{name}" class="form-control"/>
+            <span class="validationError" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name error</span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea th:field="*{description}" class="form-control"></textarea>
+            <span class="validationError" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">description error</span>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-info">Submit</button>
+        </div>
+    </form>
+</section>
+</body>
+</html>

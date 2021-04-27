@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html th:replace="~{layouts/layout :: layout(~{::title}, ~{::section})}" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>States</title></head>
+<body>
+    <section>
+    <h2>States</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Action</th>
+                </tr>
+                <tr th:each="state, iter : ${states}">
+                    <td th:text="${iter.count}"></td>
+                    <td th:text="${state.name}"></td>
+                    <td>
+                        <a th:href="@{/states/edit/{id}(id=${state.id})}"  class="btn btn-info">Edit</a>
+                        <a th:href="@{/states/delete/{id}(id=${state.id})}"  class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            </thead>
+        </table>
+        <div>
+            <a href="/states/create" class="btn btn-success">Add State</a>
+        </div>
+    </section>
+</body>
+</html>

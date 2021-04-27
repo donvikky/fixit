@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html th:replace="~{layouts/layout :: layout(~{::title}, ~{::section})}" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Services</title>
+</head>
+<body>
+<div class="container">
+    <h2>Services</h2>
+    <section>
+        <div class="row">
+            <div class="col-12" th:if="${crafts}">
+                <table  class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Category</th>
+                        <th>Name</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="craft, iter: ${crafts}">
+                        <td th:text="${iter.count}"></td>
+                        <td th:text="${craft.category.name}"></td>
+                        <td th:text="${craft.name}"></td>
+                        <td>
+                            <a th:href="@{/crafts/edit/{id}(id=${craft.id})}"  class="btn btn-info">Edit</a>
+                            <a th:href="@{/crafts/delete/{id}(id=${craft.id})}"  class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-12" th:unless="${crafts}">
+                <p class="alert alert-warning">There are no Services in the database</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <a th:href="@{/crafts/create}" class="btn btn-primary">Create Service</a>
+            </div>
+        </div>
+    </section>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html th:replace="~{layouts/layout :: layout(~{::title}, ~{::section})}" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Profile</title>
+</head>
+<body>
+<section>
+    <h2>Create Profile</h2>
+    <form method="post" action="#" th:action="@{/profiles/create}" th:object="${profile}" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="text" th:field="*{email}" class="form-control"/>
+            <span class="validationError" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email error</span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">First Name</label>
+            <input type="text" th:field="*{firstName}" class="form-control"/>
+            <span class="validationError" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">first name error</span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Last Name</label>
+            <input type="text" th:field="*{lastName}" class="form-control"/>
+            <span class="validationError" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">last name error</span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Mobile Number</label>
+            <input type="text" th:field="*{mobileNumber}" class="form-control"/>
+            <span class="validationError" th:if="${#fields.hasErrors('mobileNumber')}" th:errors="*{mobileNumber}">mobile number error</span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Address</label>
+            <textarea th:field="*{address}" class="form-control"></textarea>
+            <span class="validationError" th:if="${#fields.hasErrors('address')}" th:errors="*{address}">address error</span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">State</label>
+            <select th:field="*{state}" class="form-control">
+                <option th:each="s: ${states}" th:value="${s.id}" th:text="${s.name}">
+                </option>
+            </select>
+            <span class="validationError" th:if="${#fields.hasErrors('state')}" th:errors="*{state}">state error</span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Service(s)</label>
+            <select th:field="*{crafts}" class="form-control" multiple size="1">
+                <option th:each="c: ${crafts}" th:value="${c.id}" th:text="${c.name}">
+                </option>
+            </select>
+            <span class="validationError" th:if="${#fields.hasErrors('state')}" th:errors="*{state}">state error</span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Photo</label>
+            <input type="file" th:field="*{file}"  class="form-control" required accept="image/jpeg,image/png"/>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-info">Submit</button>
+        </div>
+    </form>
+</section>
+</body>
+</html>

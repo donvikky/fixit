@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{layouts/site_layout :: layout(~{::title}, ~{::style}, ~{::section})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Project Details</title>
+    <style>
+        .budget{
+            color: #CCC;
+        }
+    </style>
+</head>
+<body>
+<section>
+    <!-- Titlebar ================================================== -->
+    <div class="single-page-header" th:data-background-image="@{/images/single-job.jpg}">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="single-page-header-inner">
+                        <div class="left-side">
+                            <div class="header-details">
+                                <h3 th:text="${project.shortDescription}"></h3>
+                                <ul>
+                                    <li>
+                                        <a href="single-company-profile.html">
+                                            <i class="icon-material-outline-business"></i>
+                                            <span th:text="${#dates.monthName(project.date)}"></span>
+                                            <span th:text="${#dates.year(project.date)}"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <img class="flag" th:src="@{/images/flags/gb.svg}" alt="">
+                                        <i class="icon-material-outline-room"></i>
+                                        <span th:text="${#strings.capitalize(#strings.toLowerCase(project.state.name))}"></span>
+                                    </li>
+                                    <li><div class="verified-badge-with-title">Verified</div></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="right-side">
+                            <div class="salary-box">
+                                <div class="salary-type">Budget</div>
+                                <div style="font-size:16px;" class="salary-amount" th:text="|&#8358; ${#numbers.formatDecimal(project.budgetMinimum, 3,'COMMA',2,'POINT')} - &#8358; ${#numbers.formatDecimal(project.budgetMaximum, 3,'COMMA',2,'POINT')}|"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Content
+================================================== -->
+    <div class="container">
+        <div class="row">
+
+            <!-- Content -->
+            <div class="col-xl-8 col-lg-8 content-right-offset">
+
+                <div class="single-page-section">
+                    <h3 class="margin-bottom-25">Project Description</h3>
+                    <p th:text="${project.longDescription}">Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition. Organically grow the holistic world view of disruptive innovation via workplace diversity and empowerment.</p>
+                </div>
+
+                <div class="single-page-section">
+                    <h3 class="margin-bottom-30">Pictures</h3>
+                    <!-- Tabs Container -->
+                    <div class="tabs" th:if="${!project.projectPhotos.empty}">
+                        <div class="tabs-header">
+                            <ul>
+                                <li class="active" th:each="picture, iter: ${project.projectPhotos}">
+                                    <a th:href="@{#tab-{id}(id=${iter.count})}" th:data-tab-id="${iter.count}" th:text="|Photo ${iter.count}|"></a>
+                                </li>
+                                <!--<li class="active"><a href="#tab-1" data-tab-id="1">Tab 1</a></li>
+                                <li><a href="#tab-2" data-tab-id="2">Tab 2</a></li>
+                                <li><a href="#tab-3" data-tab-id="3">Tab 3</a></li>-->
+                            </ul>
+                            <div class="tab-hover"></div>
+                            <nav class="tabs-nav">
+                                <span class="tab-prev"><i class="icon-material-outline-keyboard-arrow-left"></i></span>
+                                <span class="tab-next"><i class="icon-material-outline-keyboard-arrow-right"></i></span>
+                            </nav>
+                        </div>
+                        <!-- Tab Content -->
+                        <div class="tabs-content">
+                            <div class="tab active" th:data-tab-id="${iter.count}" th:each="picture, iter: ${project.projectPhotos}">
+                                <p style="font-size:50px;"><img th:src="@{/{photo}(photo=${picture.photo})}"></p>
+                            </div>
+                            <!--<div class="tab" data-tab-id="2">
+                                <p>Podcasting operational change management inside of workflows to establish a framework. Taking seamless key performance indicators offline to maximise the long tail.</p>
+                            </div>
+                            <div class="tab" data-tab-id="3">
+                                <p>Objectively innovate empowered manufactured products whereas parallel platforms. Holisticly predominate extensible testing procedures for reliable supply chains. Dramatically engage top-line web services vis-a-vis cutting-edge deliverables.</p>
+                                <p>Phosfluorescently engage worldwide methodologies with web-enabled technology. Interactively coordinate proactive e-commerce via process-centric "outside the box" thinking. Completely pursue scalable customer service through sustainable potentialities.</p>
+                            </div>-->
+                        </div>
+                    </div>
+                    <!-- Tabs Container / End -->
+                    <div class="notify-box margin-top-15" th:if="${project.projectPhotos.empty}">
+                        <div class="switch-container">
+                            <span class="switch-text">No photos available</span></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Sidebar -->
+            <div class="col-xl-4 col-lg-4">
+                <div class="sidebar-container">
+                    <!-- Sidebar Widget -->
+                    <div class="sidebar-widget">
+                        <div class="job-overview">
+                            <div class="job-overview-headline">Project Summary</div>
+                            <div class="job-overview-inner">
+                                <ul>
+                                    <li>
+                                        <i class="icon-material-outline-location-on"></i>
+                                        <span>Location</span>
+                                        <h5 th:text="| ${#strings.capitalize(#strings.toLowerCase(project.state.name))}, Nigeria|"></h5>
+                                    </li>
+                                    <!--<li>
+                                        <i class="icon-material-outline-business-center"></i>
+                                        <span>Job Type</span>
+                                        <h5>Full Time</h5>
+                                    </li>-->
+                                    <li>
+                                        <i class="icon-material-outline-local-atm"></i>
+                                        <span>Budget</span>
+                                        <h5 th:text="|&#8358; ${#numbers.formatDecimal(project.budgetMinimum, 3,'COMMA',2,'POINT')} - &#8358; ${#numbers.formatDecimal(project.budgetMaximum, 3,'COMMA',2,'POINT')}|"></h5>
+                                    </li>
+                                    <li>
+                                        <i class="icon-material-outline-access-time"></i>
+                                        <span>Date Posted</span>
+                                        <h5 th:text="|${postDuration} day(s) ago|"></h5>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar Widget -->
+                    <div class="sidebar-widget">
+                        <h3>Bookmark or Share</h3>
+
+                        <!-- Bookmark Button -->
+                        <button class="bookmark-button margin-bottom-25">
+                            <span class="bookmark-icon"></span>
+                            <span class="bookmark-text">Bookmark</span>
+                            <span class="bookmarked-text">Bookmarked</span>
+                        </button>
+
+                        <!-- Copy URL -->
+                        <div class="copy-url">
+                            <input id="copy-url" type="text" value="" class="with-border">
+                            <button class="copy-url-button ripple-effect" data-clipboard-target="#copy-url" title="Copy to Clipboard" data-tippy-placement="top"><i class="icon-material-outline-file-copy"></i></button>
+                        </div>
+
+                        <!-- Share Buttons -->
+                        <div class="share-buttons margin-top-25">
+                            <div class="share-buttons-trigger"><i class="icon-feather-share-2"></i></div>
+                            <div class="share-buttons-content">
+                                <span>Interesting? <strong>Share It!</strong></span>
+                                <ul class="share-buttons-icons">
+                                    <li><a href="#" data-button-color="#3b5998" title="Share on Facebook" data-tippy-placement="top"><i class="icon-brand-facebook-f"></i></a></li>
+                                    <li><a href="#" data-button-color="#1da1f2" title="Share on Twitter" data-tippy-placement="top"><i class="icon-brand-twitter"></i></a></li>
+                                    <li><a href="#" data-button-color="#dd4b39" title="Share on Google Plus" data-tippy-placement="top"><i class="icon-brand-google-plus-g"></i></a></li>
+                                    <li><a href="#" data-button-color="#0077b5" title="Share on LinkedIn" data-tippy-placement="top"><i class="icon-brand-linkedin-in"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html th:replace="~{layouts/layout :: layout(~{::title}, ~{::section})}" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>LGA</title>
+</head>
+<body>
+<div class="container">
+    <h2>Lgas</h2>
+    <section>
+        <table th:if="${lgas}" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Lga</th>
+                    <th>State</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="lga: ${lgas}">
+                    <td th:text="${lga.name}"></td>
+                    <td th:text="${lga.state.name}"></td>
+                    <td>
+                        <a th:href="@{/lgas/edit/{id}(id=${lga.id})}"  class="btn btn-info">Edit</a>
+                        <a th:href="@{/lgas/delete/{id}(id=${lga.id})}"  class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+</div>
+</body>
+</html>
