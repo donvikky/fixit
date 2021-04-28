@@ -74,6 +74,7 @@
               <!-- Buttons -->
               <div class="buttons-to-right always-visible">
                 <a href="dashboard-manage-bidders.html" class="button ripple-effect"><i class="icon-material-outline-supervisor-account"></i> Manage Bidders <span class="button-info">3</span></a>
+                <a th:href="@{/jobs/{id}(id=${job.id})}" class="button gray ripple-effect ico" title="View" data-tippy-placement="top"><i class="icon-feather-file"></i></a>
                 <a th:href="@{/jobs/edit/{id}(id=${job.id})}" class="button gray ripple-effect ico" title="Edit" data-tippy-placement="top"><i class="icon-feather-edit"></i></a>
                 <a th:href="@{/jobs/delete/{id}(id=${job.id})}" class="button gray ripple-effect ico" title="Remove" data-tippy-placement="top" onclick="if(!confirm('Are you sure you want to delete this job?')) event.preventDefault()"><i class="icon-feather-trash-2"></i></a>
               </div>

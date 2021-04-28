@@ -73,6 +73,14 @@ public class Profile extends Auditable<String> {
             mappedBy = "profile", orphanRemoval = true)
     private List<Project> projects = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL,
+            mappedBy = "profile", orphanRemoval = true)
+    private List<Job> jobs = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL,
+            mappedBy = "bidder", orphanRemoval = true)
+    private List<Bid> bids = new ArrayList<>();
+
     public Profile() {
 
     }
@@ -229,6 +237,22 @@ public class Profile extends Auditable<String> {
 
     public void setProjects(List<Project> projects) {
         this.projects = projects;
+    }
+
+    public List<Job> getJobs() {
+        return jobs;
+    }
+
+    public void setJobs(List<Job> jobs) {
+        this.jobs = jobs;
+    }
+
+    public List<Bid> getBids() {
+        return bids;
+    }
+
+    public void setBids(List<Bid> bids) {
+        this.bids = bids;
     }
 
     @Override

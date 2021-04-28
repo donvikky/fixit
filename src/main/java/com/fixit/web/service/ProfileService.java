@@ -12,8 +12,12 @@ import java.util.List;
 @Service
 public class ProfileService {
 
-    @Autowired
     private ProfileRepository profileRepository;
+
+    @Autowired
+    public ProfileService(ProfileRepository profileRepository) {
+        this.profileRepository = profileRepository;
+    }
 
     public List<Profile> listAll() {
         return profileRepository.findAll();

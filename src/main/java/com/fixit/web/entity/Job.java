@@ -6,6 +6,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "jobs")
@@ -17,7 +19,6 @@ public class Job extends Auditable<String> {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "poster_id")
-    @NotNull
     private Profile profile;
 
     @Column(name = "short_description")
@@ -51,6 +52,10 @@ public class Job extends Auditable<String> {
     @Column(name = "long_description")
     @NotBlank(message = "Please provide a description")
     private String longDescription;
+
+    @OneToMany(cascade = CascadeType.ALL,
+            mappedBy = "job", orphanRemoval = true)
+    private List<Bid> bids = new ArrayList<>();
 
     public Job() {
     }
@@ -135,6 +140,14 @@ public class Job extends Auditable<String> {
 
     public void setProfile(Profile profile) {
         this.profile = profile;
+    }
+
+    public List<Bid> getBids() {
+        return bids;
+    }
+
+    public void setBids(List<Bid> bids) {
+        this.bids = bids;
     }
 
     @Override

@@ -86,7 +86,7 @@ public class ProjectController {
     @GetMapping("/{id}")
     public String viewProject(@PathVariable("id") int id, Model model){
         Project project = projectService.get(id);
-        long postDuration = new DateUtils().getPostIntervalInDays(Timestamp.valueOf(project.getCreatedAt()), TimeUnit.DAYS);
+        long postDuration = new DateUtils().getTimeInterval(Timestamp.valueOf(project.getCreatedAt()), TimeUnit.DAYS);
         model.addAttribute("project", project);
         model.addAttribute("postDuration", postDuration);
         return "projects/view";

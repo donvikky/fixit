@@ -44,6 +44,7 @@
                             <div class="submit-field">
                                 <h5>Project Name</h5>
                                 <input th:field="*{shortDescription}" type="text" class="with-border" placeholder="e.g. build me a website">
+                                <span class="validationError error" th:if="${#fields.hasErrors('shortDescription')}" th:errors="*{shortDescription}">short description error</span>
                             </div>
                         </div>
 
@@ -53,6 +54,7 @@
                                 <select th:field="*{craft}" class="selectpicker with-border" data-size="7" title="Select Category">
                                     <option th:each="craft: ${crafts}" th:value="${craft.id}" th:text="${#strings.capitalize(#strings.toLowerCase(craft.name))}"></option>
                                 </select>
+                                <span class="validationError error" th:if="${#fields.hasErrors('craft')}" th:errors="*{craft}">craft error</span>
                             </div>
                         </div>
 
@@ -62,6 +64,7 @@
                                 <select th:field="*{state}" class="selectpicker with-border" data-size="7" title="Select Location">
                                     <option th:each="state: ${states}" th:value="${state.id}" th:text="${#strings.capitalize(#strings.toLowerCase(state.name))}"></option>
                                 </select>
+                                <span class="validationError error" th:if="${#fields.hasErrors('state')}" th:errors="*{state}">state error</span>
                             </div>
                         </div>
 
@@ -73,12 +76,14 @@
                                         <div class="input-with-icon">
                                             <input th:field="*{budgetMinimum}" class="with-border" type="text" placeholder="Minimum">
                                             <i class="currency">NGN</i>
+                                            <span class="validationError error" th:if="${#fields.hasErrors('budgetMinimum')}" th:errors="*{budgetMinimum}">budget minimum error</span>
                                         </div>
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="input-with-icon">
                                             <input th:field="*{budgetMaximum}" class="with-border" type="text" placeholder="Maximum">
                                             <i class="currency">USD</i>
+                                            <span class="validationError error" th:if="${#fields.hasErrors('budgetMaximum')}" th:errors="*{budgetMaximum}">budget maximum error</span>
                                         </div>
                                     </div>
                                 </div>
@@ -93,6 +98,7 @@
                                     <div class="radio" th:each="type : ${T(com.fixit.web.enums.JobType).values()}">
                                         <input th:id="|radio-${type.id}|" th:field="*{jobType}" type="radio" th:value="${type.id}">
                                         <label th:for="|radio-${type.id}|"><span class="radio-label"></span><span th:text="${type.label}"></span></label>
+                                        <span class="validationError error" th:if="${#fields.hasErrors('jobType')}" th:errors="*{jobType}">job type error</span>
                                     </div>
                                 </div>
                             </div>
@@ -102,6 +108,7 @@
                             <div class="submit-field">
                                 <h5>Describe Your Project</h5>
                                 <textarea th:field="*{longDescription}" cols="30" rows="5" class="with-border"></textarea>
+                                <span class="validationError error" th:if="${#fields.hasErrors('longDescription')}" th:errors="*{longDescription}">long description error</span>
                             </div>
                         </div>
 
