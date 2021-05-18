@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html th:replace="~{layouts/admin_layout :: layout(~{::title}, ~{::style}, ~{::section}, ~{::script})}" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>View Bids</title>
+  <style>
+        section{
+
+        }
+    </style>
+</head>
+<body>
+<section>
+  <!-- Dashboard Headline -->
+  <div class="dashboard-headline">
+    <h3>Manage Bidders</h3>
+    <span class="margin-top-7">Bids for <a href="#" th:text="${job.shortDescription}"></a></span>
+
+    <!-- Breadcrumbs -->
+    <nav id="breadcrumbs" class="dark">
+      <ul>
+        <li><a th:href="@{/}">Home</a></li>
+        <li><a th:href="@{/dashboard}">Dashboard</a></li>
+        <li>Manage Bidders</li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- Row -->
+  <div class="row">
+    <div class="col-xl-12" th:if="${bids.empty}">
+      <div class="countdown green margin-bottom-35 closeable">
+        <p>There are no bids for this job</p>
+      </div>
+    </div>
+    <!-- Dashboard Box -->
+    <div class="col-xl-12" th:if="${!bids.empty}">
+      <div class="dashboard-box margin-top-0">
+
+        <!-- Headline -->
+        <div class="headline">
+          <h3><i class="icon-material-outline-supervisor-account"></i> <span th:text="${#lists.size(bids)}"></span> Bidders</h3>
+          <div class="sort-by">
+            <select class="selectpicker hide-tick">
+              <option>Highest First</option>
+              <option>Lowest First</option>
+              <option>Fastest First</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="content">
+          <ul class="dashboard-box-list" th:each="bid: ${bids}">
+            <li>
+              <!-- Overview -->
+              <div class="freelancer-overview manage-candidates">
+                <div class="freelancer-overview-inner">
+
+                  <!-- Avatar -->
+                  <div class="freelancer-avatar">
+                    <div class="verified-badge"></div>
+                    <a href="#"><img th:src="@{/images/user-avatar-placeholder.png}" alt=""></a>
+                  </div>
+
+                  <!-- Name -->
+                  <div class="freelancer-name">
+                    <h4>
+                      <a href="#" class="name-info" th:text="|${#strings.capitalize(#strings.toLowerCase(bid.bidder.firstName))} ${#strings.capitalize(#strings.toLowerCase(bid.bidder.lastName))}|">Kuba Adamczyk <img class="flag" th:src="@{/images/flags/pl.svg}" alt="" title="Poland" data-tippy-placement="top"></a></h4>
+
+                    <!-- Details -->
+                    <span class="freelancer-detail-item"><a href="#"><i class="icon-feather-mail"></i> <span th:text="${bid.bidder.email}"></span></a></span>
+                    <span class="freelancer-detail-item"><i class="icon-feather-phone"></i> <span th:text="${bid.bidder.mobileNumber}"></span></span>
+
+                    <!-- Rating -->
+                    <div class="freelancer-rating">
+                      <div class="star-rating" data-rating="5.0"></div>
+                    </div>
+
+                    <!-- Bid Details -->
+                    <ul class="dashboard-task-info bid-info">
+                      <li><strong th:text="|&#8358; ${#numbers.formatDecimal(bid.rate, 1,'COMMA',0,'POINT')}"></strong><span>Fixed Price</span></li>
+                      <li>
+                        <strong th:text="|${bid.completionTime} ${T(com.fixit.web.enums.TimeInterval).valueOfId(bid.completionTimeDuration)}|"></strong>
+                        <span>Delivery Time</span>
+                      </li>
+                    </ul>
+
+                    <!-- Buttons -->
+                    <div class="buttons-to-right always-visible margin-top-25 margin-bottom-0">
+                      <a href="#small-dialog-1"  class="popup-with-zoom-anim button ripple-effect accept-offer"><i class="icon-material-outline-check"></i> Accept Offer</a>
+                      <a href="#small-dialog-2" class="popup-with-zoom-anim button dark ripple-effect"><i class="icon-feather-mail"></i> Send Message</a>
+                      <a href="#" class="button gray ripple-effect ico" title="Remove Bid" data-tippy-placement="top"><i class="icon-feather-trash-2"></i></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <!-- Bid Acceptance Popup ================================================== -->
+            <div id="small-dialog-1" class="zoom-anim-dialog mfp-hide dialog-with-tabs accept-bid-modal">
+
+              <!--Tabs -->
+              <div class="sign-in-form">
+
+                <ul class="popup-tabs-nav">
+                  <li><a href="#tab1">Accept Offer</a></li>
+                </ul>
+
+                <div class="popup-tabs-container">
+
+                  <!-- Tab -->
+                  <div class="popup-tab-content" id="tab">
+
+                    <!-- Welcome Text -->
+                    <div class="welcome-text">
+                      <h3 class="offer-name-info">Josh Kosheck</h3>
+                      <div class="bid-acceptance margin-top-15" th:text="|&#8358 ${bid.rate}|">
+                        $3200
+                      </div>
+
+                    </div>
+
+                    <form id="terms">
+                      <div class="radio">
+                        <input id="radio-1" name="radio" type="radio" required>
+                        <label for="radio-1"><span class="radio-label"></span>  I have read and agree to the Terms and Conditions</label>
+                      </div>
+                    </form>
+
+                    <!-- Button -->
+                    <button class="margin-top-15 button full-width button-sliding-icon ripple-effect" type="submit" form="terms">Accept <i class="icon-material-outline-arrow-right-alt"></i></button>
+
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <!-- Bid Acceptance Popup / End -->
+
+
+            <!-- Send Direct Message Popup
+            ================================================== -->
+            <div id="small-dialog-2" class="zoom-anim-dialog mfp-hide dialog-with-tabs">
+
+              <!--Tabs -->
+              <div class="sign-in-form">
+
+                <ul class="popup-tabs-nav">
+                  <li><a href="#tab2">Send Message</a></li>
+                </ul>
+
+                <div class="popup-tabs-container">
+
+                  <!-- Tab -->
+                  <div class="popup-tab-content" id="tab2">
+
+                    <!-- Welcome Text -->
+                    <div class="welcome-text">
+                      <h3>Direct Message To David</h3>
+                    </div>
+
+                    <!-- Form -->
+                    <form method="post" id="send-pm">
+                      <textarea name="textarea" cols="10" placeholder="Message" class="with-border" required></textarea>
+                    </form>
+
+                    <!-- Button -->
+                    <button class="button full-width button-sliding-icon ripple-effect" type="submit" form="send-pm">Send <i class="icon-material-outline-arrow-right-alt"></i></button>
+
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <!-- Send Direct Message Popup / End -->
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- Row / End -->
+</section>
+<script>
+  $(document).ready(function(){
+    $('.dashboard-box-list .accept-offer').click(function(){
+      var nameInfo = $(this).closest('div.freelancer-name').find('.name-info').text();
+    })
+  })
+</script>
+</body>
+</html>

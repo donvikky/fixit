@@ -15,12 +15,12 @@ public class Bid extends Auditable<String> {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "job_id")
-    private Job job;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bidder_id")
     private Profile bidder;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "job_id")
+    private Job job;
 
     @NotNull
     @Min(value = 1)
@@ -34,17 +34,21 @@ public class Bid extends Auditable<String> {
     @NotNull
     @Min(value = 1)
     @Column(name = "completion_time_duration")
-    private Integer getCompletionTimeDuration;
+    private Integer completionTimeDuration;
+
+    private Boolean accepted;
 
     public Bid() {
     }
 
-    public Bid(Job job, Profile bidder, Double rate, Integer completionTime, Integer getCompletionTimeDuration) {
+    public Bid(Job job, Profile bidder, Double rate, Integer completionTime, Integer completionTimeDuration,
+               Boolean accepted) {
         this.job = job;
         this.bidder = bidder;
         this.rate = rate;
         this.completionTime = completionTime;
-        this.getCompletionTimeDuration = getCompletionTimeDuration;
+        this.completionTimeDuration = completionTimeDuration;
+        this.accepted = accepted;
     }
 
     public Integer getId() {
@@ -87,12 +91,20 @@ public class Bid extends Auditable<String> {
         this.completionTime = completionTime;
     }
 
-    public Integer getGetCompletionTimeDuration() {
-        return getCompletionTimeDuration;
+    public Integer getCompletionTimeDuration() {
+        return completionTimeDuration;
     }
 
-    public void setGetCompletionTimeDuration(Integer getCompletionTimeDuration) {
-        this.getCompletionTimeDuration = getCompletionTimeDuration;
+    public void setCompletionTimeDuration(Integer completionTimeDuration) {
+        this.completionTimeDuration = completionTimeDuration;
+    }
+
+    public Boolean getAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(Boolean accepted) {
+        this.accepted = accepted;
     }
 
     @Override
@@ -103,7 +115,7 @@ public class Bid extends Auditable<String> {
                 ", bidder=" + bidder +
                 ", rate=" + rate +
                 ", completionTime=" + completionTime +
-                ", getCompletionTimeDuration=" + getCompletionTimeDuration +
+                ", getCompletionTimeDuration=" + completionTimeDuration +
                 '}';
     }
 }

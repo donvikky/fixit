@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" th:fragment="layout (title, style, content)" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" th:fragment="layout (title, style, content, script)" xmlns:th="http://www.thymeleaf.org">
 <head>
 
     <!-- Basic Page Needs
@@ -476,5 +476,6 @@
 <script th:src="@{/js/magnific-popup.min.js}"></script>
 <script th:src="@{/js/slick.min.js}"></script>
 <script th:src="@{/js/custom.js}"></script>
+<script th:replace="${script}"></script>
 </body>
 </html>

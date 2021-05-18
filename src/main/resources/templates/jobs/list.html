@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html th:replace="~{layouts/admin_layout :: layout(~{::title}, ~{::style}, ~{::section})}" lang="en" xmlns:th="http://www.thymeleaf.org">
+<html th:replace="~{layouts/admin_layout :: layout(~{::title}, ~{::style}, ~{::section}, ~{})}" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>Dashboard - List Jobs</title>
@@ -40,6 +40,7 @@
         <div class="content">
           <ul class="dashboard-box-list" th:if="${!jobs.empty}">
             <li th:each="job: ${jobs}">
+
               <!-- Job Listing -->
               <div class="job-listing width-adjustment">
 
@@ -62,10 +63,10 @@
 
               <!-- Task Details -->
               <ul class="dashboard-task-info">
-                <li><strong>3</strong><span>Bids</span></li>
-                <li><strong>$22</strong><span>Avg. Bid</span></li>
+                <li><strong th:text="${#lists.size(job.bids)}"></strong><span>Bids</span></li>
+                <li><strong th:text="|&#8358;|" id="average-rate">$22</strong><span>Avg. Bid</span></li>
                 <li>
-                  <strong th:text="|&#8358;${job.budgetMinimum} - &#8358;${job.budgetMaximum}|"></strong>
+                  <strong th:text="|&#8358;${#numbers.formatDecimal(job.budgetMinimum, 1,'COMMA',0,'POINT')} - &#8358;${#numbers.formatDecimal(job.budgetMaximum, 1,'COMMA',0,'POINT')}|"></strong>
                   <span th:if="${job.jobType == T(com.fixit.web.enums.JobType).LUMP_SUM.id}" th:text="|Lump Sum|"></span>
                   <span th:if="${job.jobType == T(com.fixit.web.enums.JobType).HOURLY.id}" th:text="|Hourly Rate|"></span>
                 </li>
@@ -73,7 +74,8 @@
 
               <!-- Buttons -->
               <div class="buttons-to-right always-visible">
-                <a href="dashboard-manage-bidders.html" class="button ripple-effect"><i class="icon-material-outline-supervisor-account"></i> Manage Bidders <span class="button-info">3</span></a>
+                <a th:if="${!job.bids.empty}" th:href="@{/bids/job/{id}(id=${job.id})}" class="button ripple-effect"><i class="icon-material-outline-supervisor-account"></i> Manage Bidders <span class="button-info" th:text="${#lists.size(job.bids)}">3</span></a>
+                <a th:if="${job.bids.empty}" href="#" class="button ripple-effect"><i class="icon-material-outline-supervisor-account"></i> No Bidders Yet <span class="button-info" th:text="${#lists.size(job.bids)}">3</span></a>
                 <a th:href="@{/jobs/{id}(id=${job.id})}" class="button gray ripple-effect ico" title="View" data-tippy-placement="top"><i class="icon-feather-file"></i></a>
                 <a th:href="@{/jobs/edit/{id}(id=${job.id})}" class="button gray ripple-effect ico" title="Edit" data-tippy-placement="top"><i class="icon-feather-edit"></i></a>
                 <a th:href="@{/jobs/delete/{id}(id=${job.id})}" class="button gray ripple-effect ico" title="Remove" data-tippy-placement="top" onclick="if(!confirm('Are you sure you want to delete this job?')) event.preventDefault()"><i class="icon-feather-trash-2"></i></a>

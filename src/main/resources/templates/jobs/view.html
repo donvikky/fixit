@@ -64,9 +64,10 @@
 
       <!-- Content -->
       <div class="col-xl-8 col-lg-8 content-right-offset">
-        <div th:if="${errors != null && !errors.empty}">
-          <div th:each="error: ${errors}" th:text="${error.message}"></div>
-        </div>
+        <!-- success message -->
+        <div class="countdown green margin-bottom-35 closeable" th:if="${successMessage != null}" th:text="${successMessage}" ></div>
+        <div class="countdown green margin-bottom-35 closeable" th:if="${errorMessage != null}" th:text="${errorMessage}" ></div>
+
         <!-- Description -->
         <div class="single-page-section">
           <h3 class="margin-bottom-25">Project Description</h3>
@@ -82,13 +83,13 @@
 
           <div class="countdown green margin-bottom-35" th:text="|Posted ${postDuration} ago|"></div>
 
-          <div class="sidebar-widget">
+          <div class="sidebar-widget" th:if="${#authentication.principal.user.id != job.profile.user.id}">
             <div class="bidding-widget">
               <div class="bidding-headline"><h3>Bid on this job!</h3></div>
               <div class="bidding-inner">
                 <form method="post" th:object="${bid}" th:action="@{/bids/create}">
                   <input type="hidden" name="job" th:value="${job.id}" >
-                  <input type="hidden" name="bidder" th:value="${#authentication.principal.user.id}">
+                  <!--<input type="hidden" name="bidder" th:value="${#authentication.principal.user.id}">-->
                 <!-- Headline -->
                 <span class="bidding-detail">Set your <strong>minimal rate</strong></span>
 
@@ -111,14 +112,21 @@
                   </div>
                   <div class="bidding-field">
                     <select class="selectpicker default" th:field="*{getCompletionTimeDuration}">
-                      <option selected value="1">Days</option>
-                      <option value="2">Hours</option>
+                      <option
+                              th:each="type : ${T(com.fixit.web.enums.TimeInterval).values()}"
+                              th:value="${type.id}"
+                              th:text="${type.label}">
+                      </option>
                     </select>
                   </div>
                 </div>
 
                 <!-- Button -->
-                <button id="snackbar-place-bid" class="button ripple-effect move-on-hover full-width margin-top-30"><span>Place a Bid</span></button>
+                <button id="snackbar-place-bid" class="button ripple-effect move-on-hover full-width margin-top-30"
+                        onclick="if(!confirm('Are you satisfied with the details you provided?')) event.preventDefault()"
+                >
+                  <span>Place a Bid</span>
+                </button>
                 </form>
               </div>
               <div class="bidding-signup">Don't have an account? <a href="#sign-in-dialog" class="register-tab sign-in popup-with-zoom-anim">Sign Up</a></div>

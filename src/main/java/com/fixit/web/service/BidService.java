@@ -1,6 +1,8 @@
 package com.fixit.web.service;
 
 import com.fixit.web.entity.Bid;
+import com.fixit.web.entity.Job;
+import com.fixit.web.entity.Profile;
 import com.fixit.web.repository.BidRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,4 +34,13 @@ public class BidService {
     public void delete(int id) {
         bidRepository.deleteById(id);
     }
+
+    public List<Bid> findByJobAndBidder(Job job, Profile bidder){
+        return bidRepository.findByJobAndBidder(job, bidder);
+    }
+
+    public List<Bid> findByJobAndPoster(Job job, Profile poster){
+        return bidRepository.findByJobAndPoster(job, poster);
+    }
+
 }
