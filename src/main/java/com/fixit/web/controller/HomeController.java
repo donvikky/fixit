@@ -34,4 +34,9 @@ public class HomeController {
     public String dashboard(Model model){
         return "dashboard";
     }
+
+    @GetMapping("/oauth")
+    public String oauthLogin(){
+        return "auth/oauth";
+    }
 }

@@ -41,7 +41,7 @@ public class JobController {
 
     @GetMapping
     public String listJobs(Model model){
-        List<Job> jobs = jobService.findByCreateUser(new AuthUtils().getCurrentUser().getProfile());
+        List<Job> jobs = jobService.findByCreateUser(new AuthUtils().getCurrentUser().get().getProfile());
         model.addAttribute("jobs", jobs);
         return "jobs/list";
     }
@@ -65,7 +65,7 @@ public class JobController {
             bindingResult.getAllErrors().stream().forEach(e -> System.out.println(e.toString()));
             return "jobs/create";
         }
-        job.setProfile(new AuthUtils().getCurrentUser().getProfile());
+        job.setProfile(new AuthUtils().getCurrentUser().get().getProfile());
         jobService.save(job);
         sessionStatus.setComplete();
         return "redirect:/jobs";
@@ -89,7 +89,7 @@ public class JobController {
         if(bindingResult.hasErrors()){
             return "jobs/edit";
         }
-        job.setProfile(new AuthUtils().getCurrentUser().getProfile());
+        job.setProfile(new AuthUtils().getCurrentUser().get().getProfile());
         jobService.save(job);
         sessionStatus.setComplete();
         return "redirect:/jobs";

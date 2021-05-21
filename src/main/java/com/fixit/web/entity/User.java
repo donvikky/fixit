@@ -1,5 +1,7 @@
 package com.fixit.web.entity;
 
+import com.fixit.web.enums.Provider;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -17,6 +19,7 @@ public class User implements Serializable {
     private String username;
     private String password;
     private Boolean enabled;
+    private String token;
 
     @Column(name = "last_login_time")
     private LocalDateTime lastLoginTime;
@@ -27,6 +30,9 @@ public class User implements Serializable {
 
     @OneToOne(mappedBy = "user")
     private Profile profile;
+
+    @Enumerated(EnumType.STRING)
+    private Provider provider;
 
     public User() {
     }
@@ -92,6 +98,22 @@ public class User implements Serializable {
 
     public void setProfile(Profile profile) {
         this.profile = profile;
+    }
+
+    public Provider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(Provider provider) {
+        this.provider = provider;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     @Override

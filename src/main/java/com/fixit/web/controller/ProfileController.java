@@ -1,6 +1,5 @@
 package com.fixit.web.controller;
 
-import com.fixit.web.auth.CustomUserDetails;
 import com.fixit.web.entity.Craft;
 import com.fixit.web.entity.Profile;
 import com.fixit.web.entity.State;
@@ -10,9 +9,11 @@ import com.fixit.web.service.CraftService;
 import com.fixit.web.service.FileStorageService;
 import com.fixit.web.service.ProfileService;
 import com.fixit.web.service.StateService;
+import com.fixit.web.utils.AuthUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,18 +31,22 @@ import java.util.NoSuchElementException;
 @RequestMapping("/profiles")
 public class ProfileController {
 
+    private static final Logger logger = LoggerFactory.getLogger(ProfileController.class);
     private ProfileService profileService;
     private StateService stateService;
     private FileStorageService storageService;
     private CraftService craftService;
+    private AuthUtils authUtils;
 
     @Autowired
     public ProfileController(ProfileService profileService, StateService stateService,
-                             FileStorageService storageService, CraftService craftService) {
+                             FileStorageService storageService, CraftService craftService,
+                             AuthUtils authUtils) {
         this.profileService = profileService;
         this.stateService = stateService;
         this.storageService = storageService;
         this.craftService = craftService;
+        this.authUtils = authUtils;
     }
 
     @GetMapping
@@ -53,7 +58,9 @@ public class ProfileController {
 
     @GetMapping("/create")
     public String add(Model model){
-        Profile profile = profileService.findByUser(this.getUser());
+        User user = new AuthUtils().getCurrentUser().get();
+        logger.info("%s", user);
+        Profile profile = profileService.findByUser(authUtils.getCurrentUser().get());
         if(profile != null){
             return "redirect:/profiles/edit";
         }
@@ -77,7 +84,7 @@ public class ProfileController {
         }
         String fileName = storageService.save(file);
         
-        profile.setUser(this.getUser());
+        profile.setUser(authUtils.getCurrentUser().get());
         profile.setPhoto(fileName);
         profileService.save(profile);
         sessionStatus.setComplete();
@@ -87,7 +94,8 @@ public class ProfileController {
     @GetMapping("/edit")
     public String edit(Model model){
 
-        Profile profile = profileService.findByUser(this.getUser());
+        Profile profile = profileService.findByUser(authUtils.getCurrentUser().get());
+        logger.info("%s", new AuthUtils().getCurrentUser().get());
         if(profile == null){
             return "redirect:/profiles/create";
         }
@@ -131,7 +139,7 @@ public class ProfileController {
             String fileName = storageService.save(file);
             profile.setPhoto(fileName);
         }
-        profile.setUser(this.getUser());
+        profile.setUser(authUtils.getCurrentUser().get());
         profileService.save(profile);
         sessionStatus.setComplete();
         return "redirect:/dashboard";
@@ -182,10 +190,4 @@ public class ProfileController {
         return "profiles/view";
     }
 
-    private User getUser(){
-        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getPrincipal();
-        return userDetails.getUser();
-    }
 }

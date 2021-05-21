@@ -7,7 +7,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,31 +32,25 @@ public class Profile extends Auditable<String> {
     private String lastName;
 
     @Column(name = "mobile_number")
-    @NotBlank
     private String mobileNumber;
 
-    @NotBlank
     private String address;
     private String photo;
 
     @Column(name = "hourly_rate")
-    @NotNull(message = "Please provide an hourly rate")
     @Digits(integer = 10, fraction = 2)
     private Integer hourlyRate;
 
     @Column(name = "short_description")
-    @NotBlank(message = "Please provide a short description of your self")
     private String shortDescription;
 
     @Column(name = "long_description")
-    @NotBlank(message = "Please provide a detailed description of your self and your skills")
     private String longDescription;
 
     @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "state_id")
     private State state;

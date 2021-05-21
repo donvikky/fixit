@@ -46,7 +46,7 @@ public class ProjectController {
 
     @GetMapping
     public String listProjects(Model model){
-        List<Project> projects = projectService.findByProfile(new AuthUtils().getCurrentUser().getProfile());
+        List<Project> projects = projectService.findByProfile(new AuthUtils().getCurrentUser().get().getProfile());
         model.addAttribute("projects", projects);
         return "projects/list";
     }
@@ -75,7 +75,7 @@ public class ProjectController {
             project.setProjectPhotos(projectPhotos);
         }
 
-        Profile profile = profileService.findByUser(new AuthUtils().getCurrentUser());
+        Profile profile = profileService.findByUser(new AuthUtils().getCurrentUser().get());
         project.setProfile(profile);
         projectService.save(project);
         sessionStatus.setComplete();
@@ -116,7 +116,7 @@ public class ProjectController {
             project.setProjectPhotos(projectPhotos);
         }
 
-        Profile profile = profileService.findByUser(new AuthUtils().getCurrentUser());
+        Profile profile = profileService.findByUser(new AuthUtils().getCurrentUser().get());
         project.setProfile(profile);
         projectService.save(project);
         sessionStatus.setComplete();

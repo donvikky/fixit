@@ -39,7 +39,7 @@ public class BidController {
     public String submitBid(@Valid Bid bid, BindingResult bindingResult, SessionStatus sessionStatus,
                             RedirectAttributes redirectAttributes){
 
-        Profile bidder = new AuthUtils().getCurrentUser().getProfile();
+        Profile bidder = new AuthUtils().getCurrentUser().get().getProfile();
         List<Bid> bids = bidService.findByJobAndBidder(bid.getJob(), bidder);
 
         if(!bids.isEmpty()){
@@ -61,7 +61,7 @@ public class BidController {
     @PreAuthorize("authentication.principal.user.profile != null")
     public String listJobBids(@PathVariable("id") int id, Model model){
         Job job = jobService.get(id);
-        Profile profile = new AuthUtils().getCurrentUser().getProfile();
+        Profile profile = new AuthUtils().getCurrentUser().get().getProfile();
         List<Bid> bids = bidService.findByJobAndPoster(job, profile);
         model.addAttribute("bids", bids);
         model.addAttribute("job", job);
