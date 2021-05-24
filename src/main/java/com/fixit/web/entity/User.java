@@ -19,7 +19,6 @@ public class User implements Serializable {
     private String username;
     private String password;
     private Boolean enabled;
-    private String token;
 
     @Column(name = "last_login_time")
     private LocalDateTime lastLoginTime;
@@ -33,6 +32,9 @@ public class User implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private Provider provider;
+
+    @Column(name = "provider_id")
+    private String providerId;
 
     public User() {
     }
@@ -108,12 +110,12 @@ public class User implements Serializable {
         this.provider = provider;
     }
 
-    public String getToken() {
-        return token;
+    public String getProviderId() {
+        return providerId;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
     }
 
     @Override
@@ -121,8 +123,9 @@ public class User implements Serializable {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
                 ", enabled=" + enabled +
+                ", provider=" + provider +
+                ", providerId=" + providerId +
                 '}';
     }
 

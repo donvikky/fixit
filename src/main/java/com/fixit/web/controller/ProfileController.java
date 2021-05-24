@@ -3,7 +3,6 @@ package com.fixit.web.controller;
 import com.fixit.web.entity.Craft;
 import com.fixit.web.entity.Profile;
 import com.fixit.web.entity.State;
-import com.fixit.web.entity.User;
 import com.fixit.web.model.ProfileSearch;
 import com.fixit.web.service.CraftService;
 import com.fixit.web.service.FileStorageService;
@@ -58,8 +57,6 @@ public class ProfileController {
 
     @GetMapping("/create")
     public String add(Model model){
-        User user = new AuthUtils().getCurrentUser().get();
-        logger.info("%s", user);
         Profile profile = profileService.findByUser(authUtils.getCurrentUser().get());
         if(profile != null){
             return "redirect:/profiles/edit";
@@ -95,7 +92,6 @@ public class ProfileController {
     public String edit(Model model){
 
         Profile profile = profileService.findByUser(authUtils.getCurrentUser().get());
-        logger.info("%s", new AuthUtils().getCurrentUser().get());
         if(profile == null){
             return "redirect:/profiles/create";
         }
@@ -177,8 +173,6 @@ public class ProfileController {
     public String searchProfiles(@ModelAttribute("search") ProfileSearch search, Model model,
                                  BindingResult bindingResult){
         List<Profile> profiles = profileService.findByCraft(search.getCraft());
-        //System.out.println(profiles);
-        //List<Profile> profiles = profileService.listAll();
         model.addAttribute("profiles", profiles);
         return "profiles/search";
     }

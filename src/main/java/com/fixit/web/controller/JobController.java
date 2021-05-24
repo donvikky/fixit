@@ -1,9 +1,6 @@
 package com.fixit.web.controller;
 
-import com.fixit.web.entity.Bid;
-import com.fixit.web.entity.Craft;
-import com.fixit.web.entity.Job;
-import com.fixit.web.entity.State;
+import com.fixit.web.entity.*;
 import com.fixit.web.service.CraftService;
 import com.fixit.web.service.JobService;
 import com.fixit.web.service.StateService;
@@ -31,23 +28,25 @@ public class JobController {
     private JobService jobService;
     private StateService stateService;
     private CraftService craftService;
+    private AuthUtils authUtils;
 
     @Autowired
-    public JobController(JobService jobService, StateService stateService, CraftService craftService) {
+    public JobController(JobService jobService, StateService stateService,
+                         CraftService craftService, AuthUtils authUtils) {
         this.jobService = jobService;
         this.stateService = stateService;
         this.craftService = craftService;
+        this.authUtils = authUtils;
     }
 
     @GetMapping
     public String listJobs(Model model){
-        List<Job> jobs = jobService.findByCreateUser(new AuthUtils().getCurrentUser().get().getProfile());
+        List<Job> jobs = jobService.findByCreateUser(new User().getProfile());
         model.addAttribute("jobs", jobs);
         return "jobs/list";
     }
 
     @GetMapping("/create")
-    @PreAuthorize("authentication.principal.user.profile != null")
     public String createJob(Model model){
         List<State> states = stateService.listAll();
         List<Craft> crafts = craftService.listAll();
@@ -59,20 +58,18 @@ public class JobController {
     }
 
     @PostMapping("/create")
-    @PreAuthorize("authentication.principal.user.profile != null")
     public String saveJob(@Valid Job job, BindingResult bindingResult, SessionStatus sessionStatus) {
         if(bindingResult.hasErrors()){
             bindingResult.getAllErrors().stream().forEach(e -> System.out.println(e.toString()));
             return "jobs/create";
         }
-        job.setProfile(new AuthUtils().getCurrentUser().get().getProfile());
+        job.setProfile(authUtils.getCurrentUser().get().getProfile());
         jobService.save(job);
         sessionStatus.setComplete();
         return "redirect:/jobs";
     }
 
     @GetMapping("/edit/{id}")
-    @PreAuthorize("authentication.principal.user.profile != null")
     public String editJob(@PathVariable("id") int id, Model model){
         List<State> states = stateService.listAll();
         List<Craft> crafts = craftService.listAll();
@@ -84,12 +81,11 @@ public class JobController {
     }
 
     @PostMapping("/edit")
-    @PreAuthorize("authentication.principal.user.profile != null")
     public String updateJob(@Valid Job job, BindingResult bindingResult, SessionStatus sessionStatus){
         if(bindingResult.hasErrors()){
             return "jobs/edit";
         }
-        job.setProfile(new AuthUtils().getCurrentUser().get().getProfile());
+        job.setProfile(authUtils.getCurrentUser().get().getProfile());
         jobService.save(job);
         sessionStatus.setComplete();
         return "redirect:/jobs";

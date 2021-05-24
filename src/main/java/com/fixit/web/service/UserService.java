@@ -30,7 +30,7 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public Optional<User> findByToken(String token){
-        return userRepository.findByToken(token);
+    public Optional<User> findByProviderId(String id){
+        return userRepository.findByProviderId(id);
     }
 }

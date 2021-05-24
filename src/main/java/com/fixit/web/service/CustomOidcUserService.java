@@ -60,7 +60,6 @@ public class CustomOidcUserService {
 
     private void upDateUserLogin(OidcUser oidcUser, User user){
         user.setLastLoginTime(LocalDateTime.now());
-        user.setToken(oidcUser.getIdToken().getTokenValue());
         userService.save(user);
     }
 
@@ -68,7 +67,7 @@ public class CustomOidcUserService {
         User user = new User();
         user.setUsername(oidcUser.getPreferredUsername());
         user.setPassword("");
-        user.setToken(oidcUser.getIdToken().getTokenValue());
+        user.setProviderId(oidcUser.getSubject());
         user.setProvider(provider);
         user.setLastLoginTime(LocalDateTime.now());
         user.setEnabled(true);

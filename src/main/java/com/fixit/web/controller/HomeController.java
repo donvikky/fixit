@@ -1,8 +1,12 @@
 package com.fixit.web.controller;
 
+import com.fixit.web.annotations.ProfileComplete;
 import com.fixit.web.entity.Craft;
 import com.fixit.web.model.ProfileSearch;
 import com.fixit.web.service.CraftService;
+import com.fixit.web.service.UserService;
+import com.fixit.web.utils.AuthUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,9 +19,12 @@ import java.util.List;
 public class HomeController {
 
     private CraftService craftService;
+    private AuthUtils authUtils;
 
-    public HomeController(CraftService craftService) {
+    @Autowired
+    public HomeController(CraftService craftService, UserService userService, AuthUtils authUtils) {
         this.craftService = craftService;
+        this.authUtils = authUtils;
     }
 
     @GetMapping
@@ -31,6 +38,7 @@ public class HomeController {
     }
 
     @GetMapping("/dashboard")
+    @ProfileComplete
     public String dashboard(Model model){
         return "dashboard";
     }

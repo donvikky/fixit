@@ -34,7 +34,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);
         CustomOauth2User customOauth2User = new CustomOauth2User(oAuth2User);
         processUser(oAuth2UserRequest, customOauth2User);
-        System.out.println(customOauth2User.getName());
         return customOauth2User;
     }
 
@@ -48,7 +47,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             user = profileOptional.get().getUser();
             upDateUserLogin(oAuth2UserRequest, user);
         }else {//create new user and profile
-            user = createNewUser(oAuth2UserRequest, provider);
+            user = createNewUser(oAuth2User, provider);
             createNewProfile(oAuth2User, user);
         }
 
@@ -73,15 +72,14 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private void upDateUserLogin(OAuth2UserRequest oAuth2UserRequest, User user){
         user.setLastLoginTime(LocalDateTime.now());
-        user.setToken(oAuth2UserRequest.getAccessToken().getTokenValue());
         userService.save(user);
     }
 
-    private User createNewUser(OAuth2UserRequest oAuth2UserRequest, Provider provider){
+    private User createNewUser(CustomOauth2User oauth2User, Provider provider){
         User user = new User();
         user.setUsername("");
         user.setPassword("");
-        user.setToken(oAuth2UserRequest.getAccessToken().getTokenValue());
+        user.setProviderId(oauth2User.getAttribute("id"));
         user.setProvider(provider);
         user.setLastLoginTime(LocalDateTime.now());
         user.setEnabled(true);

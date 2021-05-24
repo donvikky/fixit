@@ -7,7 +7,6 @@ import com.fixit.web.service.BidService;
 import com.fixit.web.service.JobService;
 import com.fixit.web.utils.AuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,19 +26,20 @@ public class BidController {
 
     private BidService bidService;
     private JobService jobService;
+    private AuthUtils authUtils;
 
     @Autowired
-    public BidController(BidService bidService, JobService jobService) {
+    public BidController(BidService bidService, JobService jobService, AuthUtils authUtils) {
         this.bidService = bidService;
         this.jobService = jobService;
+        this.authUtils = authUtils;
     }
 
     @PostMapping("/create")
-    @PreAuthorize("authentication.principal.user.profile != null")
     public String submitBid(@Valid Bid bid, BindingResult bindingResult, SessionStatus sessionStatus,
                             RedirectAttributes redirectAttributes){
 
-        Profile bidder = new AuthUtils().getCurrentUser().get().getProfile();
+        Profile bidder = authUtils.getCurrentUser().get().getProfile();
         List<Bid> bids = bidService.findByJobAndBidder(bid.getJob(), bidder);
 
         if(!bids.isEmpty()){
@@ -58,10 +58,9 @@ public class BidController {
     }
 
     @GetMapping("/job/{id}")
-    @PreAuthorize("authentication.principal.user.profile != null")
     public String listJobBids(@PathVariable("id") int id, Model model){
         Job job = jobService.get(id);
-        Profile profile = new AuthUtils().getCurrentUser().get().getProfile();
+        Profile profile = authUtils.getCurrentUser().get().getProfile();
         List<Bid> bids = bidService.findByJobAndPoster(job, profile);
         model.addAttribute("bids", bids);
         model.addAttribute("job", job);

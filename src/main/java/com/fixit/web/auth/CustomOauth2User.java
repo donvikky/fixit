@@ -11,6 +11,7 @@ import java.util.Map;
 public class CustomOauth2User implements OAuth2User {
 
     private OAuth2User oAuth2User;
+    private String accessToken;
     private List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList("ROLE_USER");
 
     public CustomOauth2User(OAuth2User oAuth2User){
@@ -34,5 +35,13 @@ public class CustomOauth2User implements OAuth2User {
 
     public String getEmail() {
         return oAuth2User.<String>getAttribute("email");
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 }
