@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html th:replace="~{layouts/admin_layout :: layout(~{::title}, ~{::style}, ~{::section}, ~{::script}, ~{::link})}" lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Submit Review</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css"/>
+    <style>
+        section{
+
+        }
+
+
+    </style>
+</head>
+<body>
+<section>
+    <!-- Dashboard Headline -->
+    <div class="dashboard-headline">
+        <h3>Post a Review</h3>
+
+        <!-- Breadcrumbs -->
+        <nav id="breadcrumbs" class="dark">
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/dashboard}">Dashboard</a></li>
+                <li>Post a Review</li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="dashboard-box margin-top-0">
+
+                <!-- Headline -->
+                <div class="headline">
+                    <h3><i class="icon-feather-folder-plus"></i>Submit Review</h3>
+                </div>
+
+                <div class="content with-padding padding-bottom-10">
+
+                    <!-- Form -->
+                    <form method="post" id="change-review-form" th:action="@{/job-reviews/create}" th:object="${jobReview}">
+                        <input type="hidden" name="job" th:value="${job.id}">
+                        <input type="hidden" name="bidder" th:value="${bidder.id}">
+                        <div class="feedback-yes-no">
+                            <strong>Was this delivered on budget?</strong>
+                            <div class="radio">
+                                <input id="radio-rating-1" th:field="*{completedOnBudget}" type="radio" value="1" checked>
+                                <label for="radio-rating-1"><span class="radio-label"></span> Yes</label>
+                            </div>
+
+                            <div class="radio">
+                                <input id="radio-rating-2" th:field="*{completedOnBudget}" type="radio" value="0">
+                                <label for="radio-rating-2"><span class="radio-label"></span> No</label>
+                            </div>
+                        </div>
+
+                        <div class="feedback-yes-no">
+                            <strong>Was this delivered on time?</strong>
+                            <div class="radio">
+                                <input id="radio-rating-3" th:field="*{completedOnTime}" type="radio" value="1" checked>
+                                <label for="radio-rating-3"><span class="radio-label"></span> Yes</label>
+                            </div>
+
+                            <div class="radio">
+                                <input id="radio-rating-4" th:field="*{completedOnTime}" type="radio" value="0">
+                                <label for="radio-rating-4"><span class="radio-label"></span> No</label>
+                            </div>
+                        </div>
+
+                        <div class="feedback-yes-no">
+                            <strong>Your Rating</strong>
+                            <div class="leave-rating">
+                                <input type="radio" th:field="*{rating}" id="rating-1" value="1" checked/>
+                                <label for="rating-1" class="icon-material-outline-star"></label>
+                                <input type="radio" th:field="*{rating}" id="rating-2" value="2"/>
+                                <label for="rating-2" class="icon-material-outline-star"></label>
+                                <input type="radio" th:field="*{rating}" id="rating-3" value="3"/>
+                                <label for="rating-3" class="icon-material-outline-star"></label>
+                                <input type="radio" th:field="*{rating}" id="rating-4" value="4"/>
+                                <label for="rating-4" class="icon-material-outline-star"></label>
+                                <input type="radio" th:field="*{rating}" id="rating-5" value="5"/>
+                                <label for="rating-5" class="icon-material-outline-star"></label>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <textarea class="with-border" placeholder="Comment" th:field="*{comments}" id="message" cols="7"
+                                  required></textarea>
+                        <button class="button full-width button-sliding-icon ripple-effect" type="submit">
+                            Leave a Review <i class="icon-material-outline-arrow-right-alt"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+<script>
+  $(document).ready(function(){
+
+    $('.button-sliding-icon').on('click', function(evt) {
+    evt.preventDefault();
+    $.confirm({
+      title: 'Submit Review',
+      content: 'You cannot submit multiple reviews for a completed job. Are you sure you want to submit this review?',
+      buttons: {
+          confirm: function () {
+              $(evt.target).parent().submit();
+              //$.alert('Confirmed!');
+          },
+          cancel: function () {
+              //$.alert('Canceled!');
+          }
+      }
+  });
+  })
+
+  })
+</script>
+</body>
+</html>

@@ -59,6 +59,9 @@ public class Job extends Auditable<String> {
             mappedBy = "job", orphanRemoval = true)
     private List<Bid> bids = new ArrayList<>();
 
+    @OneToOne(mappedBy = "job")
+    private JobReview review;
+
     public Job() {
     }
 
@@ -158,6 +161,14 @@ public class Job extends Auditable<String> {
 
     public void setCompleted(Boolean completed) {
         this.completed = completed;
+    }
+
+    public JobReview getReview() {
+        return review;
+    }
+
+    public void setReview(JobReview review) {
+        this.review = review;
     }
 
     @Override
