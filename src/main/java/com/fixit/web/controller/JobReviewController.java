@@ -65,4 +65,21 @@ public class JobReviewController {
         jobReviewService.save(jobReview);
         return "redirect:/jobs";
     }
+
+    @GetMapping("/edit/{id}")
+    public String editReview(@PathVariable("id") int id, Model model){
+        JobReview jobReview = jobReviewService.get(id);
+        model.addAttribute("jobReview", jobReview);
+        return "jobreviews/edit";
+    }
+
+    @PostMapping("/edit")
+    public String updateReview(@Valid JobReview jobReview, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            bindingResult.getAllErrors().stream().forEach( error -> System.out.println(error.toString()));
+            return "jobreviews/edit";
+        }
+        jobReviewService.save(jobReview);
+        return "redirect:/jobs";
+    }
 }

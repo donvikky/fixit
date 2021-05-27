@@ -85,6 +85,7 @@
                   <button class="button ripple-effect complete-job-button"><i class="icon-material-outline-supervisor-account"></i> Mark as completed</button>
                 </form>
                 <a th:if="${job.completed AND #lists.size(job.bids) > 0 AND job.review == null }" th:href="@{/job-reviews/create/{id}(id=${job.id})}" class="button ripple-effect"><i class="icon-material-outline-supervisor-account"></i> Submit Review </a>
+                <a th:if="${job.completed AND #lists.size(job.bids) > 0 AND job.review != null }" th:href="@{/job-reviews/edit/{id}(id=${job.review.id})}" class="button ripple-effect"><i class="icon-material-outline-supervisor-account"></i> Edit Review </a>
                 <a th:href="@{/jobs/{id}(id=${job.id})}" class="button gray ripple-effect ico" title="View" data-tippy-placement="top"><i class="icon-feather-file"></i></a>
                 <a th:href="@{/jobs/edit/{id}(id=${job.id})}" class="button gray ripple-effect ico" title="Edit" data-tippy-placement="top"><i class="icon-feather-edit"></i></a>
                 <a th:href="@{/jobs/delete/{id}(id=${job.id})}" class="button gray ripple-effect ico" title="Remove" data-tippy-placement="top" onclick="if(!confirm('Are you sure you want to delete this job?')) event.preventDefault()"><i class="icon-feather-trash-2"></i></a>
