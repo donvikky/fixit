@@ -77,7 +77,7 @@ public class ProjectController {
         projectService.save(project);
         sessionStatus.setComplete();
 
-        return "redirect:/profiles";
+        return "redirect:/projects";
     }
 
     @GetMapping("/{id}")

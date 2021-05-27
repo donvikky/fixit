@@ -41,7 +41,7 @@ public class AuditorAwareImpl implements AuditorAware<String> {
 
     private static Optional<String> getCurrentAuditor(final Authentication authentication) {
         if (authentication.getPrincipal() instanceof UserDetails) {
-            CustomUserDetails userDetails = (CustomUserDetails) authentication;
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
             return Optional.of(userDetails.getUser().getId().toString());
         }
         if (authentication.getPrincipal() instanceof OidcUser) {

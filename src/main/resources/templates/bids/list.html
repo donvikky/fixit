@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html th:replace="~{layouts/admin_layout :: layout(~{::title}, ~{::style}, ~{::section}, ~{::script})}" lang="en" xmlns:th="http://www.thymeleaf.org">
+<html th:replace="~{layouts/admin_layout :: layout(~{::title}, ~{::style}, ~{::section}, ~{::script}, ~{::link})}" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>View Bids</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css"/>
   <style>
-        section{
-
+        form{
+          float: left;
         }
     </style>
 </head>
@@ -78,7 +79,7 @@
 
                     <!-- Bid Details -->
                     <ul class="dashboard-task-info bid-info">
-                      <li><strong th:text="|&#8358; ${#numbers.formatDecimal(bid.rate, 1,'COMMA',0,'POINT')}"></strong><span>Fixed Price</span></li>
+                      <li><strong class="offer" th:text="|&#8358; ${#numbers.formatDecimal(bid.rate, 1,'COMMA',0,'POINT')}"></strong><span>Fixed Price</span></li>
                       <li>
                         <strong th:text="|${bid.completionTime} ${T(com.fixit.web.enums.TimeInterval).valueOfId(bid.completionTimeDuration)}|"></strong>
                         <span>Delivery Time</span>
@@ -87,7 +88,13 @@
 
                     <!-- Buttons -->
                     <div class="buttons-to-right always-visible margin-top-25 margin-bottom-0">
-                      <a href="#small-dialog-1"  class="popup-with-zoom-anim button ripple-effect accept-offer"><i class="icon-material-outline-check"></i> Accept Offer</a>
+                      <form method="post" th:action="@{/bids/accept}">
+                        <input type="hidden" name="id" th:value="${bid.id}" class="input-bid-id"/>
+                        <input type="hidden" name="jobId" th:value="${job.id}" class="input-job-id"/>
+                        <button href="#small-dialog-1"  class="button ripple-effect accept-offer">
+                          <i class="icon-material-outline-check"></i> Accept Offer
+                        </button>
+                      </form>
                       <a href="#small-dialog-2" class="popup-with-zoom-anim button dark ripple-effect"><i class="icon-feather-mail"></i> Send Message</a>
                       <a href="#" class="button gray ripple-effect ico" title="Remove Bid" data-tippy-placement="top"><i class="icon-feather-trash-2"></i></a>
                     </div>
@@ -120,16 +127,16 @@
 
                     </div>
 
-                    <form id="terms">
+                    <form th:id="|terms${bid.id}|" method="post" th:action="@{/bids/accept}">
                       <div class="radio">
+                        <input type="hidden" name="id" th:value="${bid.id}" class="input-bid-id"/>
+                        <input type="hidden" name="jobId" th:value="${job.id}" class="input-job-id"/>
                         <input id="radio-1" name="radio" type="radio" required>
                         <label for="radio-1"><span class="radio-label"></span>  I have read and agree to the Terms and Conditions</label>
                       </div>
-                    </form>
-
                     <!-- Button -->
-                    <button class="margin-top-15 button full-width button-sliding-icon ripple-effect" type="submit" form="terms">Accept <i class="icon-material-outline-arrow-right-alt"></i></button>
-
+                    <button class="margin-top-15 button full-width button-sliding-icon ripple-effect">Accept <i class="icon-material-outline-arrow-right-alt"></i></button>
+                    </form>
                   </div>
 
                 </div>
@@ -181,11 +188,26 @@
   </div>
   <!-- Row / End -->
 </section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 <script>
   $(document).ready(function(){
-    $('.dashboard-box-list .accept-offer').click(function(){
-      var nameInfo = $(this).closest('div.freelancer-name').find('.name-info').text();
-    })
+    $('button.accept-offer').on('click', function(evt) {
+    evt.preventDefault();
+    $.confirm({
+      title: 'Accept Bid',
+      content: 'I have read and agree to the Terms and Conditions',
+      buttons: {
+          confirm: function () {
+              $(evt.target).parent().submit();
+              //$.alert('Confirmed!');
+          },
+          cancel: function () {
+              //$.alert('Canceled!');
+          }
+      }
+  });
+  })
+
   })
 </script>
 </body>

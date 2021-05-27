@@ -10,15 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Controller
 @RequestMapping("/bids")
@@ -65,5 +63,21 @@ public class BidController {
         model.addAttribute("bids", bids);
         model.addAttribute("job", job);
         return "bids/list";
+    }
+
+    @PostMapping("/accept")
+    public String acceptBid(@RequestParam("id") Integer id, @RequestParam("jobId") Integer jobId){
+
+
+        try {
+            Bid bid = bidService.get(id);
+            Job job = jobService.get(jobId);
+            bidService.acceptBid(id);
+            bidService.declineOtherBids(job, id);
+            return "redirect:/bids/job/" + jobId;
+        }catch (NoSuchElementException exception){
+            exception.printStackTrace();
+            return "redirect:/dashboard";
+        }
     }
 }

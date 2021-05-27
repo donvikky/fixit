@@ -43,4 +43,14 @@ public class BidService {
         return bidRepository.findByJobAndPoster(job, poster);
     }
 
+    public int acceptBid(Integer id){
+        System.out.println("Updating bid with ID: " + id);
+        return bidRepository.updateAcceptedBid(id);
+    }
+
+    public int declineOtherBids(Job job, Integer id){
+        System.out.println("Declining other bids aside from ID: " + id);
+        return bidRepository.updateOtherBidsToDeclined(job, id);
+    }
+
 }

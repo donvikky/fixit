@@ -41,7 +41,7 @@ public class JobController {
 
     @GetMapping
     public String listJobs(Model model){
-        List<Job> jobs = jobService.findByCreateUser(new User().getProfile());
+        List<Job> jobs = jobService.findByCreateUser(authUtils.getCurrentUser().get().getProfile());
         model.addAttribute("jobs", jobs);
         return "jobs/list";
     }
@@ -60,7 +60,7 @@ public class JobController {
     @PostMapping("/create")
     public String saveJob(@Valid Job job, BindingResult bindingResult, SessionStatus sessionStatus) {
         if(bindingResult.hasErrors()){
-            bindingResult.getAllErrors().stream().forEach(e -> System.out.println(e.toString()));
+            //bindingResult.getAllErrors().stream().forEach(e -> System.out.println(e.toString()));
             return "jobs/create";
         }
         job.setProfile(authUtils.getCurrentUser().get().getProfile());

@@ -1260,6 +1260,7 @@ $(document).ready(function(){
 		});
 	});
 
+
 	$('.popup-with-zoom-anim').magnificPopup({
 		 type: 'inline',
 
@@ -1275,6 +1276,7 @@ $(document).ready(function(){
 		 removalDelay: 300,
 		 mainClass: 'my-mfp-zoom-in'
 	});
+
 
 	$('.mfp-image').magnificPopup({
 		 type: 'image',

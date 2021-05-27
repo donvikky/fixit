@@ -5,7 +5,6 @@ import com.fixit.web.entity.Craft;
 import com.fixit.web.model.ProfileSearch;
 import com.fixit.web.service.CraftService;
 import com.fixit.web.service.UserService;
-import com.fixit.web.utils.AuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,12 +18,10 @@ import java.util.List;
 public class HomeController {
 
     private CraftService craftService;
-    private AuthUtils authUtils;
 
     @Autowired
-    public HomeController(CraftService craftService, UserService userService, AuthUtils authUtils) {
+    public HomeController(CraftService craftService, UserService userService) {
         this.craftService = craftService;
-        this.authUtils = authUtils;
     }
 
     @GetMapping
@@ -33,7 +30,6 @@ public class HomeController {
         List<Craft> crafts = craftService.listAll();
         model.addAttribute("search", search);
         model.addAttribute("crafts", crafts);
-
         return "home";
     }
 
