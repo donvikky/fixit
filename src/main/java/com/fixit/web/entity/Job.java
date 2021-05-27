@@ -53,6 +53,8 @@ public class Job extends Auditable<String> {
     @NotBlank(message = "Please provide a description")
     private String longDescription;
 
+    private Boolean completed = false;
+
     @OneToMany(cascade = CascadeType.ALL,
             mappedBy = "job", orphanRemoval = true)
     private List<Bid> bids = new ArrayList<>();
@@ -150,6 +152,14 @@ public class Job extends Auditable<String> {
         this.bids = bids;
     }
 
+    public Boolean getCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(Boolean completed) {
+        this.completed = completed;
+    }
+
     @Override
     public String toString() {
         return "Job{" +
@@ -161,6 +171,7 @@ public class Job extends Auditable<String> {
                 ", budgetMaximum=" + budgetMaximum +
                 ", jobType=" + jobType +
                 ", longDescription='" + longDescription + '\'' +
+                ", completed='" + completed + '\'' +
                 '}';
     }
 }

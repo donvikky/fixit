@@ -1,11 +1,15 @@
 <!DOCTYPE html>
-<html th:replace="~{layouts/admin_layout :: layout(~{::title}, ~{::style}, ~{::section}, ~{}, ~{})}" lang="en" xmlns:th="http://www.thymeleaf.org">
+<html th:replace="~{layouts/admin_layout :: layout(~{::title}, ~{::style}, ~{::section}, ~{::script}, ~{::link})}" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>Dashboard - List Jobs</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css"/>
   <style>
-        section{
-
+        .complete-job {
+          display: inline;
+        }
+        .complete-job button{
+          float: left;
         }
     </style>
 </head>
@@ -76,6 +80,13 @@
               <div class="buttons-to-right always-visible">
                 <a th:if="${!job.bids.empty}" th:href="@{/bids/job/{id}(id=${job.id})}" class="button ripple-effect"><i class="icon-material-outline-supervisor-account"></i> Manage Bidders <span class="button-info" th:text="${#lists.size(job.bids)}">3</span></a>
                 <a th:if="${job.bids.empty}" href="#" class="button ripple-effect"><i class="icon-material-outline-supervisor-account"></i> No Bidders Yet <span class="button-info" th:text="${#lists.size(job.bids)}">3</span></a>
+                <form class="complete-job" th:if="${!job.completed AND #lists.size(job.bids) > 0}" method="post" th:action="@{/jobs/complete}">
+                  <input type="hidden" name="id" th:value="${job.id}" />
+                  <button class="button ripple-effect complete-job-button"><i class="icon-material-outline-supervisor-account"></i> Mark as completed</button>
+                </form>
+                <form class="complete-job" th:if="${job.completed AND #lists.size(job.bids) > 0 }">
+                  <button class="button ripple-effect"><i class="icon-material-outline-supervisor-account"></i> Submit Review </button>
+                </form>
                 <a th:href="@{/jobs/{id}(id=${job.id})}" class="button gray ripple-effect ico" title="View" data-tippy-placement="top"><i class="icon-feather-file"></i></a>
                 <a th:href="@{/jobs/edit/{id}(id=${job.id})}" class="button gray ripple-effect ico" title="Edit" data-tippy-placement="top"><i class="icon-feather-edit"></i></a>
                 <a th:href="@{/jobs/delete/{id}(id=${job.id})}" class="button gray ripple-effect ico" title="Remove" data-tippy-placement="top" onclick="if(!confirm('Are you sure you want to delete this job?')) event.preventDefault()"><i class="icon-feather-trash-2"></i></a>
@@ -95,5 +106,28 @@
   <!-- Row / End -->
 
 </section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+<script>
+  $(document).ready(function(){
+
+    $('.complete-job-button').on('click', function(evt) {
+    evt.preventDefault();
+    $.confirm({
+      title: 'Mark Job as Complete',
+      content: 'I certify that this job has been completed',
+      buttons: {
+          confirm: function () {
+              $(evt.target).parent().submit();
+              //$.alert('Confirmed!');
+          },
+          cancel: function () {
+              //$.alert('Canceled!');
+          }
+      }
+  });
+  })
+
+  })
+</script>
 </body>
 </html>

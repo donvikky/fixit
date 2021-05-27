@@ -11,15 +11,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
 import javax.validation.Valid;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Controller
 @RequestMapping("/jobs")
@@ -106,6 +104,18 @@ public class JobController {
     @PreAuthorize("authentication.principal.user.profile != null")
     public String delete(@PathVariable("id") int id){
         jobService.delete(id);
+        return "redirect:/jobs";
+    }
+
+    @PostMapping("/complete")
+    public String completeJob(@RequestParam("id") int id){
+        try {
+            Job job = jobService.get(id);
+            job.setCompleted(true);
+            jobService.save(job);
+        }catch (NoSuchElementException exception){
+            exception.printStackTrace();
+        }
         return "redirect:/jobs";
     }
 }
