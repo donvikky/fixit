@@ -1,6 +1,7 @@
 package com.fixit.web.entity;
 
 import com.fixit.web.audit.Auditable;
+import com.fixit.web.validator.LessThanField;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,6 +16,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "projects")
+@LessThanField(
+        lessThanField = "budgetMinimum",
+        greaterThanField = "budgetMaximum",
+        message = "The minimum budget must be less than the maximum budget"
+)
 public class Project extends Auditable<String> {
 
     @Id

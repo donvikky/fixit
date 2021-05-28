@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html th:replace="~{layouts/admin_layout :: layout(~{::title}, ~{::style}, ~{::section}, ~{})}" lang="en" xmlns:th="http://www.thymeleaf.org">
+<html th:replace="~{layouts/admin_layout :: layout(~{::title}, ~{::style}, ~{::section}, ~{}, ~{})}" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>Create Project</title>
@@ -100,7 +100,7 @@
                     <div class="input-with-icon">
                       <input th:field="*{budgetMinimum}" class="with-border" type="text" placeholder="Min">
                       <i class="currency">NGN</i>
-                      <span class="validationError" th:if="${#fields.hasErrors('budgetMinimum')}" th:errors="*{budgetMinimum}">budget Minimum error</span>
+                      <span class="validationError error" th:if="${#fields.hasErrors('budgetMinimum')}" th:errors="*{budgetMinimum}">budget Minimum error</span>
                     </div>
                   </div>
                   <div class="col-xl-6">
