@@ -7,6 +7,7 @@ import com.fixit.web.service.StateService;
 import com.fixit.web.utils.AuthUtils;
 import com.fixit.web.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ import javax.validation.Valid;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/jobs")
@@ -37,9 +39,11 @@ public class JobController {
         this.authUtils = authUtils;
     }
 
-    @GetMapping
-    public String listJobs(Model model){
-        List<Job> jobs = jobService.findByCreateUser(authUtils.getCurrentUser().get().getProfile());
+    @GetMapping("/page/{page}")
+    public String listJobs(@PathVariable("page") Optional<Integer> curPage, Model model){
+        int currentPage = curPage.orElse(1);
+        Page jobs = jobService.findByCreateUser(authUtils.getCurrentUser().get().getProfile(), currentPage);
+        model.addAttribute("currentPage", currentPage);
         model.addAttribute("jobs", jobs);
         return "jobs/list";
     }

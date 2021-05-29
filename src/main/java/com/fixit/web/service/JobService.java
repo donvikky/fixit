@@ -4,6 +4,10 @@ import com.fixit.web.entity.Job;
 import com.fixit.web.entity.Profile;
 import com.fixit.web.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +16,9 @@ import java.util.List;
 public class JobService {
 
     private JobRepository jobRepository;
+
+    @Value("${spring.data.web.pageable.default-page-size}")
+    private int pageSize;
 
     @Autowired
     public JobService(JobRepository jobRepository) {
@@ -34,8 +41,9 @@ public class JobService {
         jobRepository.deleteById(id);
     }
 
-    public List<Job> findByCreateUser(Profile profile){
-        return jobRepository.findAllByProfile(profile);
+    public Page findByCreateUser(Profile profile, final int pageNumber){
+        final Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
+        return jobRepository.findAllByProfile(profile, pageable);
     }
 
 }

@@ -118,4 +118,5 @@ public class Bid extends Auditable<String> {
                 ", getCompletionTimeDuration=" + completionTimeDuration +
                 '}';
     }
+
 }
