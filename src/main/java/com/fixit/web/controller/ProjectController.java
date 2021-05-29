@@ -3,6 +3,7 @@ package com.fixit.web.controller;
 import com.fixit.web.entity.Profile;
 import com.fixit.web.entity.Project;
 import com.fixit.web.entity.ProjectPhoto;
+import com.fixit.web.entity.State;
 import com.fixit.web.service.FileStorageService;
 import com.fixit.web.service.ProfileService;
 import com.fixit.web.service.ProjectService;
@@ -10,6 +11,7 @@ import com.fixit.web.service.StateService;
 import com.fixit.web.utils.AuthUtils;
 import com.fixit.web.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,6 +23,7 @@ import javax.validation.Valid;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Controller
@@ -43,18 +46,27 @@ public class ProjectController {
         this.authUtils = authUtils;
     }
 
-    @GetMapping
-    public String listProjects(Model model){
-        List<Project> projects = projectService.findByProfile(authUtils.getCurrentUser().get().getProfile());
-        model.addAttribute("projects", projects);
-        return "projects/list";
+    /*
+     * Ensures the states variable is available in all templates
+     * in this controller
+     */
+    @ModelAttribute("states")
+    public List<State> getStates(){
+        return stateService.listAll();
     }
 
+    @GetMapping("/page/{page}")
+    public String listProjects(Model model, @PathVariable("page")Optional<Integer> curPage){
+        int currentPage = curPage.orElse(1);
+        Page page = projectService.findByProfile(authUtils.getCurrentUser().get().getProfile(), currentPage);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("page", page);
+        return "projects/list";
+    }
 
     @GetMapping("/create")
     public String createProject(Model model){
         model.addAttribute("project", new Project());
-        model.addAttribute("states", stateService.listAll());
         return "projects/create";
     }
 
@@ -93,7 +105,6 @@ public class ProjectController {
     public String editProject(@PathVariable("id") int id, Model model){
         Project project = projectService.get(id);
         model.addAttribute("project", project);
-        model.addAttribute("states", stateService.listAll());
         return "projects/edit";
     }
 
@@ -127,5 +138,6 @@ public class ProjectController {
         storageService.deleteAll(filenames);
         return "redirect:/projects";
     }
+
 
 }

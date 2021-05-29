@@ -31,7 +31,7 @@
     <!-- Dashboard Box -->
     <div class="col-xl-12">
       <div class="dashboard-box margin-top-0">
-        <div class="notify-box margin-top-15 headline" th:if="${projects.empty}">
+        <div class="notify-box margin-top-15 headline" th:if="${page.content.empty}">
           <div class="switch-container">
             <span class="switch-text">No projects available</span></label>
           </div>
@@ -42,8 +42,8 @@
         </div>
 
         <div class="content">
-          <ul class="dashboard-box-list" th:if="${!projects.empty}">
-            <li th:each="project: ${projects}">
+          <ul class="dashboard-box-list" th:if="${!page.content.empty}">
+            <li th:each="project: ${page.content}">
               <!-- Job Listing -->
               <div class="job-listing">
                 <!-- Job Listing Details -->
@@ -72,8 +72,26 @@
           </ul>
         </div>
       </div>
-    </div>
 
+      <!-- Pagination -->
+      <div class="clearfix" th:if="${page.totalPages > 1}"></div>
+      <div class="pagination-container margin-top-40 margin-bottom-0">
+        <nav class="pagination">
+          <ul>
+            <li th:each="i: ${#numbers.sequence(1, page.totalPages)}">
+              <a
+                      th:href="@{/projects/page/{page}(page=${i})}"
+                      th:class="${currentPage == i} ? 'ripple-effect current-page' : 'ripple-effect'">
+                [[${i}]]
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="clearfix"></div>
+      <!-- Pagination / End -->
+
+    </div>
   </div>
   <!-- Row / End -->
 </section>
