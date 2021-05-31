@@ -58,7 +58,7 @@ public class ProjectController {
     @GetMapping("/page/{page}")
     public String listProjects(Model model, @PathVariable("page")Optional<Integer> curPage){
         int currentPage = curPage.orElse(1);
-        Page page = projectService.findByProfile(authUtils.getCurrentUser().get().getProfile(), currentPage);
+        Page<Project> page = projectService.findByProfile(authUtils.getCurrentUser().get().getProfile(), currentPage);
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("page", page);
         return "projects/list";

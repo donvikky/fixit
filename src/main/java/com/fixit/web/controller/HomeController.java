@@ -5,6 +5,7 @@ import com.fixit.web.entity.Craft;
 import com.fixit.web.model.ProfileSearch;
 import com.fixit.web.service.CraftService;
 import com.fixit.web.service.UserService;
+import com.fixit.web.utils.AuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,10 +19,12 @@ import java.util.List;
 public class HomeController {
 
     private CraftService craftService;
+    private AuthUtils authUtils;
 
     @Autowired
-    public HomeController(CraftService craftService, UserService userService) {
+    public HomeController(CraftService craftService, UserService userService, AuthUtils authUtils) {
         this.craftService = craftService;
+        this.authUtils = authUtils;
     }
 
     @GetMapping
@@ -36,6 +39,7 @@ public class HomeController {
     @GetMapping("/dashboard")
     @ProfileComplete
     public String dashboard(Model model){
+        System.out.println("user roles" + authUtils.getCurrentUser().get().getRoles());
         return "dashboard";
     }
 

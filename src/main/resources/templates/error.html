@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{layouts/site_layout :: layout(~{::title}, ~{::style}, ~{::section})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Home</title>
+  <style>
+        form{
+            background-color:#AAA;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: row;
+        }
+    </style>
+</head>
+<body>
+<section>
+  <!-- Page Content
+================================================== -->
+  <!-- Container -->
+  <div class="container">
+
+    <div class="row">
+      <div class="col-xl-12">
+
+        <section id="not-found" class="center margin-top-50 margin-bottom-25">
+          <h2>404 <i class="icon-line-awesome-question-circle"></i></h2>
+          <p th:if="${exception == null}">We're sorry, but the page you were looking for doesn't exist</p>
+          <p th:if="${exception != null}" th:text="${exception}"></p>
+        </section>
+
+        <div class="row">
+          <div class="col-xl-8 offset-xl-2">
+            <div class="intro-banner-search-form not-found-search margin-bottom-50">
+              <!-- Search Field -->
+              <div class="intro-search-field ">
+                <input id="intro-keywords" type="text" placeholder="What Are You Looking For?">
+              </div>
+
+              <!-- Button -->
+              <div class="intro-search-button">
+                <button class="button ripple-effect">Search</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  <!-- Container / End -->
+
+</section>
+</body>
+</html>

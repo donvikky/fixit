@@ -5,6 +5,10 @@ import com.fixit.web.entity.Job;
 import com.fixit.web.entity.Profile;
 import com.fixit.web.repository.BidRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +17,9 @@ import java.util.List;
 public class BidService {
 
     private BidRepository bidRepository;
+
+    @Value("${spring.data.web.pageable.default-page-size}")
+    private int pageSize;
 
     @Autowired
     public BidService(BidRepository bidRepository) {
@@ -39,8 +46,9 @@ public class BidService {
         return bidRepository.findByJobAndBidder(job, bidder);
     }
 
-    public List<Bid> findByJobAndPoster(Job job, Profile poster){
-        return bidRepository.findByJobAndPoster(job, poster);
+    public Page findByJobAndPoster(Job job, Profile poster, final int pageNumber){
+        final Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
+        return bidRepository.findByJobAndPoster(job, poster, pageable);
     }
 
     public int acceptBid(Integer id){

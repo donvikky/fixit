@@ -3,10 +3,12 @@ package com.fixit.web.controller;
 import com.fixit.web.entity.Bid;
 import com.fixit.web.entity.Job;
 import com.fixit.web.entity.Profile;
+import com.fixit.web.exceptions.ResourceNotFoundException;
 import com.fixit.web.service.BidService;
 import com.fixit.web.service.JobService;
 import com.fixit.web.utils.AuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/bids")
@@ -55,11 +58,18 @@ public class BidController {
         return "redirect:/jobs/" + bid.getJob().getId();
     }
 
-    @GetMapping("/job/{id}")
-    public String listJobBids(@PathVariable("id") int id, Model model){
+    @GetMapping("/job/{id}/{page}")
+    public String listJobBids(@PathVariable("id") int id, @PathVariable("page")Optional<Integer> curPage, Model model){
+        int currentPage = curPage.orElse(1);
+
         Job job = jobService.get(id);
+        if(job == null){
+            throw new ResourceNotFoundException("The job was not found");
+        }
         Profile profile = authUtils.getCurrentUser().get().getProfile();
-        List<Bid> bids = bidService.findByJobAndPoster(job, profile);
+        Page<Bid> bids = bidService.findByJobAndPoster(job, profile, currentPage);
+
+        model.addAttribute("currentPage", currentPage);
         model.addAttribute("bids", bids);
         model.addAttribute("job", job);
         return "bids/list";

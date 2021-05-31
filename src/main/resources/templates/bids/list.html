@@ -40,7 +40,7 @@
 
         <!-- Headline -->
         <div class="headline">
-          <h3><i class="icon-material-outline-supervisor-account"></i> <span th:text="${#lists.size(bids)}"></span> Bidders</h3>
+          <h3><i class="icon-material-outline-supervisor-account"></i> <span th:text="${bids.totalElements}"></span> Bidders</h3>
           <div class="sort-by">
             <select class="selectpicker hide-tick">
               <option>Highest First</option>
@@ -181,6 +181,25 @@
             </div>
             <!-- Send Direct Message Popup / End -->
           </ul>
+
+          <!-- Pagination -->
+          <div class="clearfix" th:if="${bids.totalPages > 1}"></div>
+          <div class="pagination-container margin-top-40 margin-bottom-0">
+            <nav class="pagination">
+              <ul>
+                <li th:each="i: ${#numbers.sequence(1, bids.totalPages)}">
+                  <a
+                          th:href="@{/bids/job/{id}/{page}/(id=${job.id},page=${i})}"
+                          th:class="${currentPage == i} ? 'ripple-effect current-page' : 'ripple-effect'">
+                    [[${i}]]
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+          <div class="clearfix"></div>
+          <!-- Pagination / End -->
+
         </div>
       </div>
     </div>

@@ -78,7 +78,7 @@
 
               <!-- Buttons -->
               <div class="buttons-to-right always-visible">
-                <a th:if="${!job.bids.empty}" th:href="@{/bids/job/{id}(id=${job.id})}" class="button ripple-effect"><i class="icon-material-outline-supervisor-account"></i> Manage Bidders <span class="button-info" th:text="${#lists.size(job.bids)}">3</span></a>
+                <a th:if="${!job.bids.empty}" th:href="@{/bids/job/{id}/{page}(id=${job.id}, page=1)}" class="button ripple-effect"><i class="icon-material-outline-supervisor-account"></i> Manage Bidders <span class="button-info" th:text="${#lists.size(job.bids)}">3</span></a>
                 <a th:if="${job.bids.empty}" href="#" class="button ripple-effect"><i class="icon-material-outline-supervisor-account"></i> No Bidders Yet <span class="button-info" th:text="${#lists.size(job.bids)}">3</span></a>
                 <form class="complete-job" th:if="${!job.completed AND #lists.size(job.bids) > 0}" method="post" th:action="@{/jobs/complete}">
                   <input type="hidden" name="id" th:value="${job.id}" />

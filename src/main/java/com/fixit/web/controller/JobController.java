@@ -42,7 +42,7 @@ public class JobController {
     @GetMapping("/page/{page}")
     public String listJobs(@PathVariable("page") Optional<Integer> curPage, Model model){
         int currentPage = curPage.orElse(1);
-        Page jobs = jobService.findByCreateUser(authUtils.getCurrentUser().get().getProfile(), currentPage);
+        Page<Job> jobs = jobService.findByCreateUser(authUtils.getCurrentUser().get().getProfile(), currentPage);
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("jobs", jobs);
         return "jobs/list";
