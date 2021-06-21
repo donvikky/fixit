@@ -3,6 +3,10 @@ package com.fixit.web.service;
 import com.fixit.web.entity.State;
 import com.fixit.web.repository.StateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,8 +17,16 @@ public class StateService {
     @Autowired
     private StateRepository stateRepository;
 
-    public List<State> listAll() {
+    @Value("${spring.data.web.pageable.default-page-size}")
+    private int pageSize;
+
+    public List<State> listAll(){
         return stateRepository.findAll();
+    }
+
+    public Page<State> listAllPaginated(final int pageNumber) {
+        final Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
+        return stateRepository.findAll(pageable);
     }
 
     public void save(State state) {

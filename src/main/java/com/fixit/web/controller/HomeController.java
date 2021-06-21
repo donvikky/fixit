@@ -1,6 +1,5 @@
 package com.fixit.web.controller;
 
-import com.fixit.web.annotations.ProfileComplete;
 import com.fixit.web.entity.Craft;
 import com.fixit.web.model.ProfileSearch;
 import com.fixit.web.service.CraftService;
@@ -37,7 +36,6 @@ public class HomeController {
     }
 
     @GetMapping("/dashboard")
-    @ProfileComplete
     public String dashboard(Model model){
         System.out.println("user roles" + authUtils.getCurrentUser().get().getRoles());
         return "dashboard";

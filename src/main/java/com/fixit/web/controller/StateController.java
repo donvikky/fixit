@@ -5,15 +5,18 @@ import com.fixit.web.service.StateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/states")
@@ -24,12 +27,13 @@ public class StateController {
     @Autowired
     private StateService stateService;
 
-    @GetMapping
-    public String getStates(Model model){
-        List<State> states = stateService.listAll();
+    @GetMapping("/page/{page}")
+    public String getStates(@PathVariable("page") Optional<Integer> curPage, Model model){
+        int currentPage = curPage.orElse(1);
+        Page<State> states = stateService.listAllPaginated(currentPage);
         model.addAttribute("states", states);
-        model.addAttribute("state", new State());
-        return "states/index";
+        model.addAttribute("currentPage", currentPage);
+        return "states/list";
     }
 
     @GetMapping("/create")
@@ -40,14 +44,13 @@ public class StateController {
     }
 
     @PostMapping("/create")
-    public String createState(@Valid State state, BindingResult bindingResult){
+    public String createState(@Valid State state, BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if(bindingResult.hasErrors()){
             return "states/create";
         }
-        log.info("The received state is "+ state);
         stateService.save(state);
-
-        return "redirect:/states";
+        redirectAttributes.addFlashAttribute("message", "The state has been added successfully");
+        return "redirect:/states/page/1";
     }
 
     @GetMapping("/edit/{id}")
@@ -63,17 +66,18 @@ public class StateController {
     }
 
     @PostMapping("/edit")
-    public String update(@ModelAttribute("state") @Valid State state, BindingResult bindingResult){
+    public String update(@ModelAttribute("state") @Valid State state, BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if(bindingResult.hasErrors()){
             return "states/edit";
         }
         stateService.save(state);
-        return "redirect:/states";
+        redirectAttributes.addFlashAttribute("message", "The state has been updated successfully");
+        return "redirect:/states/page/1";
     }
 
-    @GetMapping("/delete/{id}")
-    public String delete(@PathVariable("id") int id){
+    @PostMapping("/delete")
+    public String delete(@RequestParam("id") int id){
         stateService.delete(id);
-        return "redirect:/states";
+        return "redirect:/states/page/1";
     }
 }

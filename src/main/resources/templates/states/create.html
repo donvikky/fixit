@@ -1,25 +1,67 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html th:replace="~{layouts/admin_layout :: layout(~{::title}, ~{::style}, ~{::section}, ~{}, ~{})}" lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Create State</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <title>Dashboard</title>
+    <style>
+        .settings-form{
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <h2>Add a new State</h2>
-    <form method="post" action="#" th:action="@{/states/create}" th:object="${state}">
-        <div class="mb-3">
-            <label class="form-label">Name</label>
-            <input type="text" th:field="*{name}" class="form-control"/>
-            <span class="validationError" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name error</span>
-        </div>
-        <div>
-            <button type="submit" class="btn btn-info">Submit</button>
-        </div>
-    </form>
-</div>
-<!-- JavaScript Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+<section>
+    <!-- Dashboard Headline -->
+    <div class="dashboard-headline">
+        <h3>Add a State</h3>
+
+        <!-- Breadcrumbs -->
+        <nav id="breadcrumbs" class="dark">
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/dashboard}">Dashboard</a></li>
+                <li>Add a State</li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Row -->
+    <div class="row">
+        <form method="post" th:object="${state}" th:action="@{/states/create}" class="settings-form">
+            <!-- Dashboard Box -->
+            <div class="col-xl-12">
+                <div class="dashboard-box margin-top-0">
+
+                    <!-- Headline -->
+                    <div class="headline">
+                        <h3><i class="icon-material-outline-location-on"></i> Add State</h3>
+                    </div>
+
+                    <div class="content with-padding padding-bottom-10">
+                        <div class="row">
+
+                            <div class="col-xl-6">
+                                <div class="submit-field">
+                                    <h5>Name</h5>
+                                    <input th:field="*{name}" type="text" class="keyword-input with-border" placeholder="State"/>
+                                    <span class="validationError error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name error</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-12">
+                <button href="#" class="button ripple-effect big margin-top-30"><i class="icon-feather-plus"></i> Add
+                    State
+                </button>
+            </div>
+        </form>
+    </div>
+    <!-- Row / End -->
+</section>
 </body>
 </html>
