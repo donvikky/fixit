@@ -73,8 +73,8 @@
         </div>
         <a th:href="@{/states/create}" style="float:right;" class="button ripple-effect big margin-top-30"><i class="icon-feather-plus"></i> Create State</a>
         <!-- Pagination -->
-        <div class="clearfix" th:if="${states.totalPages > 1}"></div>
-        <div class="pagination-container margin-top-40 margin-bottom-0">
+        <div class="clearfix"></div>
+        <div th:if="${states.totalPages > 1}" class="pagination-container margin-top-40 margin-bottom-0">
             <nav class="pagination">
                 <ul>
                     <li th:each="i: ${#numbers.sequence(1, states.totalPages)}">

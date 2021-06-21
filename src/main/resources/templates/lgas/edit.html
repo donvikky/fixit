@@ -1,33 +1,78 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html th:replace="~{layouts/admin_layout :: layout(~{::title}, ~{::style}, ~{::section}, ~{}, ~{})}" lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Create LGA</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <title>Dashboard</title>
+    <style>
+        .settings-form{
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <h2>Add a new State</h2>
-    <form method="post" action="#" th:action="@{/lgas/edit}" th:object="${lga}">
-        <input type="hidden" th:field="*{id}">
-        <div class="mb-3">
-            <label class="form-label">State</label>
-            <select th:field="*{state}" class="form-control">
-                <option th:each="s: ${states}" th:value="${s.id}" th:text="${s.name}">
-                </option>
-            </select>
-            <span class="validationError" th:if="${#fields.hasErrors('state')}" th:errors="*{state}">state error</span>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Name</label>
-            <input type="text" th:field="*{name}" class="form-control"/>
-            <span class="validationError" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name error</span>
-        </div>
-        <div>
-            <button type="submit" class="btn btn-info">Submit</button>
-        </div>
-    </form>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+<section>
+    <!-- Dashboard Headline -->
+    <div class="dashboard-headline">
+        <h3>Edit an LGA</h3>
+
+        <!-- Breadcrumbs -->
+        <nav id="breadcrumbs" class="dark">
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/dashboard}">Dashboard</a></li>
+                <li>Edit an LGA</li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Row -->
+    <div class="row">
+        <form method="post" th:object="${lga}" th:action="@{/lgas/edit}" class="settings-form">
+            <!-- Dashboard Box -->
+            <div class="col-xl-12">
+                <div class="dashboard-box margin-top-0">
+
+                    <!-- Headline -->
+                    <div class="headline">
+                        <h3><i class="icon-material-outline-location-on"></i> Edit LGA</h3>
+                    </div>
+
+                    <div class="content with-padding padding-bottom-10">
+                        <div class="row">
+                            <input type="hidden" th:field="*{id}"/>
+                            <div class="col-xl-6">
+                                <div class="submit-field">
+                                    <h5>State</h5>
+                                    <select th:field="*{state}" class="selectpicker with-border" data-size="7" title="Select State">
+                                        <option th:each="state: ${states}" th:value="${state.id}" th:text="${#strings.capitalize(#strings.toLowerCase(state.name))}"></option>
+                                    </select>
+                                    <span class="validationError error" th:if="${#fields.hasErrors('state')}" th:errors="*{state}">state error</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="submit-field">
+                                    <h5>Name</h5>
+                                    <input th:field="*{name}" type="text" class="keyword-input with-border" placeholder="name"/>
+                                    <span class="validationError error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name error</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-12">
+                <button href="#" class="button ripple-effect big margin-top-30"><i class="icon-feather-plus"></i> Edit
+                    LGA
+                </button>
+            </div>
+        </form>
+    </div>
+    <!-- Row / End -->
+</section>
 </body>
 </html>
