@@ -1,48 +1,122 @@
 <!DOCTYPE html>
-<html th:replace="~{layouts/layout :: layout(~{::title}, ~{::section})}" lang="en" xmlns:th="http://www.thymeleaf.org">
+<html th:replace="~{layouts/admin_layout :: layout(~{::title}, ~{::style}, ~{::section}, ~{::script}, ~{::link})}" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Towns</title>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css"/>
+    <style>
+        .basic-table{
+            margin-top: 1px;
+        }
+        .delete-form{
+            float: left;
+            margin-right: 5px;
+        }
+    </style>
+
 </head>
 <body>
-<div class="container">
-    <h2>Towns</h2>
-    <section>
-        <div class="row">
-            <div class="col-12" th:if="${towns}">
-                <table  class="table table-bordered">
-                    <thead>
+
+<section>
+    <!-- Dashboard Headline -->
+    <div class="dashboard-headline">
+        <h3>Manage Towns</h3>
+
+        <!-- Breadcrumbs -->
+        <nav id="breadcrumbs" class="dark">
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/dashboard}">Dashboard</a></li>
+                <li>Manage Towns</li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Dashboard Box -->
+    <div class="col-xl-12">
+        <div class="dashboard-box margin-top-0">
+            <div class="notify-box margin-top-15 headline" th:if="${towns.empty}">
+                <div class="switch-container">
+                    <span class="switch-text">No Towns available</span></label>
+                </div>
+            </div>
+
+            <div th:if="${message}" class="notification success closeable">
+                <p th:text="${message}"></p>
+                <a class="close" href="#"></a>
+            </div>
+
+            <!-- Headline -->
+            <div class="headline">
+                <h3><i class="icon-material-outline-business-center"></i> <span th:text="|${towns.totalElements} Towns|"></span></h3>
+            </div>
+
+            <div class="content" th:if="${!towns.empty}">
+                <table class="basic-table">
+
                     <tr>
                         <th>Name</th>
-                        <th>Lga</th>
                         <th>State</th>
+                        <th>Lga</th>
                         <th>Action</th>
                     </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="town: ${towns}">
-                        <td th:text="${town.name}"></td>
-                        <td th:text="${town.lga.name}"></td>
-                        <td th:text="${town.state.name}"></td>
-                        <td>
-                            <a th:href="@{/towns/edit/{id}(id=${town.id})}"  class="btn btn-info">Edit</a>
-                            <a th:href="@{/towns/delete/{id}(id=${town.id})}"  class="btn btn-danger">Delete</a>
+                    <tr th:each="town, iter : ${towns}">
+                        <td th:text="${#strings.capitalize(town.name)}"></td>
+                        <td th:text="${#strings.capitalize(town.lga.name)}"></td>
+                        <td th:text="${#strings.capitalize(town.state.name)}"></td>
+                        <td class="actions-td">
+                            <a th:href="@{/towns/edit/{id}(id=${town.id})}" class="button gray ripple-effect ico" title="Edit" data-tippy-placement="top"><i class="icon-feather-edit"></i></a>
+                            <form method="post" th:action="@{/towns/delete}" class="delete-form">
+                                <input type="hidden" name="id" th:value="${town.id}">
+                                <button class="button gray ripple-effect ico delete-button" title="Remove" data-tippy-placement="top" id="delete-project"><i class="icon-feather-trash-2"></i></button>
+                            </form>
                         </td>
                     </tr>
-                    </tbody>
                 </table>
             </div>
-            <div class="col-12" th:unless="${towns}">
-                <p class="alert alert-warning">There are no towns in the database</p>
-            </div>
         </div>
-        <div class="row">
-            <div class="col-3">
-                <a th:href="@{/towns/create}" class="btn btn-primary">Create Town</a>
-            </div>
+        <a th:href="@{/towns/create}" style="float:right;" class="button ripple-effect big margin-top-30"><i class="icon-feather-plus"></i> Create Town</a>
+        <!-- Pagination -->
+        <div class="clearfix" ></div>
+        <div th:if="${towns.totalPages > 1}" class="pagination-container margin-top-40 margin-bottom-0">
+            <nav class="pagination">
+                <ul>
+                    <li th:each="i: ${#numbers.sequence(1, towns.totalPages)}">
+                        <a
+                                th:href="@{/towns/page/{page}(page=${i})}"
+                                th:class="${currentPage == i} ? 'ripple-effect current-page' : 'ripple-effect'">
+                            [[${i}]]
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
-    </section>
+        <div class="clearfix"></div>
+        <!-- Pagination / End -->
+    </div>
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+<script>
+  $(document).ready(function(){
 
-</div>
+    $('.delete-button').on('click', function(evt) {
+        evt.preventDefault();
+        $.confirm({
+              title: 'Delete Town',
+              content: 'Are you sure you want to delete this town?',
+              buttons: {
+                  confirm: function () {
+                      $(evt.target).parents('form').submit();
+                      //$.alert('Confirmed!');
+                  },
+                  cancel: function () {
+                      //$.alert('Canceled!');
+                  }
+              }
+          });
+      });
+
+  })
+</script>
 </body>
 </html>

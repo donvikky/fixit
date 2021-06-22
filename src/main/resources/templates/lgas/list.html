@@ -56,10 +56,12 @@
 
                     <tr>
                         <th>Name</th>
+                        <th>State</th>
                         <th>Action</th>
                     </tr>
                     <tr th:each="lga, iter : ${lgas}">
                         <td th:text="${#strings.capitalize(lga.name)}"></td>
+                        <td th:text="${#strings.capitalize(lga.state.name)}"></td>
                         <td class="actions-td">
                             <a th:href="@{/lgas/edit/{id}(id=${lga.id})}" class="button gray ripple-effect ico" title="Edit" data-tippy-placement="top"><i class="icon-feather-edit"></i></a>
                             <form method="post" th:action="@{/lgas/delete}" class="delete-form">

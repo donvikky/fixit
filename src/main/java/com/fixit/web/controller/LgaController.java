@@ -45,6 +45,7 @@ public class LgaController {
         int currentPage = curPage.orElse(1);
         Page<Lga> lgas = lgaService.listAll(currentPage);
         model.addAttribute("lgas", lgas);
+        model.addAttribute("currentPage", currentPage);
         return "lgas/list";
     }
 

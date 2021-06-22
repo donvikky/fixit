@@ -7,15 +7,18 @@ import com.fixit.web.service.LgaService;
 import com.fixit.web.service.StateService;
 import com.fixit.web.service.TownService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/towns")
@@ -36,31 +39,48 @@ public class TownController {
         this.townService = townService;
     }
 
-    @GetMapping
-    private String listTowns(Model model){
-        List<Town> towns = townService.listAll();
+    /*
+     * Ensures the states variable is available in all templates
+     * in this controller
+     */
+    @ModelAttribute("states")
+    public List<State> getStates(){
+        return stateService.listAll();
+    }
+
+    /*
+     * Ensures the lgas variable is available in all templates
+     * in this controller
+     */
+    @ModelAttribute("lgas")
+    public List<Lga> getLgas(){
+        return lgaService.listAll();
+    }
+
+    @GetMapping("/page/{page}")
+    private String listTowns(@PathVariable("page") Optional<Integer> curPage, Model model){
+        int currentPage = curPage.orElse(1);
+        Page<Town> towns = townService.listAll(currentPage);
         model.addAttribute("towns", towns);
+        model.addAttribute("currentPage", currentPage);
         return "towns/index";
     }
 
     @GetMapping("/create")
     private String showForm(Model model){
         Town town = new Town();
-        List<State> states = stateService.listAll();
-        List<Lga> lgas = lgaService.listAll();
         model.addAttribute("town", town);
-        model.addAttribute("states", states);
-        model.addAttribute("lgas", lgas);
         return "towns/create";
     }
 
     @PostMapping("/create")
-    private String processForm(@ModelAttribute("town") @Valid Town town, BindingResult bindingResult){
+    private String processForm(@ModelAttribute("town") @Valid Town town, BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if(bindingResult.hasErrors()){
             return "towns/create";
         }
         townService.save(town);
-        return "redirect:/towns";
+        redirectAttributes.addFlashAttribute("message", "The town has been added successfully");
+        return "redirect:/towns/page/1";
     }
 
     @GetMapping("/edit/{id}")
@@ -70,25 +90,24 @@ public class TownController {
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
         }
         List<State> states = stateService.listAll();
-        List<Lga> lgas = lgaService.listAll();
         model.addAttribute("town", town);
-        model.addAttribute("states", states);
-        model.addAttribute("lgas", lgas);
         return "towns/edit";
     }
 
     @PostMapping("/edit")
-    private String update(@ModelAttribute("town") @Valid Town town, BindingResult bindingResult){
+    private String update(@ModelAttribute("town") @Valid Town town, BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if(bindingResult.hasErrors()){
             return "towns/edit";
         }
         townService.save(town);
-        return "redirect:/towns";
+        redirectAttributes.addFlashAttribute("message", "The town has been updated successfully");
+        return "redirect:/towns/page/1";
     }
 
-    @GetMapping("/delete/{id}")
-    private String delete(@PathVariable("id") Integer id){
+    @PostMapping("/delete")
+    private String delete(@RequestParam("id") Integer id, RedirectAttributes redirectAttributes){
         townService.delete(id);
-        return "redirect:/towns";
+        redirectAttributes.addFlashAttribute("message", "The town has been deleted successfully");
+        return "redirect:/towns/page/1";
     }
 }

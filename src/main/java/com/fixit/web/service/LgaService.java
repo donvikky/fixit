@@ -9,18 +9,28 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class LgaService {
 
-    @Autowired
     private LgaRepository lgaRepository;
 
     @Value("${spring.data.web.pageable.default-page-size}")
     private int pageSize;
 
+    @Autowired
+    public LgaService(LgaRepository lgaRepository) {
+        this.lgaRepository = lgaRepository;
+    }
+
     public Page<Lga> listAll(final int pageNumber) {
         final Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
         return lgaRepository.findAll(pageable);
+    }
+
+    public List<Lga> listAll(){
+        return lgaRepository.findAll();
     }
 
     public void save(Lga lga) {

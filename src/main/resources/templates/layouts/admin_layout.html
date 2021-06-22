@@ -385,7 +385,7 @@
                                     <ul>
                                         <li><a th:href="@{/states/page/{page}(page=1)}">Manage States</a></li>
                                         <li><a th:href="@{/lgas/page/{page}(page=1)}">Manage LGAs</a></li>
-                                        <li><a th:href="@{/towns}">Manage Towns</a></li>
+                                        <li><a th:href="@{/towns/page/{page}(page=1)}">Manage Towns</a></li>
                                         <li><a th:href="@{/categories}">Manage Categories</a></li>
                                         <li><a th:href="@{/services}">Manage Services</a></li>
                                         <li sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/profiles}">Manage Profiles</a></li>
