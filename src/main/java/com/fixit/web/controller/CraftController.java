@@ -5,15 +5,18 @@ import com.fixit.web.entity.Craft;
 import com.fixit.web.service.CategoryService;
 import com.fixit.web.service.CraftService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/crafts")
@@ -28,30 +31,36 @@ public class CraftController {
         this.craftService = craftService;
     }
 
-    @GetMapping
-    public String index(Model model){
-        List<Craft> crafts = craftService.listAll();
+    @ModelAttribute("categories")
+    public List<Category> getCategories(){
+        return categoryService.listAll();
+    }
+
+    @GetMapping("/page/{page}")
+    public String index(@PathVariable("page") Optional<Integer> curPage, Model model){
+        int currentPage = curPage.orElse(1);
+        Page<Craft> crafts = craftService.listAll(currentPage);
         model.addAttribute("crafts", crafts);
+        model.addAttribute("currentPage", currentPage);
         return "crafts/index";
     }
 
     @GetMapping("/create")
     public String add(Model model){
         Craft craft = new Craft();
-        List<Category> categories = categoryService.listAll();
-
         model.addAttribute("craft", craft);
-        model.addAttribute("categories", categories);
         return "crafts/create";
     }
 
     @PostMapping("/create")
-    public String save(@ModelAttribute(name = "craft") @Valid Craft craft, BindingResult bindingResult){
+    public String save(@ModelAttribute(name = "craft") @Valid Craft craft, BindingResult bindingResult,
+                       RedirectAttributes redirectAttributes){
         if(bindingResult.hasErrors()){
             return "crafts/create";
         }
         craftService.save(craft);
-        return "redirect:/crafts";
+        redirectAttributes.addFlashAttribute("message", "The service has been added successfully");
+        return "redirect:/crafts/page/1";
     }
 
     @GetMapping("/edit/{id}")
@@ -67,17 +76,20 @@ public class CraftController {
     }
 
     @PostMapping("/edit")
-    public String update(@ModelAttribute("lga") @Valid Craft craft, BindingResult bindingResult){
+    public String update(@ModelAttribute("lga") @Valid Craft craft, BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes){
         if(bindingResult.hasErrors()){
             return "crafts/edit";
         }
         craftService.save(craft);
-        return "redirect:/crafts";
+        redirectAttributes.addFlashAttribute("message", "The service has been updated successfully");
+        return "redirect:/crafts/page/1";
     }
 
-    @GetMapping("/delete/{id}")
-    public String delete(@PathVariable("id") int id){
+    @PostMapping("/delete")
+    public String delete(@RequestParam("id") int id, RedirectAttributes redirectAttributes){
         craftService.delete(id);
-        return "redirect:/crafts";
+        redirectAttributes.addFlashAttribute("message", "The service has been deleted successfully");
+        return "redirect:/crafts/page/1";
     }
 }

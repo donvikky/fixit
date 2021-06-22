@@ -1,35 +1,87 @@
 <!DOCTYPE html>
-<html th:replace="~{layouts/layout :: layout(~{::title}, ~{::section})}" lang="en" xmlns:th="http://www.thymeleaf.org">
+<html th:replace="~{layouts/admin_layout :: layout(~{::title}, ~{::style}, ~{::section}, ~{}, ~{})}" lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Create Service</title>
+    <title>Dashboard</title>
+    <style>
+        .settings-form{
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
 <section>
-    <h2>Create Service</h2>
-    <form method="post" action="#" th:action="@{/crafts/create}" th:object="${craft}">
-        <div class="mb-3">
-            <label class="form-label">Category</label>
-            <select th:field="*{category}" class="form-control">
-                <option th:each="c: ${categories}" th:value="${c.id}" th:text="${c.name}">
-                </option>
-            </select>
-            <span class="validationError" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">category error</span>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Name</label>
-            <input type="text" th:field="*{name}" class="form-control"/>
-            <span class="validationError" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name error</span>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Description</label>
-            <textarea th:field="*{description}" class="form-control"></textarea>
-            <span class="validationError" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">description error</span>
-        </div>
-        <div>
-            <button type="submit" class="btn btn-info">Submit</button>
-        </div>
-    </form>
+    <!-- Dashboard Headline -->
+    <div class="dashboard-headline">
+        <h3>Add a Service</h3>
+
+        <!-- Breadcrumbs -->
+        <nav id="breadcrumbs" class="dark">
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/dashboard}">Dashboard</a></li>
+                <li>Add an Service</li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Row -->
+    <div class="row">
+        <form method="post" th:object="${craft}" th:action="@{/crafts/create}" class="settings-form">
+            <!-- Dashboard Box -->
+            <div class="col-xl-12">
+                <div class="dashboard-box margin-top-0">
+
+                    <!-- Headline -->
+                    <div class="headline">
+                        <h3><i class="icon-material-outline-location-on"></i> Add Service</h3>
+                    </div>
+
+                    <div class="content with-padding padding-bottom-10">
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="submit-field">
+                                    <h5>Category</h5>
+                                    <select th:field="*{category}" class="selectpicker with-border" data-size="7" title="Select Category">
+                                        <option th:each="category: ${categories}" th:value="${category.id}" th:text="${#strings.capitalize(#strings.toLowerCase(category.name))}"></option>
+                                    </select>
+                                    <span class="validationError error" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">category error</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="submit-field">
+                                    <h5>Service Name</h5>
+                                    <input th:field="*{name}" type="text" class="keyword-input with-border" placeholder="name"/>
+                                    <span class="validationError error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name error</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-10">
+                                <div class="submit-field">
+                                    <h5>Description</h5>
+                                    <textarea th:field="*{description}" type="text" class="keyword-input with-border" placeholder="description"></textarea>
+                                    <span class="validationError error" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">description error</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-12">
+                <button href="#" class="button ripple-effect big margin-top-30"><i class="icon-feather-plus"></i> Add
+                    Service
+                </button>
+            </div>
+        </form>
+    </div>
+    <!-- Row / End -->
 </section>
 </body>
 </html>
