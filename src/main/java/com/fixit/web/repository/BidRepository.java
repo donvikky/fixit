@@ -28,4 +28,6 @@ public interface BidRepository extends JpaRepository<Bid, Integer> {
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("UPDATE Bid b set b.accepted = false WHERE b.job = :job AND b.id != :id")
     int updateOtherBidsToDeclined(@Param("job") Job job, @Param("id") Integer id);
+
+    int countByBidderAndAccepted(Profile bidder, Boolean accepted);
 }

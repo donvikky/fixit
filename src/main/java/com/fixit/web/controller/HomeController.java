@@ -2,6 +2,7 @@ package com.fixit.web.controller;
 
 import com.fixit.web.entity.Craft;
 import com.fixit.web.model.ProfileSearch;
+import com.fixit.web.service.BidService;
 import com.fixit.web.service.CraftService;
 import com.fixit.web.service.UserService;
 import com.fixit.web.utils.AuthUtils;
@@ -18,12 +19,17 @@ import java.util.List;
 public class HomeController {
 
     private CraftService craftService;
+    private BidService bidService;
+    private UserService userService;
     private AuthUtils authUtils;
 
     @Autowired
-    public HomeController(CraftService craftService, UserService userService, AuthUtils authUtils) {
+    public HomeController(CraftService craftService, UserService userService, AuthUtils authUtils,
+                          BidService bidService) {
         this.craftService = craftService;
         this.authUtils = authUtils;
+        this.bidService = bidService;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -37,7 +43,9 @@ public class HomeController {
 
     @GetMapping("/dashboard")
     public String dashboard(Model model){
-        System.out.println("user roles" + authUtils.getCurrentUser().get().getRoles());
+        //Profile profile = new AuthUtils(userService).getCurrentUser().get().getProfile();
+        //System.out.println(profile);
+        //model.addAttribute("bidsWon");
         return "dashboard";
     }
 

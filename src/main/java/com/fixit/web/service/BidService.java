@@ -61,4 +61,8 @@ public class BidService {
         return bidRepository.updateOtherBidsToDeclined(job, id);
     }
 
+    public int getBidsWon(Profile bidder, Boolean accepted){
+        return bidRepository.countByBidderAndAccepted(bidder, accepted);
+    }
+
 }
