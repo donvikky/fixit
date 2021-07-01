@@ -29,8 +29,8 @@ public class StateService {
         return stateRepository.findAll(pageable);
     }
 
-    public void save(State state) {
-        stateRepository.save(state);
+    public State save(State state) {
+        return stateRepository.save(state);
     }
 
     public State get(int id) {
