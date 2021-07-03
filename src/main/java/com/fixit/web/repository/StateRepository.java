@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StateRepository extends JpaRepository<State, Integer>{
     Page findAll(Pageable pageable);
+    State findTopByOrderByIdDesc();
 }

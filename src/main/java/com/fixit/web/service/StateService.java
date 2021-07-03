@@ -40,4 +40,8 @@ public class StateService {
     public void delete(int id) {
         stateRepository.deleteById(id);
     }
+
+    public State findLastRecord(){
+        return stateRepository.findTopByOrderByIdDesc();
+    }
 }

@@ -6,12 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -23,9 +21,12 @@ import java.util.Optional;
 public class StateController {
 
     private static final Logger log = LoggerFactory.getLogger(State.class);
+    private StateService stateService;
 
     @Autowired
-    private StateService stateService;
+    public StateController(StateService stateService) {
+        this.stateService = stateService;
+    }
 
     @GetMapping("/page/{page}")
     public String getStates(@PathVariable("page") Optional<Integer> curPage, Model model){
@@ -57,9 +58,7 @@ public class StateController {
     public String edit(@PathVariable("id") int id, Model model){
         State state = stateService.get(id);
         List<State> states = stateService.listAll();
-        if(state == null){
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
-        }
+
         model.addAttribute("state", state);
         model.addAttribute("states", states);
         return "states/edit";
