@@ -115,8 +115,8 @@ class StateControllerTest {
     @Test
     void delete() throws Exception {
         state = new State("state 1");
-        state.setId(1);
-        State savedState = stateService.save(state);
+        stateService.save(state);
+        State savedState = stateService.findLastRecord();
 
         mockMvc.perform(post("/states/delete")
                 .param("id", String.valueOf(savedState.getId())))
