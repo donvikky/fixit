@@ -19,7 +19,7 @@
                         <div class="left-side">
                             <div class="header-image freelancer-avatar"><img th:src="@{/{photo}(photo=${profile.photo})}" alt=""></div>
                             <div class="header-details">
-                                <h3><span th:text="${profile.firstName}"></span> <span th:text="${profile.lastName}"></span>  <span>iOS Expert + Node Dev</span></h3>
+                                <h3 th:text="|${profile.firstName} ${profile.lastName} iOS Expert + Node Dev|"></h3>
                                 <ul>
                                     <li><div class="star-rating" data-rating="5.0"></div></li>
                                     <li><img class="flag" th:src="@{/images/flags/de.svg}" alt=""><span th:text="${#strings.capitalize(#strings.toLowerCase(profile.state.name))}"></span></li>
@@ -40,6 +40,11 @@
 
             <!-- Content -->
             <div class="col-xl-8 col-lg-8 content-right-offset">
+                <!-- Bookmark success / error message -->
+                <div th:if="${message}" class="notification success closeable">
+                    <p th:text="${message}"></p>
+                    <a class="close" href="#"></a>
+                </div>
 
                 <!-- Page Content -->
                 <div class="single-page-section">
@@ -52,7 +57,7 @@
                     <div class="boxed-list-headline">
                         <h3><i class="icon-material-outline-business"></i> Previous Projects</h3>
                     </div>
-                    <ul class="boxed-list-ul" th:if="${!profile.projects.empty}">
+                    <ul class="boxed-list-ul" th:if="${profile.projects != null && !profile.projects.empty}">
                         <li th:each="project: ${profile.projects}">
                             <div class="boxed-list-item">
                                 <!-- Content -->
@@ -265,11 +270,10 @@
                         <h3>Bookmark or Share</h3>
 
                         <!-- Bookmark Button -->
-                        <button class="bookmark-button margin-bottom-25">
-                            <span class="bookmark-icon"></span>
-                            <span class="bookmark-text">Bookmark</span>
-                            <span class="bookmarked-text">Bookmarked</span>
-                        </button>
+                        <form method="post" th:action="@{/bookmarks/add}">
+                            <input type="hidden" name="id" th:value="${profile.id}">
+                            <button class="button dark ripple-effect"><i class="icon-material-outline-star"></i>&nbsp; Bookmark</button>
+                        </form>
 
                         <!-- Copy URL -->
                         <div class="copy-url">

@@ -78,6 +78,10 @@ public class Profile extends Auditable<String> {
             mappedBy = "bidder", orphanRemoval = true)
     private List<Bid> bids = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL,
+            mappedBy = "bookmarker", orphanRemoval = true)
+    private List<BookMark> bookMarks = new ArrayList<>();
+
     public Profile() {
 
     }
@@ -258,6 +262,14 @@ public class Profile extends Auditable<String> {
 
     public void setJobReviews(List<JobReview> jobReviews) {
         this.jobReviews = jobReviews;
+    }
+
+    public List<BookMark> getBookMarks() {
+        return bookMarks;
+    }
+
+    public void setBookMarks(List<BookMark> bookMarks) {
+        this.bookMarks = bookMarks;
     }
 
     @Override
