@@ -1,10 +1,9 @@
 package com.fixit.web.controller;
 
 import com.fixit.web.entity.Craft;
+import com.fixit.web.entity.Profile;
 import com.fixit.web.model.ProfileSearch;
-import com.fixit.web.service.BidService;
-import com.fixit.web.service.CraftService;
-import com.fixit.web.service.UserService;
+import com.fixit.web.service.*;
 import com.fixit.web.utils.AuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,15 +20,19 @@ public class HomeController {
     private CraftService craftService;
     private BidService bidService;
     private UserService userService;
+    private JobService jobService;
+    private JobReviewService jobReviewService;
     private AuthUtils authUtils;
 
     @Autowired
     public HomeController(CraftService craftService, UserService userService, AuthUtils authUtils,
-                          BidService bidService) {
+                          BidService bidService, JobService jobService, JobReviewService jobReviewService) {
         this.craftService = craftService;
         this.authUtils = authUtils;
         this.bidService = bidService;
         this.userService = userService;
+        this.jobService = jobService;
+        this.jobReviewService = jobReviewService;
     }
 
     @GetMapping
@@ -43,9 +46,14 @@ public class HomeController {
 
     @GetMapping("/dashboard")
     public String dashboard(Model model){
-        //Profile profile = new AuthUtils(userService).getCurrentUser().get().getProfile();
-        //System.out.println(profile);
-        //model.addAttribute("bidsWon");
+        Profile profile = new AuthUtils(userService).getCurrentUser().get().getProfile();
+        int bidsWon = bidService.getBidsWon(profile);
+        int postedJobsCount = jobService.getPostedJobsCount(profile);
+        int jobReviewsCount = jobReviewService.findJobReviewsCount(profile);
+        System.out.println("Posted Jobs: "+ postedJobsCount);
+        model.addAttribute("bidsWon", bidsWon);
+        model.addAttribute("postedJobsCount", postedJobsCount);
+        model.addAttribute("jobReviewsCount", jobReviewsCount);
         return "dashboard";
     }
 

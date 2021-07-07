@@ -31,21 +31,21 @@
         <div class="fun-fact" data-fun-fact-color="#36bd78">
             <div class="fun-fact-text">
                 <span>Bids Won</span>
-                <h4>22</h4>
+                <h4 th:text="${bidsWon}">22</h4>
             </div>
             <div class="fun-fact-icon"><i class="icon-material-outline-gavel"></i></div>
         </div>
         <div class="fun-fact" data-fun-fact-color="#b81b7f">
             <div class="fun-fact-text">
                 <span>Jobs Posted</span>
-                <h4>4</h4>
+                <h4 th:text="${postedJobsCount}">4</h4>
             </div>
             <div class="fun-fact-icon"><i class="icon-material-outline-business-center"></i></div>
         </div>
         <div class="fun-fact" data-fun-fact-color="#efa80f">
             <div class="fun-fact-text">
                 <span>Reviews</span>
-                <h4>28</h4>
+                <h4 th:text="${jobReviewsCount}">28</h4>
             </div>
             <div class="fun-fact-icon"><i class="icon-material-outline-rate-review"></i></div>
         </div>

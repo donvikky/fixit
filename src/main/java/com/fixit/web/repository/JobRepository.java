@@ -8,4 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface JobRepository extends JpaRepository<Job, Integer> {
     Page findAllByProfile(Profile profile, Pageable pageable);
+    int countByProfile(Profile profile);
 }

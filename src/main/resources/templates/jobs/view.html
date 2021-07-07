@@ -111,7 +111,7 @@
                     </div>
                   </div>
                   <div class="bidding-field">
-                    <select class="selectpicker default" th:field="*{getCompletionTimeDuration}">
+                    <select class="selectpicker default" th:field="*{completionTimeDuration}">
                       <option
                               th:each="type : ${T(com.fixit.web.enums.TimeInterval).values()}"
                               th:value="${type.id}"

@@ -46,4 +46,8 @@ public class JobService {
         return jobRepository.findAllByProfile(profile, pageable);
     }
 
+    public int getPostedJobsCount(Profile profile){
+        return jobRepository.countByProfile(profile);
+    }
+
 }

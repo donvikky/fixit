@@ -52,7 +52,7 @@ public class JobReviewController {
         }catch (NoSuchElementException exception){
             return "redirect:/jobs";
         }catch (Exception e){
-            return "redirect:/jobs";
+            return "redirect:/jobs/page/1";
         }
     }
 
@@ -63,7 +63,7 @@ public class JobReviewController {
             return "jobreviews/create";
         }
         jobReviewService.save(jobReview);
-        return "redirect:/jobs";
+        return "redirect:/jobs/page/1";
     }
 
     @GetMapping("/edit/{id}")
@@ -80,6 +80,6 @@ public class JobReviewController {
             return "jobreviews/edit";
         }
         jobReviewService.save(jobReview);
-        return "redirect:/jobs";
+        return "redirect:/jobs/page/1";
     }
 }

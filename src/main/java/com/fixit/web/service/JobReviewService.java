@@ -1,6 +1,7 @@
 package com.fixit.web.service;
 
 import com.fixit.web.entity.JobReview;
+import com.fixit.web.entity.Profile;
 import com.fixit.web.repository.JobReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,10 @@ public class JobReviewService {
 
     public void delete(int id) {
         jobReviewRepository.deleteById(id);
+    }
+
+    public int findJobReviewsCount(Profile profile){
+        return jobReviewRepository.countByBidder(profile);
     }
 
 }

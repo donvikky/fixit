@@ -68,7 +68,7 @@ public class JobController {
         job.setProfile(authUtils.getCurrentUser().get().getProfile());
         jobService.save(job);
         sessionStatus.setComplete();
-        return "redirect:/jobs";
+        return "redirect:/jobs/page/1";
     }
 
     @GetMapping("/edit/{id}")
