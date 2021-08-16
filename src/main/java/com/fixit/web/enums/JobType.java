@@ -11,4 +11,13 @@ public enum JobType {
         this.id = id;
         this.label = label;
     }
+
+    public static String valueOfId(int id) {
+        for (JobType e : values()) {
+            if (e.id == id) {
+                return e.label;
+            }
+        }
+        return null;
+    }
 }

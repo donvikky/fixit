@@ -50,4 +50,8 @@ public class JobService {
         return jobRepository.countByProfile(profile);
     }
 
+    public List<Job> findMostRecentJobs(){
+        return jobRepository.findFirst5ByOrderByIdDesc();
+    }
+
 }

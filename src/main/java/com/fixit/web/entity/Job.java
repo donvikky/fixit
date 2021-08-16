@@ -1,11 +1,13 @@
 package com.fixit.web.entity;
 
 import com.fixit.web.audit.Auditable;
+import com.fixit.web.utils.DateUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +63,9 @@ public class Job extends Auditable<String> {
 
     @OneToOne(mappedBy = "job")
     private JobReview review;
+
+    @Transient
+    private String postDuration;
 
     public Job() {
     }
@@ -169,6 +174,11 @@ public class Job extends Auditable<String> {
 
     public void setReview(JobReview review) {
         this.review = review;
+    }
+
+    public String getPostDuration() {
+        postDuration = new DateUtils().getTimeIntervalDisplayText(Timestamp.valueOf(this.getCreatedAt()));
+        return postDuration;
     }
 
     @Override

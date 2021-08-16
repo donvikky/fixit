@@ -1,6 +1,7 @@
 package com.fixit.web.controller;
 
 import com.fixit.web.entity.Craft;
+import com.fixit.web.entity.Job;
 import com.fixit.web.entity.Profile;
 import com.fixit.web.model.ProfileSearch;
 import com.fixit.web.service.*;
@@ -39,8 +40,10 @@ public class HomeController {
     public String home(Model model){
         ProfileSearch search = new ProfileSearch();
         List<Craft> crafts = craftService.listAll();
+        List<Job> recentJobs = jobService.findMostRecentJobs();
         model.addAttribute("search", search);
         model.addAttribute("crafts", crafts);
+        model.addAttribute("recentJobs", recentJobs);
         return "home";
     }
 
