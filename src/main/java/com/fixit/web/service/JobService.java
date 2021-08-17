@@ -1,7 +1,9 @@
 package com.fixit.web.service;
 
+import com.fixit.web.entity.Craft;
 import com.fixit.web.entity.Job;
 import com.fixit.web.entity.Profile;
+import com.fixit.web.entity.State;
 import com.fixit.web.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +31,11 @@ public class JobService {
         return jobRepository.findAll();
     }
 
+    public Page listAll(final int pageNumber){
+        final Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
+        return jobRepository.findAll(pageable);
+    }
+
     public void save(Job job) {
         jobRepository.save(job);
     }
@@ -52,6 +59,11 @@ public class JobService {
 
     public List<Job> findMostRecentJobs(){
         return jobRepository.findFirst5ByOrderByIdDesc();
+    }
+
+    public Page searchByStateAndService(State state, Craft craft, final int pageNumber){
+        final Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
+        return jobRepository.findByStateAndCraft(state, craft, pageable);
     }
 
 }

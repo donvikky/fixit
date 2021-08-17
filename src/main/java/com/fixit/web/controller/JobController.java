@@ -39,6 +39,45 @@ public class JobController {
         this.authUtils = authUtils;
     }
 
+    /*
+     * Ensures the states variable is available in all templates
+     * in this controller
+     */
+    @ModelAttribute("states")
+    public List<State> getStates(){
+        return stateService.listAll();
+    }
+
+    /*
+     * Ensures the crafts variable is available in all templates
+     * in this controller
+     */
+    @ModelAttribute("crafts")
+    public List<Craft> getCrafts(){
+        return craftService.listAll();
+    }
+
+    @GetMapping("/listing/{page}")
+    public String showAllJobs(@PathVariable("page") Optional<Integer> curPage, Model model){
+        int currentPage = curPage.orElse(1);
+        Page<Job> jobs = jobService.listAll(currentPage);
+        List<State> states = stateService.listAll();
+        List<Craft> crafts = craftService.listAll();
+        model.addAttribute("job", new Job());
+        model.addAttribute("jobs", jobs);
+        return "jobs/all";
+    }
+
+    @PostMapping("/listing/{page}")
+    public String searchJobs(@RequestParam("state") int stateId, @RequestParam("craft") int craftId, Model model){
+        State state = stateService.get(stateId);
+        Craft craft = craftService.get(craftId);
+        int startPage = 1;
+        Page<Job> jobs = jobService.searchByStateAndService(state, craft, startPage);
+        model.addAttribute("jobs", jobs);
+        return "jobs/all";
+    }
+
     @GetMapping("/page/{page}")
     public String listJobs(@PathVariable("page") Optional<Integer> curPage, Model model){
         int currentPage = curPage.orElse(1);
@@ -54,8 +93,6 @@ public class JobController {
         List<Craft> crafts = craftService.listAll();
 
         model.addAttribute("job", new Job());
-        model.addAttribute("states", states);
-        model.addAttribute("crafts", crafts);
         return "jobs/create";
     }
 
@@ -73,12 +110,8 @@ public class JobController {
 
     @GetMapping("/edit/{id}")
     public String editJob(@PathVariable("id") int id, Model model){
-        List<State> states = stateService.listAll();
-        List<Craft> crafts = craftService.listAll();
         Job job = jobService.get(id);
         model.addAttribute("job", job);
-        model.addAttribute("states", states);
-        model.addAttribute("crafts", crafts);
         return "jobs/edit";
     }
 

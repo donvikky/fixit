@@ -102,19 +102,19 @@
 
       <!-- Pagination -->
       <div class="clearfix" th:if="${jobs.totalPages > 1}"></div>
-      <div class="pagination-container margin-top-40 margin-bottom-0">
-        <nav class="pagination">
-          <ul>
-            <li th:each="i: ${#numbers.sequence(1, jobs.totalPages)}">
-              <a
-                      th:href="@{/jobs/page/{page}(page=${i})}"
-                      th:class="${currentPage == i} ? 'ripple-effect current-page' : 'ripple-effect'">
-                [[${i}]]
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </div>
+        <div class="pagination-container margin-top-40 margin-bottom-0">
+          <nav class="pagination">
+            <ul>
+              <li th:each="i: ${#numbers.sequence(1, jobs.totalPages)}">
+                <a
+                        th:href="@{/jobs/page/{page}(page=${i})}"
+                        th:class="${currentPage == i} ? 'ripple-effect current-page' : 'ripple-effect'">
+                  [[${i}]]
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
       <div class="clearfix"></div>
       <!-- Pagination / End -->
     </div>
