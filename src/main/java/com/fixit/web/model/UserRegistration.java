@@ -2,25 +2,32 @@ package com.fixit.web.model;
 
 import com.fixit.web.entity.Role;
 import com.fixit.web.entity.User;
+import com.fixit.web.validator.PasswordEqualField;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.List;
 
+@PasswordEqualField(
+        passwordField = "password",
+        passwordRepeatField = "confirm",
+        message = "Provided passwords must be equal all the time"
+)
 public class UserRegistration {
 
     @NotEmpty
-    @Size(min = 3)
+    @Size(min = 4, message = "Username must contain at least four characters")
     private String username;
 
     @NotEmpty
-    @Size(min = 3)
+    @Size(min = 4, message = "Password must contain at least four characters")
     private String password;
 
     @NotEmpty
-    @Size(min = 3)
+    @Size(min = 4, message = "Repeat password must contain at least four characters")
     private String confirm;
+
     private List<Role> roles;
 
     public String getUsername() {

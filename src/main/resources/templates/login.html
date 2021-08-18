@@ -37,6 +37,11 @@
                         <a class="close" href="#"></a>
                     </div>
 
+                    <div th:if="${message}" class="notification success closeable">
+                        <p th:text="${message}"></p>
+                        <a class="close" href="#"></a>
+                    </div>
+
                     <!-- Form -->
                     <form method="post" id="login-form" th:action="@{/login}">
                         <div class="input-with-icon-left">

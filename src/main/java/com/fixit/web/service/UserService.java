@@ -33,4 +33,8 @@ public class UserService {
     public Optional<User> findByProviderId(String id){
         return userRepository.findByProviderId(id);
     }
+
+    public User findByUsername(String username){
+        return userRepository.findByUsername(username);
+    }
 }

@@ -1,42 +1,95 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" th:replace="~{layouts/site_layout :: layout(~{::title}, ~{::style}, ~{::section})}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Register</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <title>Home</title>
+    <style>
+        .error{
+            color: red;
+        }
+    </style>
 </head>
 <body>
+<section>
+    <!-- Spacer -->
+    <div class="margin-top-70"></div>
+    <!-- Spacer / End-->
+
+    <!-- Page Content
+ ================================================== -->
     <div class="container">
-        <h2>Register</h2>
-        <form method="post" action="#" th:action="@{/register}" th:object="${user}">
-            <div class="mb-3">
-                <label class="form-label">Username</label>
-                <input type="text" th:field="*{username}" class="form-control"/>
-                <span class="validationError" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">name error</span>
+        <div class="row">
+            <div class="col-xl-5 offset-xl-3">
+
+                <div class="login-register-page">
+                    <!-- Welcome Text -->
+                    <div class="welcome-text">
+                        <h3 style="font-size: 26px;">Let's create your account!</h3>
+                        <span>Already have an account? <a th:href="@{/login}">Log In!</a></span>
+                    </div>
+
+                    <div th:if="${message}" class="notification error closeable">
+                        <p th:text="${message}"></p>
+                        <a class="close" href="#"></a>
+                    </div>
+
+                    <!-- Account Type -->
+                    <!--<div class="account-type">
+                        <div>
+                            <input type="radio" name="account-type-radio" id="freelancer-radio" class="account-type-radio" checked/>
+                            <label for="freelancer-radio" class="ripple-effect-dark"><i class="icon-material-outline-account-circle"></i> Freelancer</label>
+                        </div>
+
+                        <div>
+                            <input type="radio" name="account-type-radio" id="employer-radio" class="account-type-radio"/>
+                            <label for="employer-radio" class="ripple-effect-dark"><i class="icon-material-outline-business-center"></i> Employer</label>
+                        </div>
+                    </div>-->
+
+                    <!-- Form -->
+                    <form method="post" id="register-account-form" th:action="@{/register}" th:object="${user}">
+                        <div class="input-with-icon-left">
+                            <i class="icon-material-baseline-mail-outline"></i>
+                            <input type="text" class="input-text with-border" th:field="*{username}" id="emailaddress-register" placeholder="Email Address" required/>
+                            <span class="validationError error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">name error</span>
+                        </div>
+
+                        <div class="input-with-icon-left" title="Should be at least 8 characters long" data-tippy-placement="bottom">
+                            <i class="icon-material-outline-lock"></i>
+                            <input type="password" class="input-text with-border" th:field="*{password}" id="password-register" placeholder="Password" required/>
+                            <span class="validationError error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">name error</span>
+                        </div>
+
+                        <div class="input-with-icon-left">
+                            <i class="icon-material-outline-lock"></i>
+                            <input type="password" class="input-text with-border" th:field="*{confirm}" id="password-repeat-register" placeholder="Repeat Password" required/>
+                            <span class="validationError error" th:if="${#fields.hasErrors('confirm')}" th:errors="*{confirm}">name error</span>
+                        </div>
+
+                        <input type="hidden" name="roles" value="1">
+
+                        <!-- Button -->
+                        <button class="button full-width button-sliding-icon ripple-effect margin-top-10" type="submit">Register <i class="icon-material-outline-arrow-right-alt"></i></button>
+
+                    </form>
+
+                    <!-- Social Login -->
+                    <div class="social-login-separator"><span>or</span></div>
+                    <div class="social-login-buttons">
+                        <a class="facebook-login ripple-effect"><i class="icon-brand-facebook-f"></i> Register via Facebook</a>
+                        <a class="google-login ripple-effect"><i class="icon-brand-google-plus-g"></i> Register via Google+</a>
+                    </div>
+                </div>
+
             </div>
-            <div class="mb-3">
-                <label class="form-label">Password</label>
-                <input type="password" th:field="*{password}" class="form-control"/>
-                <span class="validationError" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">name error</span>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Password Confirm</label>
-                <input type="password" th:field="*{confirm}" class="form-control"/>
-                <span class="validationError" th:if="${#fields.hasErrors('confirm')}" th:errors="*{confirm}">name error</span>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Roles</label>
-                <select th:field="*{roles}" class="form-control" multiple>
-                    <option th:each="role: ${roles}" th:value="${role.id}" th:text="${role.name}">
-                    </option>
-                </select>
-                <span class="validationError" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}">roles error</span>
-            </div>
-            <div>
-                <button type="submit" class="btn btn-info">Submit</button>
-            </div>
-        </form>
+        </div>
     </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
+
+    <!-- Spacer -->
+    <div class="margin-top-70"></div>
+    <!-- Spacer / End-->
+
+</section>
 </body>
 </html>
