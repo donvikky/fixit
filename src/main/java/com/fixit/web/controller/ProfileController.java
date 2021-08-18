@@ -12,6 +12,7 @@ import com.fixit.web.utils.AuthUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,9 +23,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/profiles")
@@ -48,6 +48,24 @@ public class ProfileController {
         this.authUtils = authUtils;
     }
 
+    /*
+     * Ensures the states variable is available in all templates
+     * in this controller
+     */
+    @ModelAttribute("states")
+    public List<State> getStates(){
+        return stateService.listAll();
+    }
+
+    /*
+     * Ensures the crafts variable is available in all templates
+     * in this controller
+     */
+    @ModelAttribute("crafts")
+    public List<Craft> getCrafts(){
+        return craftService.listAll();
+    }
+
     @GetMapping
     public String index(Model model){
         List<Profile> profiles = profileService.listAll();
@@ -62,13 +80,7 @@ public class ProfileController {
             return "redirect:/profiles/edit";
         }
         profile = new Profile();
-
-        List<State> states = stateService.listAll();
-        List<Craft> crafts = craftService.listAll();
-
         model.addAttribute("profile", profile);
-        model.addAttribute("states", states);
-        model.addAttribute("crafts", crafts);
         return "profiles/create";
     }
 
@@ -96,13 +108,6 @@ public class ProfileController {
             return "redirect:/profiles/create";
         }
         model.addAttribute("profile", profile);
-
-        List<State> states = stateService.listAll();
-        List<Craft> crafts = craftService.listAll();
-
-        model.addAttribute("states", states);
-        model.addAttribute("crafts", crafts);
-
         return "profiles/edit";
     }
 
@@ -113,13 +118,7 @@ public class ProfileController {
         if(profile == null){
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
         }
-
-        List<State> states = stateService.listAll();
-        List<Craft> crafts = craftService.listAll();
         model.addAttribute("profile", profile);
-        model.addAttribute("states", states);
-        model.addAttribute("crafts", crafts);
-
         return "profiles/edit";
     }
 
@@ -149,30 +148,31 @@ public class ProfileController {
         return "redirect:/profiles";
     }
 
-    @GetMapping("/search")
-    public String searchForProfiles(@RequestParam("craft") Integer craftId, Model model){
-        Craft craft = null;
-        List<Profile> profiles = new ArrayList<>();
-        try {
-            craft = craftService.get(craftId);
-            profiles = profileService.findByCraft(craft);
-        }catch (NoSuchElementException ex){
-            //ex.printStackTrace();
-            System.out.println("Craft not found");
-            System.out.println(profiles.size());
-        }
-        List<State> states = stateService.listAll();
-        List<Craft> crafts = craftService.listAll();
+    @GetMapping("/search/{page}")
+    public String searchForProfiles(@PathVariable("page") Optional<Integer> curPage, Model model){
+        int currentPage = curPage.orElse(1);
+        Page<Profile> profiles = profileService.listAll(currentPage);
         model.addAttribute("profiles", profiles);
-        model.addAttribute("states", states);
-        model.addAttribute("crafts", crafts);
+        model.addAttribute("currentPage", currentPage);
         return "profiles/search";
     }
 
     @PostMapping("/search")
     public String searchProfiles(@ModelAttribute("search") ProfileSearch search, Model model,
                                  BindingResult bindingResult){
-        List<Profile> profiles = profileService.findByCraft(search.getCraft());
+        int startPage = 1;
+        Page<Profile> profiles = profileService.searchByService(search.getCraft(), startPage);
+        System.out.println("Number of records: "+ profiles.getTotalElements());
+        model.addAttribute("profiles", profiles);
+        return "profiles/search";
+    }
+
+    @PostMapping("/search/{page}")
+    public String searchBByStateAndService(@RequestParam("state") int stateId, @RequestParam("craft") int craftId, Model model){
+        State state = stateService.get(stateId);
+        Craft craft = craftService.get(craftId);
+        int startPage = 1;
+        Page<Profile> profiles = profileService.searchByStateAndService(state, craft, startPage);
         model.addAttribute("profiles", profiles);
         return "profiles/search";
     }

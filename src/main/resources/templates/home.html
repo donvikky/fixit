@@ -40,10 +40,10 @@
                     <div class="intro-banner-search-form margin-top-95">
 
                         <!-- Search Field -->
-                        <form method="get" th:object="${search}" th:action="@{/profiles/search}">
+                        <form method="post" th:object="${search}" th:action="@{/profiles/search}">
                             <div class="intro-search-field">
                                 <select th:field="*{craft}" class="selectpicker default" data-selected-text-format="count" data-size="7" title="All Categories" >
-                                    <option th:each="c: ${crafts}" th:value="${c.id}" th:text="${c.name}">
+                                    <option th:each="c: ${crafts}" th:value="${c.id}" th:text="${#strings.capitalize(c.name)}">
                                     </option>
                                 </select>
                             </div>

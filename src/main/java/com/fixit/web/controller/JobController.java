@@ -61,8 +61,6 @@ public class JobController {
     public String showAllJobs(@PathVariable("page") Optional<Integer> curPage, Model model){
         int currentPage = curPage.orElse(1);
         Page<Job> jobs = jobService.listAll(currentPage);
-        List<State> states = stateService.listAll();
-        List<Craft> crafts = craftService.listAll();
         model.addAttribute("job", new Job());
         model.addAttribute("jobs", jobs);
         return "jobs/all";
