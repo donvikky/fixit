@@ -10,12 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
 @Controller
-@RequestMapping("/")
 public class HomeController {
 
     private CraftService craftService;
@@ -36,7 +34,7 @@ public class HomeController {
         this.jobReviewService = jobReviewService;
     }
 
-    @GetMapping
+    @GetMapping("/")
     public String home(Model model){
         ProfileSearch search = new ProfileSearch();
         List<Craft> crafts = craftService.listAll();
@@ -45,6 +43,11 @@ public class HomeController {
         model.addAttribute("crafts", crafts);
         model.addAttribute("recentJobs", recentJobs);
         return "home";
+    }
+
+    @GetMapping("/login")
+    public String login(){
+        return "login";
     }
 
     @GetMapping("/dashboard")

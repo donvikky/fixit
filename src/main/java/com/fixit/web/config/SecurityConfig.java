@@ -73,6 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
+                .loginPage("/login")
                 .successHandler(loginSuccessHandler)
                 .and()
                 .logout()
@@ -83,7 +84,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .userService(oAuth2UserService)
                         .oidcUserService(this.oidcUserService())
                 )
-                        .successHandler(oauth2AuthenticationSuccessHandler));
+                        .successHandler(oauth2AuthenticationSuccessHandler)
+                        .loginPage("/login"));
 
         http
                 .sessionManagement()
