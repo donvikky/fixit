@@ -33,17 +33,17 @@ public class ProfileController {
     private static final Logger logger = LoggerFactory.getLogger(ProfileController.class);
     private ProfileService profileService;
     private StateService stateService;
+
     private FileStorageService storageService;
     private CraftService craftService;
     private AuthUtils authUtils;
 
     @Autowired
-    public ProfileController(ProfileService profileService, StateService stateService,
-                             FileStorageService storageService, CraftService craftService,
+    public ProfileController(ProfileService profileService, FileStorageService storageService, StateService stateService, CraftService craftService,
                              AuthUtils authUtils) {
         this.profileService = profileService;
-        this.stateService = stateService;
         this.storageService = storageService;
+        this.stateService = stateService;
         this.craftService = craftService;
         this.authUtils = authUtils;
     }

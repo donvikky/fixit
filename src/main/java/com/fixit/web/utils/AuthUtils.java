@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.Optional;
 
 @Service
@@ -39,7 +40,7 @@ public class AuthUtils {
         }
         if (authentication.getPrincipal() instanceof OidcUser) {
             OidcUser oidcUser = (OidcUser) authentication.getPrincipal();
-            return userService.findByProviderId(oidcUser.getSubject());
+            return userService.findByProviderId(oidcUser.getName());
         }
         if (authentication.getPrincipal() instanceof OAuth2User) {
             CustomOauth2User oauth2User = (CustomOauth2User) authentication.getPrincipal();

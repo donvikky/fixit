@@ -41,8 +41,8 @@ public class ProjectController {
                              ProfileService profileService, AuthUtils authUtils) {
         this.projectService = projectService;
         this.stateService = stateService;
-        this.storageService = storageService;
         this.profileService = profileService;
+        this.storageService = storageService;
         this.authUtils = authUtils;
     }
 

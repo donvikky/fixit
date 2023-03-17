@@ -43,6 +43,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         Provider provider = getProvider(oAuth2UserRequest);
         User user;
 
+        System.out.println(oAuth2User.getAttributes());
+
         if(profileOptional.isPresent()){//email already exists
             user = profileOptional.get().getUser();
             upDateUserLogin(oAuth2UserRequest, user);

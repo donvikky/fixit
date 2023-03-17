@@ -35,6 +35,7 @@ public abstract class Auditable<U> {
         return createdBy;
     }
 
+
     public void setCreatedBy(U createdBy) {
         this.createdBy = createdBy;
     }

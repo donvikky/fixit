@@ -2,6 +2,7 @@ package com.fixit.web.service;
 
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Qualifier("fileStorageImpl")
 public class FileStorageServiceImpl implements FileStorageService{
 
     private final Path root = Paths.get("uploads");

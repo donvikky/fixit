@@ -21,8 +21,6 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                                         Authentication authentication) throws IOException, ServletException {
 
         String targetUrl = "/dashboard";
-        //DefaultOidcUser user = (DefaultOidcUser) authentication.getPrincipal();
-
         redirectStrategy.sendRedirect(request, response, targetUrl);
     }
 

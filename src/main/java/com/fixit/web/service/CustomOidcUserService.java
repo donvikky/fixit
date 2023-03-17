@@ -85,4 +85,8 @@ public class CustomOidcUserService {
         profileService.save(profile);
     }
 
+    public User getUser(OidcUser oidcUser){
+        return userService.findByProviderId(oidcUser.getName()).get();
+    }
+
 }
