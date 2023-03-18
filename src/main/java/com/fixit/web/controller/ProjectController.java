@@ -89,7 +89,7 @@ public class ProjectController {
         projectService.save(project);
         sessionStatus.setComplete();
 
-        return "redirect:/projects";
+        return "redirect:/projects/page/1";
     }
 
     @GetMapping("/{id}")
@@ -127,7 +127,7 @@ public class ProjectController {
         projectService.save(project);
         sessionStatus.setComplete();
 
-        return "redirect:/dashboard";
+        return "redirect:/projects/page/1";
     }
 
     @GetMapping("/delete/{id}")
