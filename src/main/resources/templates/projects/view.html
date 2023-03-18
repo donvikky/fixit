@@ -84,7 +84,7 @@
                         <!-- Tab Content -->
                         <div class="tabs-content">
                             <div class="tab active" th:data-tab-id="${iter.count}" th:each="picture, iter: ${project.projectPhotos}">
-                                <p style="font-size:50px;"><img th:src="@{/{photo}(photo=${picture.photo})}"></p>
+                                <p style="font-size:50px;"><img th:src="@{{photo}(photo=${picture.photo})}"></p>
                             </div>
                             <!--<div class="tab" data-tab-id="2">
                                 <p>Podcasting operational change management inside of workflows to establish a framework. Taking seamless key performance indicators offline to maximise the long tail.</p>

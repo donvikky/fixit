@@ -44,7 +44,8 @@
 
                             <div class="col-auto">
                                 <div class="avatar-wrapper" data-tippy-placement="bottom" title="Change Avatar">
-                                    <img class="profile-pic" th:src="@{/images/user-avatar-placeholder.png}" alt="" />
+                                    <img th:if="${#strings.isEmpty(profile.photo)}" class="profile-pic" th:src="@{/images/user-avatar-placeholder.png}" alt="" />
+                                    <img th:if="${not #strings.isEmpty(profile.photo)}" class="profile-pic" th:src="${profile.photo}" alt="" />
                                     <div class="upload-button"></div>
                                     <input class="file-upload" type="file" th:field="*{file}" accept="image/jpeg,image/png"/>
                                 </div>

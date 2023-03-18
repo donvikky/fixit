@@ -113,4 +113,5 @@ public class FileStorageServiceImpl implements FileStorageService{
 
         return String.format("%s%s%s%s",PREFIX, RandomStringUtils.randomAlphanumeric(STR_LENGTH), SEPARATOR, contentType);
     }
+
 }

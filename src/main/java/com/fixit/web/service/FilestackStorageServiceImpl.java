@@ -12,6 +12,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,19 +39,21 @@ public class FilestackStorageServiceImpl implements FileStorageService{
     public String save(MultipartFile file) {
         String endpoint  = String.format("%s/store/S3?key=%s", baseUrl, apiKey);
         String result = "";
-            HttpResponse<JsonNode> response = Unirest.post(endpoint)
-                    .header("Content-Type", "image/jpeg")
-                    .field("upload", file)
-                    .asJson();
+        HttpResponse<JsonNode> response = null;
 
+        try {
+            response = Unirest.post(endpoint)
+                    .body(file.getInputStream())
+                    .asJson();
             if (response.getStatus() == 200) {
                 JsonNode jsonResponse = response.getBody();
                 result = jsonResponse.getObject().getString("url");
             } else {
-                System.out.println("Upload failed with status code: " + response.getStatus());
-                return "";
+                logger.info("Upload failed with status code: " + response.getStatus());
             }
-
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return result;
     }
 
@@ -83,4 +86,6 @@ public class FilestackStorageServiceImpl implements FileStorageService{
     public void deleteAll(List<String> filenames) {
 
     }
+
+
 }
