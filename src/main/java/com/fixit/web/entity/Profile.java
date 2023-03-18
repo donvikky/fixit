@@ -55,6 +55,9 @@ public class Profile extends Auditable<String> {
     @JoinColumn(name = "state_id")
     private State state;
 
+    @Column(name = "receive_job_notification")
+    private Boolean  receiveJobNotification;
+
     @Transient
     private MultipartFile file;
 
@@ -88,7 +91,7 @@ public class Profile extends Auditable<String> {
 
     public Profile(String email, String firstName, String lastName, String mobileNumber, String address, String photo,
                    User user, State state, MultipartFile file, List<Craft> crafts, Integer hourlyRate,
-                   String shortDescription, String longDescription) {
+                   String shortDescription, String longDescription, Boolean  receiveJobNotification) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -102,6 +105,7 @@ public class Profile extends Auditable<String> {
         this.hourlyRate = hourlyRate;
         this.shortDescription = shortDescription;
         this.longDescription = longDescription;
+        this.receiveJobNotification  = receiveJobNotification;
     }
 
     public Profile(String email, String firstName, String lastName, String mobileNumber, String address,  State state) {
@@ -272,6 +276,14 @@ public class Profile extends Auditable<String> {
         this.bookMarks = bookMarks;
     }
 
+    public Boolean getReceiveJobNotification() {
+        return receiveJobNotification;
+    }
+
+    public void setReceiveJobNotification(Boolean receiveJobNotification) {
+        this.receiveJobNotification = receiveJobNotification;
+    }
+
     @Override
     public String toString() {
         return "Profile{" +
@@ -284,6 +296,7 @@ public class Profile extends Auditable<String> {
                 ", photo='" + photo + '\'' +
                 ", user=" + user +
                 ", state=" + state +
+                ", receiveNotifications=" + receiveJobNotification +
                 '}';
     }
 }

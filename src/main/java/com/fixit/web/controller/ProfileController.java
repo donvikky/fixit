@@ -129,7 +129,7 @@ public class ProfileController {
         if(bindingResult.hasErrors()){
             return "profiles/edit";
         }
-
+        System.out.println(profile.toString());
         if(!file.isEmpty()){
             String fileName = storageService.save(file);
             profile.setPhoto(fileName);
