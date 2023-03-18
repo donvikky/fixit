@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{layouts/site_layout :: layout(~{::title}, ~{::style}, ~{::section})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <style>
+
+    </style>
+</head>
+<body>
+<section>
+    <!-- Page Content
+================================================== -->
+    <!-- Spacer -->
+    <div class="margin-top-70"></div>
+    <!-- Spacer / End-->
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-8 offset-xl-2">
+                <div class="verify-user-div">
+                    <div th:if="${error}" class="notification error closeable">
+                        <p th:text="${error}"></p>
+                        <a class="close" href="#"></a>
+                    </div>
+
+                    <div th:if="${warning}" class="notification warning closeable">
+                        <p th:text="${warning}"></p>
+                        <a class="close" href="#"></a>
+                    </div>
+
+                    <div th:if="${success}" class="notification success closeable">
+                        <p th:text="${success}"></p>
+                        <a class="close" href="#"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Spacer -->
+    <div class="margin-top-70"></div>
+    <!-- Spacer / End-->
+</section>
+</body>
+</html>

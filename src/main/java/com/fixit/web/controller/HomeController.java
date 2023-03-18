@@ -3,6 +3,7 @@ package com.fixit.web.controller;
 import com.fixit.web.entity.Craft;
 import com.fixit.web.entity.Job;
 import com.fixit.web.entity.Profile;
+import com.fixit.web.entity.User;
 import com.fixit.web.model.ProfileSearch;
 import com.fixit.web.service.*;
 import com.fixit.web.utils.AuthUtils;
@@ -10,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class HomeController {
@@ -66,5 +69,23 @@ public class HomeController {
     @GetMapping("/oauth")
     public String oauthLogin(){
         return "auth/oauth";
+    }
+
+    @GetMapping("verify/user/{token}")
+    public String verifyUser(@PathVariable("token") String token, Model model){
+        Optional<User> user = userService.findByVerificationToken(token);
+        if(user.isEmpty()){
+            model.addAttribute("error",
+                    "An error was encountered. Please request a valid token.");
+        } else if (user.get().getEnabled()) {
+            model.addAttribute("warning",
+                    "Your account has been previously verified.");
+        }else{
+            //update user
+            userService.updateUserByVerificationToken(token);
+            model.addAttribute("success",
+                    "Your registration has been verified successfully. Please login to access your account");
+        }
+        return "verify";
     }
 }

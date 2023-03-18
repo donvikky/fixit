@@ -36,14 +36,22 @@ public class User implements Serializable {
     @Column(name = "provider_id")
     private String providerId;
 
+    @Column(name = "verification_token")
+    private String verificationToken;
+
+    @Column(name = "verification_token_expiry")
+    private LocalDateTime verificationTokenExpiry;
+
     public User() {
     }
 
-    public User(String username, String password, Boolean enabled, List<Role> roles) {
+    public User(String username, String password, Boolean enabled, List<Role> roles, String verificationToken, LocalDateTime verificationTokenExpiry) {
         this.username = username;
         this.password = password;
         this.enabled = enabled;
         this.roles = roles;
+        this.verificationToken = verificationToken;
+        this.verificationTokenExpiry =  verificationTokenExpiry;
     }
 
     public Integer getId() {
@@ -116,6 +124,22 @@ public class User implements Serializable {
 
     public void setProviderId(String providerId) {
         this.providerId = providerId;
+    }
+
+    public String getVerificationToken() {
+        return verificationToken;
+    }
+
+    public void setVerificationToken(String verificationToken) {
+        this.verificationToken = verificationToken;
+    }
+
+    public LocalDateTime getVerificationTokenExpiry() {
+        return verificationTokenExpiry;
+    }
+
+    public void setVerificationTokenExpiry(LocalDateTime verificationTokenExpiry) {
+        this.verificationTokenExpiry = verificationTokenExpiry;
     }
 
     @Override

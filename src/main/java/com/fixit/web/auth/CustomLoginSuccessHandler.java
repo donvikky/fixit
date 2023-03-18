@@ -26,13 +26,13 @@ public class CustomLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
-        String targetUrl = "/dashboard";
+        String successTargetUrl = "/dashboard";
 
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         User user = userDetails.getUser();
         user.setLastLoginTime(LocalDateTime.now());
         userService.save(user);
         //super.onAuthenticationSuccess(request, response, authentication);
-        redirectStrategy.sendRedirect(request, response, targetUrl);
+        redirectStrategy.sendRedirect(request, response, successTargetUrl);
     }
 }

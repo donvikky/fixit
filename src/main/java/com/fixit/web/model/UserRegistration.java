@@ -3,10 +3,12 @@ package com.fixit.web.model;
 import com.fixit.web.entity.Role;
 import com.fixit.web.entity.User;
 import com.fixit.web.validator.PasswordEqualField;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @PasswordEqualField(
@@ -62,8 +64,19 @@ public class UserRegistration {
         this.roles = roles;
     }
 
-    public User create(PasswordEncoder passwordEncoder){
-        return new User(username, passwordEncoder.encode(password), true, roles);
+    public String generateVerificationToken() {
+        int tokenLength = 30;
+        return RandomStringUtils.randomAlphanumeric(tokenLength);
+    }
+
+    public LocalDateTime generateVerificationTokenExpiryDate() {
+        int tokenExpiryDays = 1;
+        return LocalDateTime.now().plusDays(tokenExpiryDays);
+    }
+
+    public User create(PasswordEncoder passwordEncoder) {
+        return new User(username, passwordEncoder.encode(password), false, roles, generateVerificationToken(),
+                generateVerificationTokenExpiryDate());
     }
 
 }

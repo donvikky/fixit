@@ -2,3 +2,8 @@
     color: red;
     font-size: 12px;
 }
+
+.verify-user-div{
+    min-height: 200px;
+    text-align: center;
+}

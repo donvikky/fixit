@@ -37,4 +37,12 @@ public class UserService {
     public User findByUsername(String username){
         return userRepository.findByUsername(username);
     }
+
+    public Optional<User> findByVerificationToken(String token){
+        return userRepository.findByVerificationToken(token);
+    }
+
+    public int updateUserByVerificationToken(String token){
+        return userRepository.updateUserByVerificationToken(token);
+    }
 }
