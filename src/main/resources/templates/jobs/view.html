@@ -66,7 +66,10 @@
       <div class="col-xl-8 col-lg-8 content-right-offset">
         <!-- success message -->
         <div class="countdown green margin-bottom-35 closeable" th:if="${successMessage != null}" th:text="${successMessage}" ></div>
-        <div class="countdown green margin-bottom-35 closeable" th:if="${errorMessage != null}" th:text="${errorMessage}" ></div>
+        <div class="notification error closeable"  th:if="${errorMessage != null}">
+          <p th:text="${errorMessage}"></p>
+          <a class="close" href="#"></a>
+        </div>
 
         <!-- Description -->
         <div class="single-page-section">

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.NoSuchElementException;
@@ -57,11 +58,13 @@ public class JobReviewController {
     }
 
     @PostMapping("/create")
-    public String saveReview(@Valid JobReview jobReview, BindingResult bindingResult){
+    public String saveReview(@Valid JobReview jobReview, BindingResult bindingResult,
+                             RedirectAttributes redirectAttributes){
         if(bindingResult.hasErrors()){
             bindingResult.getAllErrors().stream().forEach( error -> System.out.println(error.toString()));
             return "jobreviews/create";
         }
+        redirectAttributes.addFlashAttribute("successMessage", "The review was submitted successfully");
         jobReviewService.save(jobReview);
         return "redirect:/jobs/page/1";
     }
@@ -74,11 +77,12 @@ public class JobReviewController {
     }
 
     @PostMapping("/edit")
-    public String updateReview(@Valid JobReview jobReview, BindingResult bindingResult){
+    public String updateReview(@Valid JobReview jobReview, BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if(bindingResult.hasErrors()){
             bindingResult.getAllErrors().stream().forEach( error -> System.out.println(error.toString()));
             return "jobreviews/edit";
         }
+        redirectAttributes.addFlashAttribute("successMessage", "The review was updated successfully");
         jobReviewService.save(jobReview);
         return "redirect:/jobs/page/1";
     }

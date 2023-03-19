@@ -27,6 +27,11 @@
     </nav>
   </div>
 
+  <div class="notification success closeable" th:if="${successMessage}">
+    <p th:text="${successMessage}"></p>
+    <a class="close" href="#"></a>
+  </div>
+
   <!-- Row -->
   <div class="row">
     <div class="col-xl-12" th:if="${bids.empty}">
@@ -91,8 +96,10 @@
                       <form method="post" th:action="@{/bids/accept}">
                         <input type="hidden" name="id" th:value="${bid.id}" class="input-bid-id"/>
                         <input type="hidden" name="jobId" th:value="${job.id}" class="input-job-id"/>
-                        <button href="#small-dialog-1"  class="button ripple-effect accept-offer">
-                          <i class="icon-material-outline-check"></i> Accept Offer
+                        <button href="#small-dialog-1"  class="button ripple-effect accept-offer" th:disabled="${bid.job.completed}">
+                          <i class="icon-material-outline-check"></i>
+                          <span th:if="${!bid.job.completed}">Accept Offer</span>
+                          <span th:if="${bid.job.completed}">Job Completed</span>
                         </button>
                       </form>
                       <a href="#small-dialog-2" class="popup-with-zoom-anim button dark ripple-effect"><i class="icon-feather-mail"></i> Send Message</a>

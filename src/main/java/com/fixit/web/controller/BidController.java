@@ -41,6 +41,12 @@ public class BidController {
                             RedirectAttributes redirectAttributes){
 
         Profile bidder = authUtils.getCurrentUser().get().getProfile();
+        System.out.println("Current profile " + bidder.getFirstName());
+        if(bidder == null){
+            redirectAttributes.addFlashAttribute("errorMessage", "Please update" +
+                    " your profile first before attempting  to  place a bid.");
+            return "redirect:/jobs/" + bid.getJob().getId();
+        }
         List<Bid> bids = bidService.findByJobAndBidder(bid.getJob(), bidder);
 
         if(!bids.isEmpty()){
@@ -76,7 +82,8 @@ public class BidController {
     }
 
     @PostMapping("/accept")
-    public String acceptBid(@RequestParam("id") Integer id, @RequestParam("jobId") Integer jobId){
+    public String acceptBid(@RequestParam("id") Integer id, @RequestParam("jobId") Integer jobId,
+                            RedirectAttributes redirectAttributes){
 
 
         try {
@@ -84,7 +91,8 @@ public class BidController {
             Job job = jobService.get(jobId);
             bidService.acceptBid(id);
             bidService.declineOtherBids(job, id);
-            return "redirect:/bids/job/" + jobId;
+            redirectAttributes.addFlashAttribute("successMessage", "The bid was accepted successfully");
+            return "redirect:/bids/job/" + jobId  + "/1";
         }catch (NoSuchElementException exception){
             exception.printStackTrace();
             return "redirect:/dashboard";

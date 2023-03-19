@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.sql.Timestamp;
@@ -143,14 +144,15 @@ public class JobController {
     }
 
     @PostMapping("/complete")
-    public String completeJob(@RequestParam("id") int id){
+    public String completeJob(@RequestParam("id") int id, RedirectAttributes redirectAttributes){
         try {
             Job job = jobService.get(id);
             job.setCompleted(true);
             jobService.save(job);
+            redirectAttributes.addFlashAttribute("successMessage", "The job has been marked  as completed");
         }catch (NoSuchElementException exception){
             exception.printStackTrace();
         }
-        return "redirect:/jobs";
+        return "redirect:/jobs/page/" + 1;
     }
 }

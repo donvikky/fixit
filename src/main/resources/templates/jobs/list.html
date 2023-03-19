@@ -29,6 +29,11 @@
     </nav>
   </div>
 
+  <div class="notification success closeable" th:if="${successMessage}">
+    <p  th:text="${successMessage}"></p>
+    <a class="close" href="#"></a>
+  </div>
+
   <!-- Row -->
   <div class="row">
 
