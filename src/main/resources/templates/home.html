@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" th:replace="~{layouts/site_layout :: layout(~{::title}, ~{::style}, ~{::section})}" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" th:replace="~{layouts/site_layout :: layout(~{::title}, ~{::style}, ~{::section}, ~{::script})}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
@@ -40,7 +40,7 @@
                     <div class="intro-banner-search-form margin-top-95">
 
                         <!-- Search Field -->
-                        <form method="post" th:object="${search}" th:action="@{/profiles/search}">
+                        <form method="get" th:object="${search}" th:action="@{/profiles/search}">
                             <div class="intro-search-field">
                                 <select th:field="*{craft}" class="selectpicker default" data-selected-text-format="count" data-size="7" title="All Categories" >
                                     <option th:each="c: ${crafts}" th:value="${c.id}" th:text="${#strings.capitalize(c.name)}">

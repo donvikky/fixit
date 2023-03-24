@@ -16,8 +16,7 @@ public interface ProfileRepository extends JpaRepository<Profile, Integer> {
     List<Profile> findAllByCrafts(Craft craft);
     Profile findByUser(User user);
     Optional<Profile> findByEmail(String email);
-    Page findByStateAndCrafts(State state, Craft craft, Pageable pageable);
+    Page findByCraftsAndState(Craft craft, State state, Pageable pageable);
     Page findByCrafts(Craft craft, Pageable pageable);
-
 
 }

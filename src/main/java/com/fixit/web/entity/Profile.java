@@ -85,6 +85,9 @@ public class Profile extends Auditable<String> {
             mappedBy = "bookmarker", orphanRemoval = true)
     private List<BookMark> bookMarks = new ArrayList<>();
 
+    @Transient
+    private Double rating;
+
     public Profile() {
 
     }
@@ -282,6 +285,14 @@ public class Profile extends Auditable<String> {
 
     public void setReceiveJobNotification(Boolean receiveJobNotification) {
         this.receiveJobNotification = receiveJobNotification;
+    }
+
+    public Double getRating(){
+        Double totalRatings  = 0D;
+        for(JobReview review : getJobReviews()){
+            totalRatings += review.getRating();
+        }
+        return totalRatings >  0 ? totalRatings / getJobReviews().size() : 0D;
     }
 
     @Override

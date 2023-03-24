@@ -29,7 +29,7 @@ public class Craft extends Auditable<String> implements Serializable {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @ManyToMany(mappedBy = "crafts")
+    @ManyToMany(mappedBy = "crafts", fetch = FetchType.LAZY)
     private List<Profile> profiles;
 
     @OneToMany(cascade = CascadeType.ALL,

@@ -61,10 +61,9 @@ public class ProfileService {
     public Optional<Profile> findByEmail(String email){
         return profileRepository.findByEmail(email);
     }
-
-    public Page searchByStateAndService(State state, Craft craft, final int pageNumber){
+    public Page searchByStateAndService(Craft craft, State state, final int pageNumber){
         final Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
-        return profileRepository.findByStateAndCrafts(state, craft, pageable);
+        return profileRepository.findByCraftsAndState(craft, state, pageable);
     }
 
     public Page searchByService(Craft craft, final int pageNumber){

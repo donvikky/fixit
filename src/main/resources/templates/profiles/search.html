@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" th:replace="~{layouts/site_layout :: layout(~{::title}, ~{::style}, ~{::section})}" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" th:replace="~{layouts/site_layout :: layout(~{::title}, ~{::style}, ~{::section}, ~{::script})}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Profile Search</title>
     <style>
 
     </style>
+    <script>
+        $(document).ready(function(){
+            alert()
+        })
+    </script>
 </head>
 <body>
 <section>
@@ -19,11 +24,11 @@
         <div class="row">
             <div class="col-xl-3 col-lg-4">
                 <div class="sidebar-container">
-                    <form method="post" th:action="@{/profiles/search/1}">
+                    <form method="get" th:object="${search}" th:action="@{/profiles/search}">
                         <!-- Location -->
                         <div class="sidebar-widget">
                             <h3>Location</h3>
-                            <select name="state" class="selectpicker default" multiple data-selected-text-format="count" data-size="7" title="All States" >
+                            <select th:field="*{state}" class="selectpicker default" data-selected-text-format="count" data-size="7" title="Select State" required>
                                 <option th:each="state: ${states}" th:value="${state.id}" th:text="${#strings.capitalize(state.name)}"></option>
                             </select>
                         </div>
@@ -31,7 +36,7 @@
                         <!-- Category -->
                         <div class="sidebar-widget">
                             <h3>Category</h3>
-                            <select name="craft" class="selectpicker default" multiple data-selected-text-format="count" data-size="7" title="All Categories" >
+                            <select th:field="*{craft}" class="selectpicker default" data-selected-text-format="count" data-size="7" title="Select Category" required>
                                 <option th:each="craft: ${crafts}" th:value="${craft.id}" th:text="${#strings.capitalize(#strings.toLowerCase(craft.name))}"></option>
                             </select>
                         </div>
@@ -79,16 +84,16 @@
                                 <!-- Avatar -->
                                 <div class="freelancer-avatar">
                                     <div class="verified-badge"></div>
-                                    <a href="single-freelancer-profile.html"><img th:src="@{/{photo}(photo=${profile.photo})}" alt=""></a>
+                                    <a href="single-freelancer-profile.html"><img th:src="${profile.photo}" alt=""></a>
                                 </div>
 
                                 <!-- Name -->
                                 <div class="freelancer-name">
                                     <h4><a href="#"><span th:text="${#strings.capitalize(profile.firstName)}"></span> <span th:text="${#strings.capitalize(profile.lastName)}"></span><img class="flag" src="images/flags/gb.svg" alt="" title="United Kingdom" data-tippy-placement="top"></a></h4>
-                                    <span style="margin-right:2px;" th:each="c: ${profile.crafts}" th:text="${#strings.append(#strings.capitalize(#strings.toLowerCase(c.name)), ',')}">UI/UX Designer</span>
+                                    <span style="margin-right:2px;" th:each="c: ${profile.crafts}" th:text="${#strings.append(#strings.capitalize(#strings.toLowerCase(c.name)), ', ')}">UI/UX Designer</span>
                                     <!-- Rating -->
                                     <div class="freelancer-rating">
-                                        <div class="star-rating" data-rating="4.9"></div>
+                                        <div class="star-rating" data-rating="" th:data-rating="${profile.rating}"></div>
                                     </div>
                                 </div>
                             </div>
@@ -100,10 +105,10 @@
                                 <ul>
                                     <li>Location <strong><i class="icon-material-outline-location-on"></i> [[${#strings.capitalize(profile.state.name)}]]</strong></li>
                                     <li>Rate <strong>&#8358;[[${#numbers.formatDecimal(profile.hourlyRate, 1,'COMMA',0,'POINT')}]] / hr</strong></li>
-                                    <li>Job Success <strong>95%</strong></li>
+                                    <li>Jobs Done <strong th:text="${#lists.size(profile.jobs.?[completed])}"></strong></li>
                                 </ul>
                             </div>
-                            <a th:href="@{/profiles/{id}(id=${profile.id})}" class="button button-sliding-icon ripple-effect">View Profile <i class="icon-material-outline-arrow-right-alt"></i></a>
+                            <a th:href="@{/profiles/view/{id}(id=${profile.id})}" class="button button-sliding-icon ripple-effect">View Profile <i class="icon-material-outline-arrow-right-alt"></i></a>
                         </div>
                     </div>
                     <!-- Freelancer / End -->
@@ -126,7 +131,7 @@
                         <ul>
                             <li th:each="i: ${#numbers.sequence(1, profiles.totalPages)}">
                                 <a
-                                        th:href="@{/profiles/search/{page}(page=${i})}"
+                                        th:href="@{/profiles/search/{page}(page=${i}, craft=${param.craft}, state=${param.state})}"
                                         th:class="${currentPage == i} ? 'ripple-effect current-page' : 'ripple-effect'">
                                     [[${i}]]
                                 </a>

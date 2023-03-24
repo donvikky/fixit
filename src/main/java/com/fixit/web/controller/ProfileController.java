@@ -22,6 +22,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -148,6 +149,7 @@ public class ProfileController {
         return "redirect:/profiles";
     }
 
+    /*
     @GetMapping("/search/{page}")
     public String searchForProfiles(@PathVariable("page") Optional<Integer> curPage, Model model){
         int currentPage = curPage.orElse(1);
@@ -156,28 +158,50 @@ public class ProfileController {
         model.addAttribute("currentPage", currentPage);
         return "profiles/search";
     }
+    */
 
-    @PostMapping("/search")
-    public String searchProfiles(@ModelAttribute("search") ProfileSearch search, Model model,
-                                 BindingResult bindingResult){
-        int startPage = 1;
-        Page<Profile> profiles = profileService.searchByService(search.getCraft(), startPage);
-        System.out.println("Number of records: "+ profiles.getTotalElements());
+    @GetMapping("/search")
+    public String searchProfiles(@PathVariable(value = "page") Optional<Integer> curPage, @ModelAttribute("search") ProfileSearch search, Model model,
+                                 BindingResult bindingResult, HttpServletRequest request){
+        int currentPage = curPage.orElse(1);
+        Page<Profile> profiles = null;
+        model.addAttribute("search", search);
+        if(search.getState() != null && search.getCraft() != null){
+            profiles = profileService.searchByStateAndService(search.getCraft() ,search.getState(), currentPage);
+        }else if(search.getCraft() != null){
+            profiles = profileService.searchByService(search.getCraft(), currentPage);
+        }else{
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "There was an error in the request");
+        }
         model.addAttribute("profiles", profiles);
+        model.addAttribute("search", search);
         return "profiles/search";
     }
 
-    @PostMapping("/search/{page}")
-    public String searchBByStateAndService(@RequestParam("state") int stateId, @RequestParam("craft") int craftId, Model model){
-        State state = stateService.get(stateId);
+
+    @GetMapping("/search/{page}")
+    public String searchByStateAndService(@PathVariable(value = "page") Optional<Integer> curPage,
+                                          @RequestParam(value = "state", required = false, defaultValue = "0") int stateId,
+                                          @RequestParam("craft") int craftId, Model model){
+
         Craft craft = craftService.get(craftId);
-        int startPage = 1;
-        Page<Profile> profiles = profileService.searchByStateAndService(state, craft, startPage);
+        int currentPage = curPage.orElse(1);
+        ProfileSearch search = new ProfileSearch();
+        Page<Profile> profiles = null;
+        if(stateId == 0){ // no state selected
+            profiles = profileService.searchByService(craft, currentPage);
+        }else {
+            State state = stateService.get(stateId);
+            profiles = profileService.searchByStateAndService(craft, state, currentPage);
+        }
+
         model.addAttribute("profiles", profiles);
+        model.addAttribute("search", search);
         return "profiles/search";
     }
 
-    @GetMapping("/{id}")
+
+    @GetMapping("/view/{id}")
     public String viewProfile(@PathVariable("id") int id, Model model){
         Profile profile = profileService.get(id);
         model.addAttribute("profile", profile);
