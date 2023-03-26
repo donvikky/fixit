@@ -86,7 +86,7 @@
 
           <div class="countdown green margin-bottom-35" th:text="|Posted ${postDuration} ago|"></div>
 
-          <div class="sidebar-widget" th:if="${#authentication.principal.user.id != job.profile.user.id}">
+          <div class="sidebar-widget" th:if="${#authentication.name != 'anonymousUser'} and ${#authentication.principal.user.id != job.profile.user.id}">
             <div class="bidding-widget">
               <div class="bidding-headline"><h3>Bid on this job!</h3></div>
               <div class="bidding-inner">
@@ -97,7 +97,7 @@
                 <span class="bidding-detail">Set your <strong>minimal rate</strong></span>
 
                 <!-- Price Slider -->
-                <div class="bidding-value">$<span id="biddingVal"></span></div>
+                <div class="bidding-value">&#8358;<span id="biddingVal"></span></div>
                 <input class="bidding-slider" type="text" value="" th:field="*{rate}" data-slider-handle="custom" data-slider-currency="&#8358;" data-slider-min="1" data-slider-max="1000000" data-slider-value="auto" data-slider-step="50" data-slider-tooltip="hide" />
 
                 <!-- Headline -->
