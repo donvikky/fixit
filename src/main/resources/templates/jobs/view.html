@@ -22,7 +22,7 @@
         <div class="col-md-12">
           <div class="single-page-header-inner">
             <div class="left-side">
-              <div class="header-image"><a th:href="@{/profiles/{id}(id=${job.profile.id})}"><img th:src="@{/{photo}(photo=${job.profile.photo})}" alt=""></a></div>
+              <div class="header-image"><a th:href="@{/profiles/{id}(id=${job.profile.id})}"><img th:src="${job.profile.photo}" alt=""></a></div>
               <div class="header-details">
                 <h3 th:text="|${job.shortDescription}|"></h3>
                 <h5>About the Poster</h5>
@@ -33,7 +33,7 @@
                       <span th:text="|${job.profile.firstName} ${job.profile.lastName}|"></span>
                     </a>
                   </li>
-                  <li><div class="star-rating" data-rating="5.0"></div></li>
+                  <li><div class="star-rating" data-rating="5.0" th:data-rating="${job.profile.rating}"></div></li>
                   <li>
                     <img class="flag" src="images/flags/de.svg" alt="">
                     <span th:text="${#strings.capitalize(#strings.toLowerCase(job.state.name))}"></span>
