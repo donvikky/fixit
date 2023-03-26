@@ -70,7 +70,7 @@ public class RegisterController {
         String verificationEmailMessage = String.format("Thank you for signing up with Fixit. Please click the link below" +
                 "to activate your account.  <br> <a href='%s/verify/user/%s'>Activate your account</a>",
                 baseUrl, newUser.getVerificationToken());
-        messagingService.send(newUser.getUsername(), verificationEmailSubject, verificationEmailMessage);
+        //messagingService.send(newUser.getUsername(), verificationEmailSubject, verificationEmailMessage);
         redirectAttributes.addFlashAttribute("message", "Your registration was successful! A verification email has been" +
                 " sent to you. Please click the link in the mail to activate your account");
         return "redirect:/login";

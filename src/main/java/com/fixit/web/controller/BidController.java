@@ -9,6 +9,7 @@ import com.fixit.web.service.JobService;
 import com.fixit.web.utils.AuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,6 +37,7 @@ public class BidController {
         this.authUtils = authUtils;
     }
 
+    @PreAuthorize(value = "principal.profile != null")
     @PostMapping("/create")
     public String submitBid(@Valid Bid bid, BindingResult bindingResult, SessionStatus sessionStatus,
                             RedirectAttributes redirectAttributes){
