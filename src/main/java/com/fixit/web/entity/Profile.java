@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,8 @@ public class Profile extends Auditable<String> {
     private String lastName;
 
     @Column(name = "mobile_number")
+    @NotBlank(message = "Please provide your mobile number")
+    @Size(min=10, max=10)
     private String mobileNumber;
 
     private String address;
