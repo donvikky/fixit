@@ -86,7 +86,7 @@ public class JobController {
         return "jobs/list";
     }
 
-    @PreAuthorize(value = "principal.profile != null")
+    @PreAuthorize(value = "principal.user.profile != null")
     @GetMapping("/create")
     public String createJob(Model model){
         List<State> states = stateService.listAll();
@@ -96,7 +96,7 @@ public class JobController {
         return "jobs/create";
     }
 
-    @PreAuthorize(value = "principal.profile != null")
+    @PreAuthorize(value = "principal.user.profile != null")
     @PostMapping("/create")
     public String saveJob(@Valid Job job, BindingResult bindingResult, SessionStatus sessionStatus) {
         if(bindingResult.hasErrors()){
@@ -109,7 +109,8 @@ public class JobController {
         return "redirect:/jobs/page/1";
     }
 
-    @PreAuthorize(value = "principal.profile != null")
+
+    @PreAuthorize(value = "principal.user.profile != null")
     @GetMapping("/edit/{id}")
     public String editJob(@PathVariable("id") int id, Model model){
         Job job = jobService.get(id);
@@ -117,7 +118,8 @@ public class JobController {
         return "jobs/edit";
     }
 
-    @PreAuthorize(value = "principal.profile != null")
+
+    @PreAuthorize(value = "principal.user.profile != null")
     @PostMapping("/edit")
     public String updateJob(@Valid Job job, BindingResult bindingResult, SessionStatus sessionStatus){
         if(bindingResult.hasErrors()){

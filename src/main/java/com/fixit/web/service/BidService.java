@@ -30,8 +30,8 @@ public class BidService {
         return bidRepository.findAll();
     }
 
-    public void save(Bid bid) {
-        bidRepository.save(bid);
+    public Bid save(Bid bid) {
+        return bidRepository.save(bid);
     }
 
     public Bid get(int id) {

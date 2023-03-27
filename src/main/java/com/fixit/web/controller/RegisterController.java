@@ -7,6 +7,7 @@ import com.fixit.web.service.MessagingService;
 import com.fixit.web.service.RoleService;
 import com.fixit.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -34,7 +35,8 @@ public class RegisterController {
     private String baseUrl;
 
     @Autowired
-    public RegisterController(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder, MessagingService messagingService) {
+    public RegisterController(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder,
+                              @Qualifier("emailMessagingService") MessagingService messagingService) {
         this.userService = userService;
         this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;

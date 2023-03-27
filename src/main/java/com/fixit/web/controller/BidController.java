@@ -6,8 +6,10 @@ import com.fixit.web.entity.Profile;
 import com.fixit.web.exceptions.ResourceNotFoundException;
 import com.fixit.web.service.BidService;
 import com.fixit.web.service.JobService;
+import com.fixit.web.service.MessagingService;
 import com.fixit.web.utils.AuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -30,14 +32,18 @@ public class BidController {
     private JobService jobService;
     private AuthUtils authUtils;
 
+    private MessagingService messagingService;
+
     @Autowired
-    public BidController(BidService bidService, JobService jobService, AuthUtils authUtils) {
+    public BidController(BidService bidService, JobService jobService, AuthUtils authUtils,
+                         @Qualifier("whatsappMessagingService") MessagingService messagingService) {
         this.bidService = bidService;
         this.jobService = jobService;
         this.authUtils = authUtils;
+        this.messagingService = messagingService;
     }
 
-    @PreAuthorize(value = "principal.profile != null")
+    @PreAuthorize(value = "principal.user.profile != null")
     @PostMapping("/create")
     public String submitBid(@Valid Bid bid, BindingResult bindingResult, SessionStatus sessionStatus,
                             RedirectAttributes redirectAttributes){
@@ -60,7 +66,12 @@ public class BidController {
 
         bid.setBidder(bidder);
         bid.setAccepted(false);
-        bidService.save(bid);
+        Bid savedBid  = bidService.save(bid);
+
+        String messageSubject = "New bid made";
+        String messageBody = String.format("An artisan has indicated interest on the %s job you posted. " +
+                "Please login to fixit.works to review the bid and contact the artisan", bid.getJob().getCraft().getName());
+        messagingService.send(savedBid.getJob().getProfile().getMobileNumber(), messageSubject, messageBody);
         redirectAttributes.addFlashAttribute("successMessage", "The bid was submitted successfully");
 
         return "redirect:/jobs/" + bid.getJob().getId();
