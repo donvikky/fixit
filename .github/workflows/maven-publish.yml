@@ -52,4 +52,4 @@ jobs:
           docker stop vokrobodo/fixit:dev || true
           docker rm vokrobodo/fixit:dev || true
           docker pull vokrobodo/fixit:dev
-          docker run -p 8081:8081 vokrobodo/fixit:dev
+          docker run --name vokrobodo/fixit:dev -p 8081:8081 vokrobodo/fixit:dev
