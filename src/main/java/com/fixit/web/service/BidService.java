@@ -65,4 +65,5 @@ public class BidService {
         return bidRepository.countByBidderAndAccepted(bidder, true);
     }
 
+
 }
