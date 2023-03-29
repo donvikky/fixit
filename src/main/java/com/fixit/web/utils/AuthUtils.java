@@ -14,7 +14,6 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import java.math.BigInteger;
 import java.util.Optional;
 
 @Service
@@ -22,6 +21,7 @@ public class AuthUtils {
 
     private UserService userService;
     private static final Logger logger = LoggerFactory.getLogger(AuthUtils.class);
+
 
     @Autowired
     public AuthUtils(UserService userService) {
