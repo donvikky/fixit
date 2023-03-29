@@ -52,4 +52,6 @@ jobs:
           docker stop vokrobodo/fixit:dev || true
           docker rm vokrobodo/fixit:dev || true
           docker pull vokrobodo/fixit:dev
-          docker run -p 8081:8081 -e SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/fixit vokrobodo/fixit:dev
+          docker run -p 8081:8081 -e SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/fixit
+          -e SPRING_DATASOURCE_USERNAME=${{ secrets.DB_USERNAME }} -e SPRING_DATASOURCE_PASSWORD=${{ secrets.DB_PASSWORD }}
+          vokrobodo/fixit:dev
