@@ -49,7 +49,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: ${{ secrets.REMOTE_PORT }}
         script: |
-          docker stop vokrobodo/fixit:dev || true
-          docker rm vokrobodo/fixit:dev || true
+          docker stop fixit-dev || true
+          docker rm fixit-dev || true
           docker pull vokrobodo/fixit:dev
-          docker run --name vokrobodo/fixit:dev -p 8081:8081 vokrobodo/fixit:dev
+          docker run --name fixit-dev -p 8081:8081 vokrobodo/fixit:dev
