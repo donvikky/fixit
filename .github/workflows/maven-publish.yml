@@ -5,7 +5,8 @@ name: Build and push docker image to remote server
 
 on:
   push:
-    branches: [develop]
+    branches:
+      - develop
 
 jobs:
   build:
