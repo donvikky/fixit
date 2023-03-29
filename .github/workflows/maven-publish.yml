@@ -1,7 +1,7 @@
 # This workflow will build a package using Maven and then publish it to GitHub packages when a release is created
 # For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path
 
-name: Build and Push dev brach to remote server
+name: Build and Push dev branch to remote server
 
 on:
   push:
@@ -52,6 +52,4 @@ jobs:
           docker stop vokrobodo/fixit:dev || true
           docker rm vokrobodo/fixit:dev || true
           docker pull vokrobodo/fixit:dev
-          docker run -p 8081:8081 -e SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/fixit
-          -e SPRING_DATASOURCE_USERNAME=${{ secrets.DB_USERNAME }} -e SPRING_DATASOURCE_PASSWORD=${{ secrets.DB_PASSWORD }}
-          vokrobodo/fixit:dev
+          docker run -p 8081:8081 -e SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/fixit -e SPRING_DATASOURCE_USERNAME=${{ secrets.DB_USERNAME }} -e SPRING_DATASOURCE_PASSWORD=${{ secrets.DB_PASSWORD }} vokrobodo/fixit:dev
