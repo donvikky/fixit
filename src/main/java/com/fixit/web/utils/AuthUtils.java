@@ -22,7 +22,6 @@ public class AuthUtils {
     private UserService userService;
     private static final Logger logger = LoggerFactory.getLogger(AuthUtils.class);
 
-
     @Autowired
     public AuthUtils(UserService userService) {
         this.userService = userService;
