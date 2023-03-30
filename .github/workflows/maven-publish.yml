@@ -48,6 +48,7 @@ jobs:
         username: ${{ secrets.REMOTE_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: ${{ secrets.REMOTE_PORT }}
+        command_timeout: 20m
         script: |
           docker stop fixit-dev || true
           docker rm fixit-dev || true
