@@ -45,4 +45,8 @@ public class UserService {
     public int updateUserByVerificationToken(String token){
         return userRepository.updateUserByVerificationToken(token);
     }
+
+    public Optional<User> findByUniqueUsername(String username){
+        return userRepository.findByUniqueUsername(username);
+    }
 }

@@ -17,6 +17,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findByProviderId(String providerId);
     Optional<User> findByVerificationToken(String token);
 
+    @Query("select u from User u where u.username = ?1")
+    Optional<User> findByUniqueUsername(String username);
+
     @Modifying
     @Query("update User u set u.enabled = true where u.verificationToken = ?1")
     int updateUserByVerificationToken(String token);

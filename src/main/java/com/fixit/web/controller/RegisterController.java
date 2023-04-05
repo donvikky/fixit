@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/register")
@@ -60,9 +61,9 @@ public class RegisterController {
             return "auth/register";
         }
         //check if username is taken
-        User user = userService.findByUsername(userRegistration.getUsername().toLowerCase(Locale.ROOT));
-
-        if(user != null){
+        Optional<User> user = userService.findByUniqueUsername(userRegistration.getUsername().toLowerCase(Locale.ROOT));
+        System.out.println("User details:" + userRegistration.getUsername().toLowerCase(Locale.ROOT));
+        if(user.isPresent()){
             model.addAttribute("message", "That username is not available. Please choose another username");
             return "auth/register";
         }

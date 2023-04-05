@@ -9,10 +9,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Repository
 public interface BidRepository extends JpaRepository<Bid, Integer> {
     List<Bid> findByJobAndBidder(Job job, Profile bidder);
 
@@ -30,4 +32,6 @@ public interface BidRepository extends JpaRepository<Bid, Integer> {
     int updateOtherBidsToDeclined(@Param("job") Job job, @Param("id") Integer id);
 
     int countByBidderAndAccepted(Profile bidder, Boolean accepted);
+
+    List<Bid> findByBidder(Profile bidder);
 }
