@@ -112,7 +112,6 @@ public class BidController {
             redirectAttributes.addFlashAttribute("successMessage", "The bid was accepted successfully");
             return "redirect:/bids/job/" + jobId  + "/1";
         }catch (NoSuchElementException exception){
-            exception.printStackTrace();
             return "redirect:/dashboard";
         }
     }

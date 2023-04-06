@@ -1,13 +1,11 @@
 package com.fixit.web.controller;
 
 import com.fixit.web.entity.Craft;
+import com.fixit.web.entity.JobReview;
 import com.fixit.web.entity.Profile;
 import com.fixit.web.entity.State;
 import com.fixit.web.model.ProfileSearch;
-import com.fixit.web.service.CraftService;
-import com.fixit.web.service.FileStorageService;
-import com.fixit.web.service.ProfileService;
-import com.fixit.web.service.StateService;
+import com.fixit.web.service.*;
 import com.fixit.web.utils.AuthUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,16 +35,25 @@ public class ProfileController {
 
     private FileStorageService storageService;
     private CraftService craftService;
+    private JobService jobService;
+
+    private BidService bidService;
+
+    private JobReviewService jobReviewService;
     private AuthUtils authUtils;
 
     @Autowired
-    public ProfileController(ProfileService profileService, FileStorageService storageService, StateService stateService, CraftService craftService,
-                             AuthUtils authUtils) {
+    public ProfileController(ProfileService profileService, FileStorageService storageService, StateService stateService,
+                             CraftService craftService, AuthUtils authUtils, JobService jobService, BidService bidService,
+                             JobReviewService jobReviewService) {
         this.profileService = profileService;
         this.storageService = storageService;
         this.stateService = stateService;
         this.craftService = craftService;
         this.authUtils = authUtils;
+        this.jobService = jobService;
+        this.bidService = bidService;
+        this.jobReviewService  = jobReviewService;
     }
 
     /*
@@ -204,7 +211,20 @@ public class ProfileController {
     @GetMapping("/view/{id}")
     public String viewProfile(@PathVariable("id") int id, Model model){
         Profile profile = profileService.get(id);
+        int postedJobsCount = jobService.getPostedJobsCount(profile);
+        int completedJobsCount = bidService.countCompletedJobs(profile);
+        List<JobReview> jobReviews  = jobReviewService.findByBidder(profile);
+
+        int onBudgetPercentage = jobReviewService.getOnBudgetPercentage(jobReviews);
+        int onTimePercentage = jobReviewService.getOnTimePercentage(jobReviews);
+
         model.addAttribute("profile", profile);
+        model.addAttribute("postedJobsCount", postedJobsCount);
+        model.addAttribute("completedJobsCount", completedJobsCount);
+
+        model.addAttribute("jobReviews", jobReviews);
+        model.addAttribute("onBudgetPercentage", onBudgetPercentage);
+        model.addAttribute("onTimePercentage", onTimePercentage);
         return "profiles/view";
     }
 

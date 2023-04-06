@@ -67,5 +67,9 @@ public class BidService {
         return bidRepository.findByBidder(bidder);
     }
 
+    public int countCompletedJobs(Profile profile){
+        return bidRepository.findCompletedJobs(profile).size();
+    }
+
 
 }

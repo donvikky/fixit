@@ -33,5 +33,8 @@ public interface BidRepository extends JpaRepository<Bid, Integer> {
 
     int countByBidderAndAccepted(Profile bidder, Boolean accepted);
 
+    @Query("SELECT b from Bid b JOIN b.job j WHERE b.bidder = :profile AND b.job = j.id AND j.completed = true")
+    List<Bid> findCompletedJobs(@Param("profile") Profile profile);
+
     List<Bid> findByBidder(Profile bidder);
 }

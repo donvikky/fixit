@@ -47,7 +47,7 @@ public class Profile extends Auditable<String> {
     @Column(name = "short_description")
     private String shortDescription;
 
-    @Column(name = "long_description")
+    @Column(columnDefinition = "TEXT", name = "long_description")
     private String longDescription;
 
     @OneToOne(cascade = CascadeType.MERGE)
