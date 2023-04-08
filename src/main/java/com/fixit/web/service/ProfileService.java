@@ -71,4 +71,9 @@ public class ProfileService {
         return profileRepository.findByCrafts(craft, pageable);
     }
 
+    public int updateTelegramId(int id, String telegramId){
+        return profileRepository.updateTelegramId(id, telegramId);
+    }
+
+
 }

@@ -14,7 +14,7 @@
 <section>
     <!-- Dashboard Headline -->
     <div class="dashboard-headline">
-        <h3>Hello, <th:block sec:authentication="name"></th:block>!</h3>
+        <h3>Hello<th:block th:if="${profile != null}" th:text="|, ${#strings.capitalize(profile.firstName)}|"></th:block>!</h3>
         <span>We are glad to see you again!</span>
 
         <!-- Breadcrumbs -->
@@ -24,6 +24,11 @@
                 <li>Dashboard</li>
             </ul>
         </nav>
+    </div>
+
+    <div class="notification error closeable" th:if="${profile == null or profile.telegramId == null}">
+        <p>Please update your profile and register your telegram account <a href="https://t.me/Fixit_Works_Bot">here</a> in order to receive important notifications.</p>
+        <a class="close" href="#"></a>
     </div>
 
     <!-- Fun Facts Container -->

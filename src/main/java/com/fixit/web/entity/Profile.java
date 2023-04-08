@@ -91,8 +91,19 @@ public class Profile extends Auditable<String> {
     @Transient
     private Double rating;
 
+    @Column(name = "telegram_id")
+    private String telegramId;
+
     public Profile() {
 
+    }
+
+    public String getTelegramId() {
+        return telegramId;
+    }
+
+    public void setTelegramId(String telegramId) {
+        this.telegramId = telegramId;
     }
 
     public Profile(String email, String firstName, String lastName, String mobileNumber, String address, String photo,

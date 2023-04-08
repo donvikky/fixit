@@ -64,6 +64,7 @@ public class HomeController {
         model.addAttribute("bidsWon", bidsWon);
         model.addAttribute("postedJobsCount", postedJobsCount);
         model.addAttribute("jobReviewsCount", jobReviewsCount);
+        model.addAttribute("profile", profile);
         return "dashboard";
     }
 

@@ -27,6 +27,10 @@ public class AuthUtils {
         this.userService = userService;
     }
 
+    public AuthUtils(){
+
+    }
+
     public Optional<User> getCurrentUser() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
