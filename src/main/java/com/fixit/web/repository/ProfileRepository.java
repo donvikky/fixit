@@ -21,9 +21,11 @@ public interface ProfileRepository extends JpaRepository<Profile, Integer> {
     Optional<Profile> findByEmail(String email);
     Page findByCraftsAndState(Craft craft, State state, Pageable pageable);
     Page findByCrafts(Craft craft, Pageable pageable);
-
     @Modifying
     @Query("update Profile p set p.telegramId = :telegramId where p.id = :id")
     int updateTelegramId(@Param("id") int id, @Param("telegramId") String telegramId);
+    Optional<Profile> findByTelegramId(String telegramId);
+
+    Optional<Profile> findByMobileNumber(String mobileNumber);
 
 }

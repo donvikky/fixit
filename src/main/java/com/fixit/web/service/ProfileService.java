@@ -75,5 +75,13 @@ public class ProfileService {
         return profileRepository.updateTelegramId(id, telegramId);
     }
 
+    public Optional<Profile> findByTelegramId(String telegramId){
+        return profileRepository.findByTelegramId(telegramId);
+    }
+
+    public Optional<Profile> findByMobileNumber(String mobileNumber){
+        return profileRepository.findByMobileNumber(mobileNumber);
+    };
+
 
 }

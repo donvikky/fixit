@@ -35,6 +35,11 @@ public class WhatsappMessagingService implements MessagingService{
     }
 
     @Override
+    public void send(String contactDetail, String message) {
+
+    }
+
+    @Override
     public void sendAll(List<String> contactDetails) {
 
     }
