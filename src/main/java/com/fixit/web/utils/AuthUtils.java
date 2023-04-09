@@ -50,7 +50,7 @@ public class AuthUtils {
             return userService.findByProviderId(oauth2User.getAttribute("id"));
         }
 
-        return Optional.of((User) authentication.getPrincipal());
+        return null;
 
     }
 
