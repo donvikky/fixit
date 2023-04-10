@@ -45,7 +45,6 @@ public class HomeController {
         model.addAttribute("search", search);
         model.addAttribute("crafts", crafts);
         model.addAttribute("recentJobs", recentJobs);
-        System.out.println("All Jobs "+ recentJobs );
         return "home";
     }
 

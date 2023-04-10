@@ -20,6 +20,13 @@ public interface ProfileRepository extends JpaRepository<Profile, Integer> {
     Profile findByUser(User user);
     Optional<Profile> findByEmail(String email);
     Page findByCraftsAndState(Craft craft, State state, Pageable pageable);
+
+    @Query("SELECT p FROM Profile p " +
+            "JOIN p.crafts c WHERE c.id = :craftId " +
+            "AND p.state = :state " +
+            "AND p.receiveJobNotification = true " +
+            "AND p.id != :profileId")
+    List<Profile> findProfilesByCraftsAndState(@Param("craftId") int craftId, State state, @Param("profileId") int profileId);
     Page findByCrafts(Craft craft, Pageable pageable);
     @Modifying
     @Query("update Profile p set p.telegramId = :telegramId where p.id = :id")

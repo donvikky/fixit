@@ -30,6 +30,7 @@ public class TelegramMessagingService implements MessagingService{
         Map messageMap = new HashMap<String, String>();
         messageMap.put("chat_id", contactDetail);
         messageMap.put("text", message);
+        messageMap.put("parse_mode", "HTML");
 
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -48,7 +49,8 @@ public class TelegramMessagingService implements MessagingService{
     }
 
     @Override
-    public void sendAll(List<String> contactDetails) {
-
+    public void sendAll(List<String> contactDetails, String message) {
+        System.out.println("Sending Messages");
+        contactDetails.stream().forEach(contact -> send(contact, message));
     }
 }

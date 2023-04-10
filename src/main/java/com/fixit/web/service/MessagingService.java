@@ -6,5 +6,5 @@ public interface MessagingService {
     public void send(String contactDetail, String subject, String  content);
 
     public void send(String  contactDetail, String message);
-    public void sendAll(List<String> contactDetails);
+    public void sendAll(List<String> contactDetails, String message);
 }

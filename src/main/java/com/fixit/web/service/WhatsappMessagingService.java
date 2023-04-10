@@ -40,7 +40,7 @@ public class WhatsappMessagingService implements MessagingService{
     }
 
     @Override
-    public void sendAll(List<String> contactDetails) {
+    public void sendAll(List<String> contactDetails, String message) {
 
     }
 }

@@ -83,5 +83,9 @@ public class ProfileService {
         return profileRepository.findByMobileNumber(mobileNumber);
     };
 
+    public List<Profile> getProfilesForNotificationByStateAndCraft(int craftId, State state, int profileId){
+        return profileRepository.findProfilesByCraftsAndState(craftId, state, profileId);
+    }
+
 
 }
