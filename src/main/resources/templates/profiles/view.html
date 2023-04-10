@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" th:replace="~{layouts/site_layout :: layout(~{::title}, ~{::style}, ~{::section}, ~{})}" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" th:replace="~{layouts/site_layout :: layout(~{::title}, ~{::style}, ~{::section}, ~{script})}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Profile Details</title>
@@ -294,34 +294,36 @@
                     </div>
 
                     <!-- Form -->
-                    <form method="post">
-
+                    <form method="post"  id="artisan-contact-form" th:object="${contact}" th:action="@{/profiles/contact}">
+                        <input type="hidden" name="id" th:value="${profile.id}">
                         <div class="input-with-icon-left">
                             <i class="icon-material-outline-account-circle"></i>
-                            <input type="text" class="input-text with-border" name="name" id="name" placeholder="First and Last Name"/>
+                            <input type="text" class="input-text with-border" th:field="*{name}" id="name" placeholder="First and Last Name" required/>
                         </div>
 
                         <div class="input-with-icon-left">
                             <i class="icon-material-baseline-mail-outline"></i>
-                            <input type="text" class="input-text with-border" name="emailaddress" id="emailaddress" placeholder="Email Address"/>
+                            <input type="text" class="input-text with-border" th:field="*{mobileNumber}" id="emailaddress" placeholder="Mobile Number" required/>
                         </div>
 
-                        <textarea name="textarea" cols="10" placeholder="Message" class="with-border"></textarea>
+                        <textarea th:field="*{message}" cols="10" placeholder="Message" class="with-border" required></textarea>
 
-                        <div class="uploadButton margin-top-25">
+                        <!--<div class="uploadButton margin-top-25">
                             <input class="uploadButton-input" type="file" accept="image/*, application/pdf" id="upload" multiple/>
                             <label class="uploadButton-button ripple-effect" for="upload">Add Attachments</label>
                             <span class="uploadButton-file-name">Allowed file types: zip, pdf, png, jpg <br> Max. files size: 50 MB.</span>
-                        </div>
+                        </div>-->
+
+                        <!-- Button -->
+                        <button class="button margin-top-35 full-width button-sliding-icon ripple-effect" type="submit">Send Message <i class="icon-material-outline-arrow-right-alt"></i></button>
 
                     </form>
 
-                    <!-- Button -->
-                    <button class="button margin-top-35 full-width button-sliding-icon ripple-effect" type="submit">Make an Offer <i class="icon-material-outline-arrow-right-alt"></i></button>
+
 
                 </div>
                 <!-- Login -->
-                <div class="popup-tab-content" id="loginn">
+                <div class="popup-tab-content" id="login">
 
                     <!-- Welcome Text -->
                     <div class="welcome-text">
@@ -341,7 +343,7 @@
                             <input type="text" class="input-text with-border" name="emailaddress2" id="emailaddress2" placeholder="Email Address" required/>
                         </div>
 
-                        <textarea name="textarea" cols="10" placeholder="Message" class="with-border"></textarea>
+                        <textarea name="textarea" cols="10" placeholder="Message" class="with-border" required></textarea>
 
                         <div class="uploadButton margin-top-25">
                             <input class="uploadButton-input" type="file" accept="image/*, application/pdf" id="upload-cv" multiple/>
@@ -349,10 +351,12 @@
                             <span class="uploadButton-file-name">Allowed file types: zip, pdf, png, jpg <br> Max. files size: 50 MB.</span>
                         </div>
 
+                        <!-- Button -->
+                        <button class="button full-width button-sliding-icon ripple-effect" type="submit" form="make-an-offer-form">Make an Offer <i class="icon-material-outline-arrow-right-alt"></i></button>
+
                     </form>
 
-                    <!-- Button -->
-                    <button class="button full-width button-sliding-icon ripple-effect" type="submit" form="make-an-offer-form">Make an Offer <i class="icon-material-outline-arrow-right-alt"></i></button>
+
 
                 </div>
 
@@ -378,7 +382,13 @@ $('.copy-url-button').click(function() {
 		text: 'Copied to clipboard!',
 	});
 });
+$(document).ready(function(){
+alert();
+    $('#artisan-contact-form).submit(function(){
+        alert();
+    })
+})
 </script>
-</script>
+
 </body>
 </html>
