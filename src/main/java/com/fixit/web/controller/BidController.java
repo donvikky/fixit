@@ -39,7 +39,7 @@ public class BidController {
 
     @Autowired
     public BidController(BidService bidService, JobService jobService, AuthUtils authUtils,
-                         @Qualifier("whatsappMessagingService") MessagingService messagingService,
+                         @Qualifier("telegramMessagingService") MessagingService messagingService,
                          UserService  userService) {
         this.bidService = bidService;
         this.jobService = jobService;
@@ -54,7 +54,6 @@ public class BidController {
                             RedirectAttributes redirectAttributes){
 
         Profile bidder = authUtils.getCurrentUser().get().getProfile();
-        System.out.println("Current profile " + bidder.getFirstName());
         if(bidder == null){
             redirectAttributes.addFlashAttribute("errorMessage", "Please update" +
                     " your profile first before attempting  to  place a bid.");
@@ -76,7 +75,7 @@ public class BidController {
         String messageSubject = "New bid made";
         String messageBody = String.format("An artisan has indicated interest on the %s job you posted. " +
                 "Please login to fixit.works to review the bid and contact the artisan", bid.getJob().getCraft().getName());
-        //messagingService.send(savedBid.getJob().getProfile().getMobileNumber(), messageSubject, messageBody);
+        messagingService.send(savedBid.getJob().getProfile().getTelegramId(), messageBody);
         redirectAttributes.addFlashAttribute("successMessage", "The bid was submitted successfully");
 
         return "redirect:/jobs/" + bid.getJob().getId();

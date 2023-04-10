@@ -1,6 +1,9 @@
 package com.fixit.web.controller;
 
-import com.fixit.web.entity.*;
+import com.fixit.web.entity.Bid;
+import com.fixit.web.entity.Craft;
+import com.fixit.web.entity.Job;
+import com.fixit.web.entity.State;
 import com.fixit.web.service.CraftService;
 import com.fixit.web.service.JobService;
 import com.fixit.web.service.StateService;
