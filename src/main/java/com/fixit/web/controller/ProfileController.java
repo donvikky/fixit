@@ -137,19 +137,18 @@ public class ProfileController {
 
     @PostMapping("/edit")
     public String update(@ModelAttribute("profileForm") @Valid Profile profile,
-                         @RequestParam("file") MultipartFile file, BindingResult bindingResult,
-                         SessionStatus sessionStatus){
+                         @RequestParam("file") MultipartFile file, BindingResult bindingResult
+                         ){
         if(bindingResult.hasErrors()){
             return "profiles/edit";
         }
-        String fileName = profile.getPhoto();
+
         if(!file.isEmpty()){
-            fileName = storageService.save(file);
+            String fileName = storageService.save(file);
+            profile.setPhoto(fileName);
         }
-        profile.setPhoto(fileName);
         profile.setUser(authUtils.getCurrentUser().get());
         profileService.save(profile);
-        sessionStatus.setComplete();
         return "redirect:/dashboard";
     }
 

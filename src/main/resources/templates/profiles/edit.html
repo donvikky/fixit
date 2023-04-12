@@ -29,6 +29,8 @@
     <div class="row">
         <form method="post" th:object="${profile}" th:action="@{/profiles/edit}" enctype="multipart/form-data">
             <input type="hidden" th:field="*{id}">
+            <input type="hidden" th:field="*{telegramId}"/>
+            <input type="hidden" th:field="*{photo}"/>
             <!-- Dashboard Box -->
             <div class="col-xl-12">
                 <div class="dashboard-box margin-top-0">

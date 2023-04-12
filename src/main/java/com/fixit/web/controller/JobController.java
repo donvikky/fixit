@@ -122,13 +122,14 @@ public class JobController {
         List<Profile> profiles = profileService.getProfilesForNotificationByStateAndCraft(savedJob.getCraft().getId(),
                 savedJob.getState(), savedJob.getProfile().getId());
 
-        System.out.println("Affected profiles" + profiles.toString());
 
         List<String> telegramIds = new ArrayList<>();
         profiles.stream().filter(profile -> !profile.getTelegramId().isEmpty()).forEach(profile -> telegramIds.add(profile.getTelegramId()));
 
-        System.out.println("Affected TelegramIds" + telegramIds.toString());
-        messagingService.sendAll(telegramIds, message);
+        if(telegramIds.size() > 0){
+            messagingService.sendAll(telegramIds, message);
+        }
+        
         sessionStatus.setComplete();
         return "redirect:/jobs/page/1";
     }
