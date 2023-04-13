@@ -54,6 +54,14 @@ public class User implements Serializable {
         this.verificationTokenExpiry =  verificationTokenExpiry;
     }
 
+    public User(String username, String password, Boolean enabled, String verificationToken, LocalDateTime verificationTokenExpiry) {
+        this.username = username;
+        this.password = password;
+        this.enabled = enabled;
+        this.verificationToken = verificationToken;
+        this.verificationTokenExpiry =  verificationTokenExpiry;
+    }
+
     public Integer getId() {
         return id;
     }

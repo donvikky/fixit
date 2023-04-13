@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+
 @Transactional(propagation = Propagation.REQUIRES_NEW) //To avoid TransactionalException / RollBackException
 public interface UserRepository extends JpaRepository<User, Integer> {
 
