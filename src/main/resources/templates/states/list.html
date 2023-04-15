@@ -35,7 +35,7 @@
     <!-- Dashboard Box -->
     <div class="col-xl-12">
         <div class="dashboard-box margin-top-0">
-            <div class="notify-box margin-top-15 headline" th:if="${states.empty}">
+            <div class="notify-box margin-top-15 headline" th:if="${#lists.isEmpty(states)}">
                 <div class="switch-container">
                     <span class="switch-text">No states available</span></label>
                 </div>
@@ -47,11 +47,11 @@
             </div>
 
             <!-- Headline -->
-            <div class="headline">
+            <div class="headline" th:if="${states != null}">
                 <h3><i class="icon-material-outline-business-center"></i> <span th:text="|${states.totalElements} States|"></span></h3>
             </div>
 
-            <div class="content" th:if="${!states.empty}">
+            <div class="content" th:if="${!#lists.isEmpty(states)}">
                 <table class="basic-table">
 
                     <tr>
@@ -74,7 +74,7 @@
         <a th:href="@{/states/create}" style="float:right;" class="button ripple-effect big margin-top-30"><i class="icon-feather-plus"></i> Create State</a>
         <!-- Pagination -->
         <div class="clearfix"></div>
-        <div th:if="${states.totalPages > 1}" class="pagination-container margin-top-40 margin-bottom-0">
+        <div th:if="${states != null && states.totalPages > 1}" class="pagination-container margin-top-40 margin-bottom-0">
             <nav class="pagination">
                 <ul>
                     <li th:each="i: ${#numbers.sequence(1, states.totalPages)}">

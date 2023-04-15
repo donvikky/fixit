@@ -13,9 +13,12 @@ import java.util.List;
 
 @Service
 public class StateService {
+    private StateRepository stateRepository;
 
     @Autowired
-    private StateRepository stateRepository;
+    public StateService(StateRepository stateRepository) {
+        this.stateRepository = stateRepository;
+    }
 
     @Value("${spring.data.web.pageable.default-page-size}")
     private int pageSize;
