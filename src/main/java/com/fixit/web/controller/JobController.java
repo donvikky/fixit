@@ -93,7 +93,8 @@ public class JobController {
         return "jobs/list";
     }
 
-    @PreAuthorize(value = "principal.user.profile != null")
+    //@PreAuthorize(value = "principal.user.profile != null")
+    @PreAuthorize("@securityService.hasProfile()")
     @GetMapping("/create")
     public String createJob(Model model){
         List<State> states = stateService.listAll();

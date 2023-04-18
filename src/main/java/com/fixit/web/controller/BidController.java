@@ -48,17 +48,18 @@ public class BidController {
         this.userService = userService;
     }
 
-    @PreAuthorize(value = "principal.user.profile != null")
+    //@PreAuthorize(value = "principal.user.profile != null")
+    @PreAuthorize("@securityService.hasProfile()")
     @PostMapping("/create")
     public String submitBid(@Valid Bid bid, BindingResult bindingResult, SessionStatus sessionStatus,
                             RedirectAttributes redirectAttributes){
 
         Profile bidder = authUtils.getCurrentUser().get().getProfile();
-        if(bidder == null){
-            redirectAttributes.addFlashAttribute("errorMessage", "Please update" +
-                    " your profile first before attempting  to  place a bid.");
-            return "redirect:/jobs/" + bid.getJob().getId();
-        }
+//        if(bidder == null){
+//            redirectAttributes.addFlashAttribute("errorMessage", "Please update" +
+//                    " your profile first before attempting  to  place a bid.");
+//            return "redirect:/jobs/" + bid.getJob().getId();
+//        }
         List<Bid> bids = bidService.findByJobAndBidder(bid.getJob(), bidder);
 
         if(!bids.isEmpty()){
