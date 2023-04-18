@@ -93,7 +93,7 @@ public class Profile extends Auditable<String> {
 
     @Column(name = "telegram_id")
     private String telegramId;
-
+    private int views;
     public Profile() {
 
     }
@@ -299,6 +299,14 @@ public class Profile extends Auditable<String> {
 
     public void setReceiveJobNotification(Boolean receiveJobNotification) {
         this.receiveJobNotification = receiveJobNotification;
+    }
+
+    public int getViews() {
+        return views;
+    }
+
+    public void setViews(int views) {
+        this.views = views;
     }
 
     public Double getRating(){

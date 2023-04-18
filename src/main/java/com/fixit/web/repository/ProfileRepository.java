@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,5 +35,10 @@ public interface ProfileRepository extends JpaRepository<Profile, Integer> {
     Optional<Profile> findByTelegramId(String telegramId);
 
     Optional<Profile> findByMobileNumber(String mobileNumber);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Profile p SET p.views = p.views + 1 WHERE p.id = ?1")
+    void incrementProfileViews(Integer profileId);
 
 }

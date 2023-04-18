@@ -381,7 +381,7 @@
 
                             <ul data-submenu-title="Start">
                                 <li class="active"><a th:href="@{/dashboard}"><i class="icon-material-outline-dashboard"></i> Dashboard</a></li>
-                                <li><a href="#"><i class="icon-material-outline-settings"></i> Settings</a>
+                                <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="#"><i class="icon-material-outline-settings"></i> Settings</a>
                                     <ul>
                                         <li><a th:href="@{/states/page/{page}(page=1)}">Manage States</a></li>
                                         <li><a th:href="@{/lgas/page/{page}(page=1)}">Manage LGAs</a></li>
@@ -410,14 +410,14 @@
                                         <li><a th:href="@{/bids/my}">My bids</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="#"><i class="icon-material-outline-assignment"></i> Tasks</a>
+                                <!--<li><a href="#"><i class="icon-material-outline-assignment"></i> Tasks</a>
                                     <ul>
                                         <li><a href="dashboard-manage-tasks.html">Manage Tasks <span class="nav-tag">2</span></a></li>
                                         <li><a href="dashboard-manage-bidders.html">Manage Bidders</a></li>
                                         <li><a href="dashboard-my-active-bids.html">My Active Bids <span class="nav-tag">4</span></a></li>
                                         <li><a href="dashboard-post-a-task.html">Post a Task</a></li>
                                     </ul>
-                                </li>
+                                </li>-->
                             </ul>
 
                             <ul data-submenu-title="Account">

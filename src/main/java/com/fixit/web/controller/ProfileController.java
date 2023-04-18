@@ -215,6 +215,7 @@ public class ProfileController {
     @GetMapping("/view/{id}")
     public String viewProfile(@PathVariable("id") int id, Model model){
         Profile profile = profileService.get(id);
+        profileService.incrementProfileViews(profile.getId());
         int postedJobsCount = jobService.getPostedJobsCount(profile);
         int completedJobsCount = bidService.countCompletedJobs(profile);
         List<JobReview> jobReviews  = jobReviewService.findByBidder(profile);

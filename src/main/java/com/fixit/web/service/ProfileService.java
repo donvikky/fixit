@@ -87,5 +87,7 @@ public class ProfileService {
         return profileRepository.findProfilesByCraftsAndState(craftId, state, profileId);
     }
 
-
+    public void incrementProfileViews(int profileId){
+        profileRepository.incrementProfileViews(profileId);
+    }
 }
