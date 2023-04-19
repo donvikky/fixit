@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Locale;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Controller
@@ -68,7 +69,11 @@ public class RegisterController {
             return "auth/register";
         }
 
+        Optional<Role> userRoleOptional = roleService.findByName("USER");
+        Role userRole = userRoleOptional.orElseThrow(() -> new NoSuchElementException("The specified role does not exist"));
+        userRegistration.setRoles(List.of(userRole));
         User newUser = userService.save(userRegistration.create(passwordEncoder));
+
         String verificationEmailSubject = "Please verify your email address to activate your account";
         String verificationEmailMessage = String.format("Thank you for signing up with Fixit. Please click the link below" +
                 "to activate your account.  <br> <a href='%s/verify/user/%s'>Activate your account</a>",
