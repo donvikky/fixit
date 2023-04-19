@@ -55,7 +55,7 @@ public class HomeController {
 
     @GetMapping("/dashboard")
     public String dashboard(Model model){
-        Profile profile = new AuthUtils(userService).getCurrentUser().get().getProfile();
+        Profile profile = authUtils.getCurrentUser().get().getProfile();
         int bidsWon = bidService.getBidsWon(profile);
         int postedJobsCount = jobService.getPostedJobsCount(profile);
         int jobReviewsCount = jobReviewService.findJobReviewsCount(profile);
