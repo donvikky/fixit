@@ -69,7 +69,7 @@ public class RegisterController {
             return "auth/register";
         }
 
-        Optional<Role> userRoleOptional = roleService.findByName("USER");
+        Optional<Role> userRoleOptional = roleService.findByName("ROLE_USER");
         Role userRole = userRoleOptional.orElseThrow(() -> new NoSuchElementException("The specified role does not exist"));
         userRegistration.setRoles(List.of(userRole));
         User newUser = userService.save(userRegistration.create(passwordEncoder));

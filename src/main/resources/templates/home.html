@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" th:replace="~{layouts/site_layout :: layout(~{::title}, ~{::style}, ~{::section}, ~{::script})}" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" th:replace="~{layouts/site_layout :: layout(~{::title}, ~{::style}, ~{::section}, ~{::script})}"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
@@ -58,7 +59,7 @@
             </div>
 
             <!-- Stats -->
-            <div class="row">
+            <div class="row" sec:authorize="hasRole('ROLE_ADMIN')">
                 <div class="col-md-12">
                     <ul class="intro-stats margin-top-45 hide-under-992px">
                         <li>
@@ -202,7 +203,7 @@
     </div>
     <!-- Icon Boxes / End -->
     <!-- Counters -->
-    <div class="section padding-top-70 padding-bottom-75">
+    <div class="section padding-top-70 padding-bottom-75" sec:authorize="hasRole('ROLE_ADMIN')">
         <div class="container">
             <div class="row">
 

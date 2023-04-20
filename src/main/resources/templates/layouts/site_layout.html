@@ -380,7 +380,7 @@
                 <div class="right-side" sec:authorize="isAnonymous()">
 
                     <div class="header-widget">
-                        <a th:href="@{/login}" class="popup-with-zoom-anim log-in-button">
+                        <a th:href="@{/login}" class="log-in-button">
                             <i class="icon-feather-log-in"></i> <span>Log In / Register</span>
                         </a>
                     </div>
@@ -398,7 +398,7 @@
                 <div class="right-side" sec:authorize="isAuthenticated()">
 
                     <div class="header-widget">
-                        <a th:href="@{/dashboard}" class="popup-with-zoom-anim log-in-button">
+                        <a th:href="@{/dashboard}" class="log-in-button">
                             <i class="icon-feather-log-in"></i> <span>Dashboard</span>
                         </a>
                     </div>
@@ -623,9 +623,6 @@ $('#snackbar-user-status label').click(function() {
 		backgroundColor: '#383838'
 	});
 });
-
-
-
 </script>
 
 
