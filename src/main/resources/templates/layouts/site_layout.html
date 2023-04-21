@@ -513,12 +513,11 @@
                     <!-- Links -->
                     <div class="col-xl-2 col-lg-2 col-md-3">
                         <div class="footer-links">
-                            <h3>For Candidates</h3>
+                            <h3>For Artisans</h3>
                             <ul>
-                                <li><a href="#"><span>Browse Jobs</span></a></li>
-                                <li><a href="#"><span>Add Resume</span></a></li>
-                                <li><a href="#"><span>Job Alerts</span></a></li>
-                                <li><a href="#"><span>My Bookmarks</span></a></li>
+                                <li><a th:href="@{/jobs/listing/1}"><span>Browse Jobs</span></a></li>
+                                <li><a th:href="@{/projects/page/1}"><span>Add Projects</span></a></li>
+                                <li><a th:href="@{/profiles/edit}"><span>Job Alerts</span></a></li>
                             </ul>
                         </div>
                     </div>
@@ -526,12 +525,11 @@
                     <!-- Links -->
                     <div class="col-xl-2 col-lg-2 col-md-3">
                         <div class="footer-links">
-                            <h3>For Employers</h3>
+                            <h3>For Individuals</h3>
                             <ul>
-                                <li><a href="#"><span>Browse Candidates</span></a></li>
-                                <li><a href="#"><span>Post a Job</span></a></li>
-                                <li><a href="#"><span>Post a Task</span></a></li>
-                                <li><a href="#"><span>Plans & Pricing</span></a></li>
+                                <li><a th:href="@{/}"><span>Browse Artisans</span></a></li>
+                                <li><a th:href="@{/jobs/create}"><span>Post a Job</span></a></li>
+                                <li><a th:href="@{/bookmarks/page/1}"><span>My Bookmarks</span></a></li>
                             </ul>
                         </div>
                     </div>
@@ -541,9 +539,9 @@
                         <div class="footer-links">
                             <h3>Helpful Links</h3>
                             <ul>
-                                <li><a href="#"><span>Contact</span></a></li>
-                                <li><a href="#"><span>Privacy Policy</span></a></li>
-                                <li><a href="#"><span>Terms of Use</span></a></li>
+                                <li><a href="mailto:info@fixit.works"><span>Contact</span></a></li>
+                                <li><a th:href="@{/privacy}"><span>Privacy Policy</span></a></li>
+                                <li><a th:href="@{/terms}"><span>Terms of Use</span></a></li>
                             </ul>
                         </div>
                     </div>
@@ -553,8 +551,8 @@
                         <div class="footer-links">
                             <h3>Account</h3>
                             <ul>
-                                <li><a href="#"><span>Log In</span></a></li>
-                                <li><a href="#"><span>My Account</span></a></li>
+                                <li><a th:href="@{/login}"><span>Log In</span></a></li>
+                                <li><a th:href="@{/dashboard}"><span>My Account</span></a></li>
                             </ul>
                         </div>
                     </div>
