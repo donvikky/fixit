@@ -89,4 +89,9 @@ public class HomeController {
         }
         return "verify";
     }
+
+    @GetMapping("/privacy")
+    public String privacyPolicyPage(){
+        return "privacy";
+    }
 }
