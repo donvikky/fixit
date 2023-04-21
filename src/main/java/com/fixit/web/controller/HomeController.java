@@ -94,4 +94,9 @@ public class HomeController {
     public String privacyPolicyPage(){
         return "privacy";
     }
+
+    @GetMapping("/terms")
+    public String termsAndConditions(){
+        return "terms";
+    }
 }
