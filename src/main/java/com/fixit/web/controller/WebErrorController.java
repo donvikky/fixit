@@ -1,5 +1,6 @@
 package com.fixit.web.controller;
 
+import io.sentry.Sentry;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -17,7 +18,7 @@ public class WebErrorController implements ErrorController {
     @RequestMapping("/error")
     public String displayError(HttpServletRequest request, Model model){
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
-
+        Sentry.captureMessage(RequestDispatcher.ERROR_EXCEPTION);
         if (status != null) {
             Integer statusCode = Integer.valueOf(status.toString());
 

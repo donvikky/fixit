@@ -6,6 +6,7 @@ import com.fixit.web.model.UserRegistration;
 import com.fixit.web.service.MessagingService;
 import com.fixit.web.service.RoleService;
 import com.fixit.web.service.UserService;
+import io.sentry.Sentry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,7 +57,8 @@ public class RegisterController {
 
     @PostMapping
     public String processUserRegistration(@Valid @ModelAttribute("user") UserRegistration userRegistration,
-                                          BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
+                                          BindingResult bindingResult, RedirectAttributes redirectAttributes,
+                                          Model model){
 
         if(bindingResult.hasErrors()){
             return "auth/register";
@@ -78,7 +80,13 @@ public class RegisterController {
         String verificationEmailMessage = String.format("Thank you for signing up with Fixit. Please click the link below " +
                 "to activate your account.  <br/><br/> <a href='%s/verify/user/%s'>Activate your account</a>",
                 baseUrl, newUser.getVerificationToken());
-        messagingService.send(newUser.getUsername(), verificationEmailSubject, verificationEmailMessage);
+
+        try {
+            messagingService.send(newUser.getUsername(), verificationEmailSubject, verificationEmailMessage);
+        } catch (Exception e){
+            Sentry.captureException(e);
+        }
+
         redirectAttributes.addFlashAttribute("message", "Your registration was successful! A verification email has been" +
                 " sent to you. Please click the link in the mail to activate your account");
         return "redirect:/login";
