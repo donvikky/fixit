@@ -65,7 +65,7 @@ public class CustomOidcUserService {
 
     private User createNewUser(OidcUser oidcUser, Provider provider){
         User user = new User();
-        user.setUsername(oidcUser.getPreferredUsername());
+        user.setUsername(oidcUser.getEmail());
         user.setPassword("");
         user.setProviderId(oidcUser.getSubject());
         user.setProvider(provider);
@@ -80,7 +80,7 @@ public class CustomOidcUserService {
         profile.setFirstName(oidcUser.getGivenName());
         profile.setLastName(oidcUser.getFamilyName());
         profile.setEmail(oidcUser.getEmail());
-        profile.setMobileNumber(oidcUser.getPhoneNumber());
+        profile.setMobileNumber("0123456789");
         profile.setUser(user);
         profileService.save(profile);
     }
