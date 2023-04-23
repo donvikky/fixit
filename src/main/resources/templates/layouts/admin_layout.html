@@ -5,7 +5,7 @@
 
     <!-- Basic Page Needs
     ================================================== -->
-    <title th:replace="${title}">Hireo</title>
+    <title th:replace="${title}">Fixit</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -35,12 +35,12 @@
 
                     <!-- Logo -->
                     <div id="logo">
-                        <a th:href="@{/}"><img th:src="@{/images/logo.png}" alt=""></a>
+                        <a th:href="@{/}"><img th:src="@{/images/fixit-logo.png}" alt=""></a>
                     </div>
 
                     <!-- Main Navigation -->
                     <nav id="navigation">
-                        <ul id="responsive">
+                        <!--<ul id="responsive">
 
                             <li><a href="#">Home</a>
                                 <ul class="dropdown-nav">
@@ -143,7 +143,7 @@
                                 </ul>
                             </li>
 
-                        </ul>
+                        </ul>-->
                     </nav>
                     <div class="clearfix"></div>
                     <!-- Main Navigation / End -->
@@ -381,7 +381,7 @@
 
                             <ul data-submenu-title="Start">
                                 <li class="active"><a th:href="@{/dashboard}"><i class="icon-material-outline-dashboard"></i> Dashboard</a></li>
-                                <li><a href="#"><i class="icon-material-outline-settings"></i> Settings</a>
+                                <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="#"><i class="icon-material-outline-settings"></i> Settings</a>
                                     <ul>
                                         <li><a th:href="@{/states/page/{page}(page=1)}">Manage States</a></li>
                                         <li><a th:href="@{/lgas/page/{page}(page=1)}">Manage LGAs</a></li>
@@ -391,9 +391,9 @@
                                         <li sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/profiles}">Manage Profiles</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="dashboard-messages.html"><i class="icon-material-outline-question-answer"></i> Messages <span class="nav-tag">2</span></a></li>
+                                <!--<li><a href="dashboard-messages.html"><i class="icon-material-outline-question-answer"></i> Messages <span class="nav-tag">2</span></a></li>-->
                                 <li><a th:href="@{/bookmarks/page/{page}(page=1)}"><i class="icon-material-outline-star-border"></i> Bookmarks</a></li>
-                                <li><a href="dashboard-reviews.html"><i class="icon-material-outline-rate-review"></i> Reviews</a></li>
+                                <!--<li><a href="dashboard-reviews.html"><i class="icon-material-outline-rate-review"></i> Reviews</a></li>-->
                             </ul>
 
                             <ul data-submenu-title="Organize and Manage">
@@ -407,16 +407,17 @@
                                     <ul>
                                         <li><a th:href="@{/jobs/page/{page}(page=1)}">Manage Jobs <span class="nav-tag">3</span></a></li>
                                         <li><a th:href="@{/jobs/create}">Post a Job</a></li>
+                                        <li><a th:href="@{/bids/my}">My bids</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="#"><i class="icon-material-outline-assignment"></i> Tasks</a>
+                                <!--<li><a href="#"><i class="icon-material-outline-assignment"></i> Tasks</a>
                                     <ul>
                                         <li><a href="dashboard-manage-tasks.html">Manage Tasks <span class="nav-tag">2</span></a></li>
                                         <li><a href="dashboard-manage-bidders.html">Manage Bidders</a></li>
                                         <li><a href="dashboard-my-active-bids.html">My Active Bids <span class="nav-tag">4</span></a></li>
                                         <li><a href="dashboard-post-a-task.html">Post a Task</a></li>
                                     </ul>
-                                </li>
+                                </li>-->
                             </ul>
 
                             <ul data-submenu-title="Account">
@@ -440,7 +441,7 @@
                 <div class="dashboard-footer-spacer"></div>
                 <div class="small-footer margin-top-15">
                     <div class="small-footer-copyrights">
-                        © <span th:text="${#dates.year(#dates.createNow())}"></span> <strong>Hireo</strong>. All Rights Reserved.
+                        © <span th:text="${#dates.year(#dates.createNow())}"></span> <strong>Fixit</strong>. All Rights Reserved.
                     </div>
                     <ul class="footer-social-links">
                         <li>

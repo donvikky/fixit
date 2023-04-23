@@ -1,17 +1,17 @@
 package com.fixit.web.controller;
 
 import com.fixit.web.entity.Craft;
+import com.fixit.web.entity.JobReview;
 import com.fixit.web.entity.Profile;
 import com.fixit.web.entity.State;
+import com.fixit.web.model.ContactProfile;
 import com.fixit.web.model.ProfileSearch;
-import com.fixit.web.service.CraftService;
-import com.fixit.web.service.FileStorageService;
-import com.fixit.web.service.ProfileService;
-import com.fixit.web.service.StateService;
+import com.fixit.web.service.*;
 import com.fixit.web.utils.AuthUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -37,16 +38,27 @@ public class ProfileController {
 
     private FileStorageService storageService;
     private CraftService craftService;
+    private JobService jobService;
+
+    private BidService bidService;
+
+    private JobReviewService jobReviewService;
+    private MessagingService messagingService;
     private AuthUtils authUtils;
 
     @Autowired
-    public ProfileController(ProfileService profileService, FileStorageService storageService, StateService stateService, CraftService craftService,
-                             AuthUtils authUtils) {
+    public ProfileController(ProfileService profileService, FileStorageService storageService, StateService stateService,
+                             CraftService craftService, AuthUtils authUtils, JobService jobService, BidService bidService,
+                             JobReviewService jobReviewService,  @Qualifier("telegramMessagingService") MessagingService messagingService) {
         this.profileService = profileService;
         this.storageService = storageService;
         this.stateService = stateService;
         this.craftService = craftService;
         this.authUtils = authUtils;
+        this.jobService = jobService;
+        this.bidService = bidService;
+        this.jobReviewService  = jobReviewService;
+        this.messagingService = messagingService;
     }
 
     /*
@@ -125,19 +137,18 @@ public class ProfileController {
 
     @PostMapping("/edit")
     public String update(@ModelAttribute("profileForm") @Valid Profile profile,
-                         @RequestParam("file") MultipartFile file, BindingResult bindingResult,
-                         SessionStatus sessionStatus){
+                         @RequestParam("file") MultipartFile file, BindingResult bindingResult
+                         ){
         if(bindingResult.hasErrors()){
             return "profiles/edit";
         }
-        System.out.println(profile.toString());
+
         if(!file.isEmpty()){
             String fileName = storageService.save(file);
             profile.setPhoto(fileName);
         }
         profile.setUser(authUtils.getCurrentUser().get());
         profileService.save(profile);
-        sessionStatus.setComplete();
         return "redirect:/dashboard";
     }
 
@@ -204,8 +215,37 @@ public class ProfileController {
     @GetMapping("/view/{id}")
     public String viewProfile(@PathVariable("id") int id, Model model){
         Profile profile = profileService.get(id);
+        profileService.incrementProfileViews(profile.getId());
+        int postedJobsCount = jobService.getPostedJobsCount(profile);
+        int completedJobsCount = bidService.countCompletedJobs(profile);
+        List<JobReview> jobReviews  = jobReviewService.findByBidder(profile);
+
+        int onBudgetPercentage = jobReviewService.getOnBudgetPercentage(jobReviews);
+        int onTimePercentage = jobReviewService.getOnTimePercentage(jobReviews);
+
         model.addAttribute("profile", profile);
+        model.addAttribute("postedJobsCount", postedJobsCount);
+        model.addAttribute("completedJobsCount", completedJobsCount);
+
+        model.addAttribute("jobReviews", jobReviews);
+        model.addAttribute("onBudgetPercentage", onBudgetPercentage);
+        model.addAttribute("onTimePercentage", onTimePercentage);
+        model.addAttribute("contact", new ContactProfile());
         return "profiles/view";
+    }
+
+    @PostMapping("/contact")
+    public String contactArtisan(@ModelAttribute("contact") ContactProfile  contactProfile, @RequestParam("id") int id,
+                                 Model model, RedirectAttributes redirectAttributes){
+        Profile profile = profileService.get(id);
+        if(profile == null){
+            return "redirect:/error";
+        }
+        String message = String.format("%s just sent you a message! \n\n %s \n\n You can reach him on this number %s",
+                contactProfile.getName(), contactProfile.getMessage(), contactProfile.getMobileNumber());
+        messagingService.send(profile.getTelegramId(), message);
+        redirectAttributes.addFlashAttribute("message", "Your message was sent successfully");
+        return "redirect:/profiles/view/" + id;
     }
 
 }

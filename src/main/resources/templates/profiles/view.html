@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" th:replace="~{layouts/site_layout :: layout(~{::title}, ~{::style}, ~{::section}, ~{})}" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" th:replace="~{layouts/site_layout :: layout(~{::title}, ~{::style}, ~{::section}, ~{script})}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Profile Details</title>
@@ -17,12 +17,12 @@
                 <div class="col-md-12">
                     <div class="single-page-header-inner">
                         <div class="left-side">
-                            <div class="header-image freelancer-avatar"><img th:src="@{/{photo}(photo=${profile.photo})}" alt=""></div>
+                            <div class="header-image freelancer-avatar"><img th:src="${profile.photo}" alt=""></div>
                             <div class="header-details">
-                                <h3 th:text="|${profile.firstName} ${profile.lastName} iOS Expert + Node Dev|"></h3>
+                                <h3 th:utext="|${#strings.capitalize(profile.firstName)} ${#strings.capitalize(profile.lastName)} <span>${#strings.capitalize(profile.shortDescription)}<span>|"></h3>
                                 <ul>
-                                    <li><div class="star-rating" data-rating="5.0"></div></li>
-                                    <li><img class="flag" th:src="@{/images/flags/de.svg}" alt=""><span th:text="${#strings.capitalize(#strings.toLowerCase(profile.state.name))}"></span></li>
+                                    <li><div class="star-rating" th:data-rating="${profile.rating}"></div></li>
+                                    <li><img class="flag" th:src="@{/images/flags/ng.svg}" alt=""><span th:text="${#strings.capitalize(#strings.toLowerCase(profile.state.name))}"></span></li>
                                     <li><div class="verified-badge-with-title">Verified</div></li>
                                 </ul>
                             </div>
@@ -98,60 +98,23 @@
                     <div class="boxed-list-headline">
                         <h3><i class="icon-material-outline-thumb-up"></i> Work History and Feedback</h3>
                     </div>
-                    <ul class="boxed-list-ul">
-                        <li>
+                    <div class="notify-box margin-top-15" th:if="${jobReviews.empty}">
+                        <div class="switch-container">
+                            <span class="switch-text">No previous projects</span></label>
+                        </div>
+                    </div>
+                    <ul class="boxed-list-ul" th:if="${!jobReviews.empty}">
+                        <li th:each="review : ${jobReviews}">
                             <div class="boxed-list-item">
                                 <!-- Content -->
                                 <div class="item-content">
-                                    <h4>Web, Database and API Developer <span>Rated as Freelancer</span></h4>
+                                    <h4 th:utext="|${review.job.shortDescription} <span>Rated as Freelancer</span>|"></h4>
                                     <div class="item-details margin-top-10">
-                                        <div class="star-rating" data-rating="5.0"></div>
-                                        <div class="detail-item"><i class="icon-material-outline-date-range"></i> August 2019</div>
+                                        <div class="star-rating" th:data-rating="${review.rating}"></div>
+                                        <div class="detail-item"><i class="icon-material-outline-date-range"></i> <span th:text="${#temporals.format(review.createdAt, 'MMMM yyyy')}"></span></div>
                                     </div>
                                     <div class="item-description">
-                                        <p>Excellent programmer - fully carried out my project in a very professional manner. </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="boxed-list-item">
-                                <!-- Content -->
-                                <div class="item-content">
-                                    <h4>WordPress Theme Installation <span>Rated as Freelancer</span></h4>
-                                    <div class="item-details margin-top-10">
-                                        <div class="star-rating" data-rating="5.0"></div>
-                                        <div class="detail-item"><i class="icon-material-outline-date-range"></i> June 2019</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="boxed-list-item">
-                                <!-- Content -->
-                                <div class="item-content">
-                                    <h4>Fix Python Selenium Code <span>Rated as Employer</span></h4>
-                                    <div class="item-details margin-top-10">
-                                        <div class="star-rating" data-rating="5.0"></div>
-                                        <div class="detail-item"><i class="icon-material-outline-date-range"></i> May 2019</div>
-                                    </div>
-                                    <div class="item-description">
-                                        <p>I was extremely impressed with the quality of work AND how quickly he got it done. He then offered to help with another side part of the project that we didn't even think about originally.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="boxed-list-item">
-                                <!-- Content -->
-                                <div class="item-content">
-                                    <h4>PHP Core Website Fixes <span>Rated as Freelancer</span></h4>
-                                    <div class="item-details margin-top-10">
-                                        <div class="star-rating" data-rating="5.0"></div>
-                                        <div class="detail-item"><i class="icon-material-outline-date-range"></i> May 2019</div>
-                                    </div>
-                                    <div class="item-description">
-                                        <p>Awesome work, definitely will rehire. Poject was completed not only with the requirements, but on time, within our small budget.</p>
+                                        <p th:text="${review.comments}"></p>
                                     </div>
                                 </div>
                             </div>
@@ -160,7 +123,7 @@
 
                     <!-- Pagination -->
                     <div class="clearfix"></div>
-                    <div class="pagination-container margin-top-40 margin-bottom-10">
+                    <!--<div class="pagination-container margin-top-40 margin-bottom-10">
                         <nav class="pagination">
                             <ul>
                                 <li><a href="#" class="ripple-effect current-page">1</a></li>
@@ -168,7 +131,7 @@
                                 <li class="pagination-arrow"><a href="#" class="ripple-effect"><i class="icon-material-outline-keyboard-arrow-right"></i></a></li>
                             </ul>
                         </nav>
-                    </div>
+                    </div>-->
                     <div class="clearfix"></div>
                     <!-- Pagination / End -->
 
@@ -185,50 +148,50 @@
 
                     <!-- Profile Overview -->
                     <div class="profile-overview">
-                        <div class="overview-item"><strong>$35</strong><span>Hourly Rate</span></div>
-                        <div class="overview-item"><strong>53</strong><span>Jobs Done</span></div>
-                        <div class="overview-item"><strong>22</strong><span>Rehired</span></div>
+                        <div class="overview-item"><strong th:text="|&#8358; ${profile.hourlyRate}|"></strong><span>Hourly Rate</span></div>
+                        <div class="overview-item"><strong th:text="${completedJobsCount}"></strong><span>Jobs Done</span></div>
+                        <div class="overview-item"><strong th:text="${postedJobsCount}"></strong><span>Jobs Posted</span></div>
                     </div>
 
                     <!-- Button -->
-                    <a href="#small-dialog" class="apply-now-button popup-with-zoom-anim margin-bottom-50">Make an Offer <i class="icon-material-outline-arrow-right-alt"></i></a>
+                    <a href="#small-dialog" class="apply-now-button popup-with-zoom-anim margin-bottom-50">Contact Me! <i class="icon-material-outline-arrow-right-alt"></i></a>
 
                     <!-- Freelancer Indicators -->
                     <div class="sidebar-widget">
                         <div class="freelancer-indicators">
 
                             <!-- Indicator -->
-                            <div class="indicator">
+                            <!--<div class="indicator">
                                 <strong>88%</strong>
                                 <div class="indicator-bar" data-indicator-percentage="88"><span></span></div>
                                 <span>Job Success</span>
-                            </div>
+                            </div>-->
 
                             <!-- Indicator -->
-                            <div class="indicator">
+                            <!--<div class="indicator">
                                 <strong>100%</strong>
                                 <div class="indicator-bar" data-indicator-percentage="100"><span></span></div>
                                 <span>Recommendation</span>
-                            </div>
+                            </div>-->
 
                             <!-- Indicator -->
                             <div class="indicator">
-                                <strong>90%</strong>
-                                <div class="indicator-bar" data-indicator-percentage="90"><span></span></div>
+                                <strong th:text="|${onTimePercentage}%|">90%</strong>
+                                <div class="indicator-bar" th:data-indicator-percentage="${onTimePercentage}"><span></span></div>
                                 <span>On Time</span>
                             </div>
 
                             <!-- Indicator -->
                             <div class="indicator">
-                                <strong>80%</strong>
-                                <div class="indicator-bar" data-indicator-percentage="80"><span></span></div>
+                                <strong th:text="|${onBudgetPercentage}%|">80%</strong>
+                                <div class="indicator-bar" th:data-indicator-percentage="${onBudgetPercentage}"><span></span></div>
                                 <span>On Budget</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Widget -->
-                    <div class="sidebar-widget">
+                    <!--<div class="sidebar-widget">
                         <h3>Social Profiles</h3>
                         <div class="freelancer-socials margin-top-25">
                             <ul>
@@ -239,10 +202,10 @@
 
                             </ul>
                         </div>
-                    </div>
+                    </div>-->
 
                     <!-- Widget -->
-                    <div class="sidebar-widget">
+                    <!--<div class="sidebar-widget">
                         <h3>Skills</h3>
                         <div class="task-tags">
                             <span>iOS</span>
@@ -254,16 +217,16 @@
                             <span>PHP</span>
                             <span>WordPress</span>
                         </div>
-                    </div>
+                    </div>-->
 
                     <!-- Widget -->
-                    <div class="sidebar-widget">
+                    <!--<div class="sidebar-widget">
                         <h3>Attachments</h3>
                         <div class="attachments-container">
                             <a href="#" class="attachment-box ripple-effect"><span>Cover Letter</span><i>PDF</i></a>
                             <a href="#" class="attachment-box ripple-effect"><span>Contract</span><i>DOCX</i></a>
                         </div>
-                    </div>
+                    </div>-->
 
                     <!-- Sidebar Widget -->
                     <div class="sidebar-widget">
@@ -274,6 +237,8 @@
                             <input type="hidden" name="id" th:value="${profile.id}">
                             <button class="button dark ripple-effect"><i class="icon-material-outline-star"></i>&nbsp; Bookmark</button>
                         </form>
+
+                        <br/>
 
                         <!-- Copy URL -->
                         <div class="copy-url">
@@ -329,34 +294,36 @@
                     </div>
 
                     <!-- Form -->
-                    <form method="post">
-
+                    <form method="post"  id="artisan-contact-form" th:object="${contact}" th:action="@{/profiles/contact}">
+                        <input type="hidden" name="id" th:value="${profile.id}">
                         <div class="input-with-icon-left">
                             <i class="icon-material-outline-account-circle"></i>
-                            <input type="text" class="input-text with-border" name="name" id="name" placeholder="First and Last Name"/>
+                            <input type="text" class="input-text with-border" th:field="*{name}" id="name" placeholder="First and Last Name" required/>
                         </div>
 
                         <div class="input-with-icon-left">
                             <i class="icon-material-baseline-mail-outline"></i>
-                            <input type="text" class="input-text with-border" name="emailaddress" id="emailaddress" placeholder="Email Address"/>
+                            <input type="text" class="input-text with-border" th:field="*{mobileNumber}" id="emailaddress" placeholder="Mobile Number" required/>
                         </div>
 
-                        <textarea name="textarea" cols="10" placeholder="Message" class="with-border"></textarea>
+                        <textarea th:field="*{message}" cols="10" placeholder="Message" class="with-border" required></textarea>
 
-                        <div class="uploadButton margin-top-25">
+                        <!--<div class="uploadButton margin-top-25">
                             <input class="uploadButton-input" type="file" accept="image/*, application/pdf" id="upload" multiple/>
                             <label class="uploadButton-button ripple-effect" for="upload">Add Attachments</label>
                             <span class="uploadButton-file-name">Allowed file types: zip, pdf, png, jpg <br> Max. files size: 50 MB.</span>
-                        </div>
+                        </div>-->
+
+                        <!-- Button -->
+                        <button class="button margin-top-35 full-width button-sliding-icon ripple-effect" type="submit">Send Message <i class="icon-material-outline-arrow-right-alt"></i></button>
 
                     </form>
 
-                    <!-- Button -->
-                    <button class="button margin-top-35 full-width button-sliding-icon ripple-effect" type="submit">Make an Offer <i class="icon-material-outline-arrow-right-alt"></i></button>
+
 
                 </div>
                 <!-- Login -->
-                <div class="popup-tab-content" id="loginn">
+                <div class="popup-tab-content" id="login">
 
                     <!-- Welcome Text -->
                     <div class="welcome-text">
@@ -376,7 +343,7 @@
                             <input type="text" class="input-text with-border" name="emailaddress2" id="emailaddress2" placeholder="Email Address" required/>
                         </div>
 
-                        <textarea name="textarea" cols="10" placeholder="Message" class="with-border"></textarea>
+                        <textarea name="textarea" cols="10" placeholder="Message" class="with-border" required></textarea>
 
                         <div class="uploadButton margin-top-25">
                             <input class="uploadButton-input" type="file" accept="image/*, application/pdf" id="upload-cv" multiple/>
@@ -384,10 +351,12 @@
                             <span class="uploadButton-file-name">Allowed file types: zip, pdf, png, jpg <br> Max. files size: 50 MB.</span>
                         </div>
 
+                        <!-- Button -->
+                        <button class="button full-width button-sliding-icon ripple-effect" type="submit" form="make-an-offer-form">Make an Offer <i class="icon-material-outline-arrow-right-alt"></i></button>
+
                     </form>
 
-                    <!-- Button -->
-                    <button class="button full-width button-sliding-icon ripple-effect" type="submit" form="make-an-offer-form">Make an Offer <i class="icon-material-outline-arrow-right-alt"></i></button>
+
 
                 </div>
 
@@ -413,7 +382,13 @@ $('.copy-url-button').click(function() {
 		text: 'Copied to clipboard!',
 	});
 });
+$(document).ready(function(){
+alert();
+    $('#artisan-contact-form).submit(function(){
+        alert();
+    })
+})
 </script>
-</script>
+
 </body>
 </html>

@@ -52,17 +52,24 @@ public class BidService {
     }
 
     public int acceptBid(Integer id){
-        System.out.println("Updating bid with ID: " + id);
         return bidRepository.updateAcceptedBid(id);
     }
 
     public int declineOtherBids(Job job, Integer id){
-        System.out.println("Declining other bids aside from ID: " + id);
         return bidRepository.updateOtherBidsToDeclined(job, id);
     }
 
     public int getBidsWon(Profile bidder){
         return bidRepository.countByBidderAndAccepted(bidder, true);
     }
+
+    public List<Bid> findByBidder(Profile bidder){
+        return bidRepository.findByBidder(bidder);
+    }
+
+    public int countCompletedJobs(Profile profile){
+        return bidRepository.findCompletedJobs(profile).size();
+    }
+
 
 }

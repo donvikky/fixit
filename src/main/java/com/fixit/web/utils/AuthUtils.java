@@ -22,10 +22,13 @@ public class AuthUtils {
     private UserService userService;
     private static final Logger logger = LoggerFactory.getLogger(AuthUtils.class);
 
-
     @Autowired
     public AuthUtils(UserService userService) {
         this.userService = userService;
+    }
+
+    public AuthUtils(){
+
     }
 
     public Optional<User> getCurrentUser() {
@@ -47,7 +50,7 @@ public class AuthUtils {
             return userService.findByProviderId(oauth2User.getAttribute("id"));
         }
 
-        return Optional.of((User) authentication.getPrincipal());
+        return null;
 
     }
 

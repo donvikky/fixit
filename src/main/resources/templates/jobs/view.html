@@ -24,13 +24,13 @@
             <div class="left-side">
               <div class="header-image"><a th:href="@{/profiles/{id}(id=${job.profile.id})}"><img th:src="${job.profile.photo}" alt=""></a></div>
               <div class="header-details">
-                <h3 th:text="|${job.shortDescription}|"></h3>
+                <h3 th:text="|${#strings.capitalize(job.shortDescription)}|"></h3>
                 <h5>About the Poster</h5>
                 <ul>
                   <li>
                     <a th:href="@{/profiles/{id}(id=${job.profile.id})}">
                       <i class="icon-material-outline-business"></i>
-                      <span th:text="|${job.profile.firstName} ${job.profile.lastName}|"></span>
+                      <span th:text="|${#strings.capitalize(job.profile.firstName)} ${#strings.capitalize(job.profile.lastName)}|"></span>
                     </a>
                   </li>
                   <li><div class="star-rating" data-rating="5.0" th:data-rating="${job.profile.rating}"></div></li>

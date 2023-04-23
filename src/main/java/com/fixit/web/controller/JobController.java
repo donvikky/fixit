@@ -1,12 +1,11 @@
 package com.fixit.web.controller;
 
 import com.fixit.web.entity.*;
-import com.fixit.web.service.CraftService;
-import com.fixit.web.service.JobService;
-import com.fixit.web.service.StateService;
+import com.fixit.web.service.*;
 import com.fixit.web.utils.AuthUtils;
 import com.fixit.web.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,8 +15,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -29,15 +30,21 @@ public class JobController {
     private JobService jobService;
     private StateService stateService;
     private CraftService craftService;
+
+    private ProfileService profileService;
+    private MessagingService messagingService;
     private AuthUtils authUtils;
 
     @Autowired
-    public JobController(JobService jobService, StateService stateService,
-                         CraftService craftService, AuthUtils authUtils) {
+    public JobController(JobService jobService, StateService stateService, CraftService craftService,
+                         AuthUtils authUtils, @Qualifier("telegramMessagingService") MessagingService messagingService,
+                         ProfileService profileService) {
         this.jobService = jobService;
         this.stateService = stateService;
         this.craftService = craftService;
         this.authUtils = authUtils;
+        this.messagingService = messagingService;
+        this.profileService = profileService;
     }
 
     /*
@@ -86,7 +93,8 @@ public class JobController {
         return "jobs/list";
     }
 
-    @PreAuthorize(value = "principal.user.profile != null")
+    //@PreAuthorize(value = "principal.user.profile != null")
+    @PreAuthorize("@securityService.hasProfile()")
     @GetMapping("/create")
     public String createJob(Model model){
         List<State> states = stateService.listAll();
@@ -98,13 +106,31 @@ public class JobController {
 
     @PreAuthorize(value = "principal.user.profile != null")
     @PostMapping("/create")
-    public String saveJob(@Valid Job job, BindingResult bindingResult, SessionStatus sessionStatus) {
+    public String saveJob(@Valid Job job, BindingResult bindingResult, SessionStatus sessionStatus, HttpServletRequest request) {
         if(bindingResult.hasErrors()){
             //bindingResult.getAllErrors().stream().forEach(e -> System.out.println(e.toString()));
             return "jobs/create";
         }
         job.setProfile(authUtils.getCurrentUser().get().getProfile());
-        jobService.save(job);
+        Job savedJob = jobService.save(job);
+
+        //get all profiles that have requested notification and send notification.
+        //1. set telegram message
+        String message = String.format("A new %s job has been posted. You can access the job here https://%s/jobs/%s to" +
+                " review the job details and notify the poster of your interest.", savedJob.getCraft().getName(),
+                request.getServerName(), savedJob.getId());
+
+        List<Profile> profiles = profileService.getProfilesForNotificationByStateAndCraft(savedJob.getCraft().getId(),
+                savedJob.getState(), savedJob.getProfile().getId());
+
+
+        List<String> telegramIds = new ArrayList<>();
+        profiles.stream().filter(profile -> !profile.getTelegramId().isEmpty()).forEach(profile -> telegramIds.add(profile.getTelegramId()));
+
+        if(telegramIds.size() > 0){
+            messagingService.sendAll(telegramIds, message);
+        }
+        
         sessionStatus.setComplete();
         return "redirect:/jobs/page/1";
     }

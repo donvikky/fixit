@@ -7,9 +7,6 @@
 
     </style>
     <script>
-        $(document).ready(function(){
-            alert()
-        })
     </script>
 </head>
 <body>
@@ -69,7 +66,7 @@
                 </div>
 
                 <!-- Freelancers List Container -->
-                <div class="freelancers-container freelancers-list-layout compact-list margin-top-35" th:if="${!profiles.empty}">
+                <div class="freelancers-container freelancers-list-layout compact-list margin-top-35 margin-bottom-20" th:if="${!profiles.empty}">
 
                     <!--Freelancer -->
                     <div class="freelancer" th:each="profile: ${profiles}">
@@ -84,7 +81,7 @@
                                 <!-- Avatar -->
                                 <div class="freelancer-avatar">
                                     <div class="verified-badge"></div>
-                                    <a href="single-freelancer-profile.html"><img th:src="${profile.photo}" alt=""></a>
+                                    <a href="single-freelancer-profile.html"><img th:src="${profile.photo}" alt="" height="50px" width="50px"></a>
                                 </div>
 
                                 <!-- Name -->

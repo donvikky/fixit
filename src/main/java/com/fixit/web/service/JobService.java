@@ -36,8 +36,8 @@ public class JobService {
         return jobRepository.findAll(pageable);
     }
 
-    public void save(Job job) {
-        jobRepository.save(job);
+    public Job save(Job job) {
+        return jobRepository.save(job);
     }
 
     public Job get(int id) {

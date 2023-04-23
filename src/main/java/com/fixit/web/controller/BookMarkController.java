@@ -49,14 +49,14 @@ public class BookMarkController {
         if(bookMarkOptional.isPresent()){
             redirectAttributes.addFlashAttribute("message",
                     "You have already bookmarked this profile");
-            return "redirect:/profiles/"+ id;
+            return "redirect:/profiles/view/"+ id;
         }
 
         BookMark bookMark = new BookMark(bookmarker, artisan);
         bookMarkService.save(bookMark);
         redirectAttributes.addFlashAttribute("message",
                 "This profile has been added to your bookmarks");
-        return "redirect:/profiles/"+ id;
+        return "redirect:/profiles/view/"+ id;
     }
 
     @PostMapping("/delete")

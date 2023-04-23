@@ -64,7 +64,7 @@
 
                   <!-- Name -->
                   <div class="freelancer-name">
-                    <h4><a th:href="@{/profiles/{id}(id=${bookmark.artisan.id})}">[[${bookmark.artisan.firstName}]] [[${bookmark.artisan.lastName}]] <img class="flag" th:src="@{/images/flags/de.svg}" alt="" title="Germany" data-tippy-placement="top"></a></h4>
+                    <h4><a th:href="@{/profiles/view/{id}(id=${bookmark.artisan.id})}">[[${bookmark.artisan.firstName}]] [[${bookmark.artisan.lastName}]] <img class="flag" th:src="@{/images/flags/de.svg}" alt="" title="Germany" data-tippy-placement="top"></a></h4>
                     <span th:text="${bookmark.artisan.shortDescription}"></span>
                     <!-- Rating -->
                     <div class="freelancer-rating">

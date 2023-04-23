@@ -38,4 +38,24 @@ public class JobReviewService {
         return jobReviewRepository.countByBidder(profile);
     }
 
+    public List<JobReview> findByBidder(Profile profile){
+        return jobReviewRepository.findByBidder(profile);
+    }
+
+    public int getOnTimePercentage(List<JobReview>  jobReviews){
+        if(jobReviews.size() == 0){
+            return 0;
+        }
+        int completedCount = (int) jobReviews.stream().filter(jobReview -> jobReview.getCompletedOnTime() == true).count();
+        return Math.round((completedCount / jobReviews.size()) * 100);
+    }
+
+    public int getOnBudgetPercentage(List<JobReview>  jobReviews){
+        if(jobReviews.size() == 0){
+            return 0;
+        }
+        int budgetCount = (int) jobReviews.stream().filter(jobReview -> jobReview.getCompletedOnBudget() == true).count();
+        return Math.round((budgetCount / jobReviews.size())  * 100);
+    }
+
 }

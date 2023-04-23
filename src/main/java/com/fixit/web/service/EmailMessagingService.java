@@ -37,7 +37,12 @@ public class EmailMessagingService implements MessagingService{
     }
 
     @Override
-    public void sendAll(List<String> contactDetails) {
+    public void send(String contactDetail, String message) {
+
+    }
+
+    @Override
+    public void sendAll(List<String> contactDetails , String message) {
 
     }
 }

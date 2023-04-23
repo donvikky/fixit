@@ -7,6 +7,7 @@ import com.fixit.web.exceptions.ResourceNotFoundException;
 import com.fixit.web.service.BidService;
 import com.fixit.web.service.JobService;
 import com.fixit.web.service.MessagingService;
+import com.fixit.web.service.UserService;
 import com.fixit.web.utils.AuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,27 +35,31 @@ public class BidController {
 
     private MessagingService messagingService;
 
+    private UserService userService;
+
     @Autowired
     public BidController(BidService bidService, JobService jobService, AuthUtils authUtils,
-                         @Qualifier("whatsappMessagingService") MessagingService messagingService) {
+                         @Qualifier("telegramMessagingService") MessagingService messagingService,
+                         UserService  userService) {
         this.bidService = bidService;
         this.jobService = jobService;
         this.authUtils = authUtils;
         this.messagingService = messagingService;
+        this.userService = userService;
     }
 
-    @PreAuthorize(value = "principal.user.profile != null")
+    //@PreAuthorize(value = "principal.user.profile != null")
+    @PreAuthorize("@securityService.hasProfile()")
     @PostMapping("/create")
     public String submitBid(@Valid Bid bid, BindingResult bindingResult, SessionStatus sessionStatus,
                             RedirectAttributes redirectAttributes){
 
         Profile bidder = authUtils.getCurrentUser().get().getProfile();
-        System.out.println("Current profile " + bidder.getFirstName());
-        if(bidder == null){
-            redirectAttributes.addFlashAttribute("errorMessage", "Please update" +
-                    " your profile first before attempting  to  place a bid.");
-            return "redirect:/jobs/" + bid.getJob().getId();
-        }
+//        if(bidder == null){
+//            redirectAttributes.addFlashAttribute("errorMessage", "Please update" +
+//                    " your profile first before attempting  to  place a bid.");
+//            return "redirect:/jobs/" + bid.getJob().getId();
+//        }
         List<Bid> bids = bidService.findByJobAndBidder(bid.getJob(), bidder);
 
         if(!bids.isEmpty()){
@@ -71,7 +76,7 @@ public class BidController {
         String messageSubject = "New bid made";
         String messageBody = String.format("An artisan has indicated interest on the %s job you posted. " +
                 "Please login to fixit.works to review the bid and contact the artisan", bid.getJob().getCraft().getName());
-        messagingService.send(savedBid.getJob().getProfile().getMobileNumber(), messageSubject, messageBody);
+        messagingService.send(savedBid.getJob().getProfile().getTelegramId(), messageBody);
         redirectAttributes.addFlashAttribute("successMessage", "The bid was submitted successfully");
 
         return "redirect:/jobs/" + bid.getJob().getId();
@@ -100,15 +105,29 @@ public class BidController {
 
 
         try {
-            Bid bid = bidService.get(id);
+            bidService.get(id);
             Job job = jobService.get(jobId);
             bidService.acceptBid(id);
             bidService.declineOtherBids(job, id);
             redirectAttributes.addFlashAttribute("successMessage", "The bid was accepted successfully");
             return "redirect:/bids/job/" + jobId  + "/1";
         }catch (NoSuchElementException exception){
-            exception.printStackTrace();
             return "redirect:/dashboard";
         }
+    }
+
+    @GetMapping("/my")
+    public String showMyBids(Model model){
+        Profile  profile =  new AuthUtils(userService).getCurrentUser().get().getProfile();
+        List<Bid> bids = bidService.findByBidder(profile);
+        model.addAttribute("bids", bids);
+        return "bids/my";
+    }
+
+    @PostMapping("/delete")
+    public String delete(@RequestParam("id") int id, RedirectAttributes redirectAttributes){
+        bidService.delete(id);
+        redirectAttributes.addFlashAttribute("message", "The bid has been deleted successfully");
+        return "redirect:/bids/my";
     }
 }

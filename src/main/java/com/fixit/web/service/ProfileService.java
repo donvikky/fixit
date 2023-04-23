@@ -71,4 +71,23 @@ public class ProfileService {
         return profileRepository.findByCrafts(craft, pageable);
     }
 
+    public int updateTelegramId(int id, String telegramId){
+        return profileRepository.updateTelegramId(id, telegramId);
+    }
+
+    public Optional<Profile> findByTelegramId(String telegramId){
+        return profileRepository.findByTelegramId(telegramId);
+    }
+
+    public Optional<Profile> findByMobileNumber(String mobileNumber){
+        return profileRepository.findByMobileNumber(mobileNumber);
+    };
+
+    public List<Profile> getProfilesForNotificationByStateAndCraft(int craftId, State state, int profileId){
+        return profileRepository.findProfilesByCraftsAndState(craftId, state, profileId);
+    }
+
+    public void incrementProfileViews(int profileId){
+        profileRepository.incrementProfileViews(profileId);
+    }
 }

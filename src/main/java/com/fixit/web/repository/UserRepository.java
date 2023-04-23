@@ -9,15 +9,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+
 @Transactional(propagation = Propagation.REQUIRES_NEW) //To avoid TransactionalException / RollBackException
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-    @Query("select u from User u where u.username = ?1 AND u.enabled = 1")
+    @Query("select u from User u where u.username = ?1 AND u.enabled = true")
     User findByUsername(String username);
     Optional<User> findByProviderId(String providerId);
     Optional<User> findByVerificationToken(String token);
 
+    @Query("select u from User u where u.username = ?1")
+    Optional<User> findByUniqueUsername(String username);
+
     @Modifying
-    @Query("update User u set u.enabled = 1 where u.verificationToken = ?1")
+    @Query("update User u set u.enabled = true where u.verificationToken = ?1")
     int updateUserByVerificationToken(String token);
 }

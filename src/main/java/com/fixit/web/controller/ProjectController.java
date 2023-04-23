@@ -12,6 +12,7 @@ import com.fixit.web.utils.AuthUtils;
 import com.fixit.web.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -64,12 +65,14 @@ public class ProjectController {
         return "projects/list";
     }
 
+    @PreAuthorize("@securityService.hasProfile()")
     @GetMapping("/create")
     public String createProject(Model model){
         model.addAttribute("project", new Project());
         return "projects/create";
     }
 
+    @PreAuthorize("@securityService.hasProfile()")
     @PostMapping("/create")
     public String save(@Valid Project project, BindingResult bindingResult,
                        @RequestParam("files") MultipartFile[] files,

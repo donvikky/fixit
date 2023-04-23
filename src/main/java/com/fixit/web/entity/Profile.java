@@ -34,7 +34,7 @@ public class Profile extends Auditable<String> {
 
     @Column(name = "mobile_number")
     @NotBlank(message = "Please provide your mobile number")
-    @Size(min=10, max=10)
+    @Size(min=10, max=20)
     private String mobileNumber;
 
     private String address;
@@ -47,7 +47,7 @@ public class Profile extends Auditable<String> {
     @Column(name = "short_description")
     private String shortDescription;
 
-    @Column(name = "long_description")
+    @Column(columnDefinition = "TEXT", name = "long_description")
     private String longDescription;
 
     @OneToOne(cascade = CascadeType.MERGE)
@@ -91,8 +91,19 @@ public class Profile extends Auditable<String> {
     @Transient
     private Double rating;
 
+    @Column(name = "telegram_id")
+    private String telegramId;
+    private int views;
     public Profile() {
 
+    }
+
+    public String getTelegramId() {
+        return telegramId;
+    }
+
+    public void setTelegramId(String telegramId) {
+        this.telegramId = telegramId;
     }
 
     public Profile(String email, String firstName, String lastName, String mobileNumber, String address, String photo,
@@ -288,6 +299,14 @@ public class Profile extends Auditable<String> {
 
     public void setReceiveJobNotification(Boolean receiveJobNotification) {
         this.receiveJobNotification = receiveJobNotification;
+    }
+
+    public int getViews() {
+        return views;
+    }
+
+    public void setViews(int views) {
+        this.views = views;
     }
 
     public Double getRating(){

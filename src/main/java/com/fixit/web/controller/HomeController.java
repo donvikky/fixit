@@ -45,7 +45,6 @@ public class HomeController {
         model.addAttribute("search", search);
         model.addAttribute("crafts", crafts);
         model.addAttribute("recentJobs", recentJobs);
-        System.out.println("All Jobs "+ recentJobs );
         return "home";
     }
 
@@ -56,7 +55,7 @@ public class HomeController {
 
     @GetMapping("/dashboard")
     public String dashboard(Model model){
-        Profile profile = new AuthUtils(userService).getCurrentUser().get().getProfile();
+        Profile profile = authUtils.getCurrentUser().get().getProfile();
         int bidsWon = bidService.getBidsWon(profile);
         int postedJobsCount = jobService.getPostedJobsCount(profile);
         int jobReviewsCount = jobReviewService.findJobReviewsCount(profile);
@@ -64,6 +63,7 @@ public class HomeController {
         model.addAttribute("bidsWon", bidsWon);
         model.addAttribute("postedJobsCount", postedJobsCount);
         model.addAttribute("jobReviewsCount", jobReviewsCount);
+        model.addAttribute("profile", profile);
         return "dashboard";
     }
 
@@ -88,5 +88,15 @@ public class HomeController {
                     "Your registration has been verified successfully. Please login to access your account");
         }
         return "verify";
+    }
+
+    @GetMapping("/privacy")
+    public String privacyPolicyPage(){
+        return "privacy";
+    }
+
+    @GetMapping("/terms")
+    public String termsAndConditions(){
+        return "terms";
     }
 }
