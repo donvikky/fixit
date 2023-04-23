@@ -32,7 +32,7 @@ public class Profile extends Auditable<String> {
     @NotBlank
     private String lastName;
 
-    @Column(name = "mobile_number")
+    @Column(name = "mobile_number", nullable = true)
     @NotBlank(message = "Please provide your mobile number")
     @Size(min=10, max=20)
     private String mobileNumber;

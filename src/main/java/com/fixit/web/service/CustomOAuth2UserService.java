@@ -2,6 +2,7 @@ package com.fixit.web.service;
 
 import com.fixit.web.auth.CustomOauth2User;
 import com.fixit.web.entity.Profile;
+import com.fixit.web.entity.Role;
 import com.fixit.web.entity.User;
 import com.fixit.web.enums.Provider;
 import org.slf4j.Logger;
@@ -14,6 +15,8 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -23,10 +26,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private ProfileService profileService;
     private UserService userService;
 
+    private RoleService roleService;
+
     @Autowired
-    public CustomOAuth2UserService(ProfileService profileService, UserService userService) {
+    public CustomOAuth2UserService(ProfileService profileService, UserService userService, RoleService roleService) {
         this.profileService = profileService;
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @Override
@@ -78,12 +84,16 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private User createNewUser(CustomOauth2User oauth2User, Provider provider){
+        Optional<Role> userRoleOptional = roleService.findByName("ROLE_USER");
+        Role userRole = userRoleOptional.orElseThrow(() -> new NoSuchElementException("The specified role does not exist"));
+
         User user = new User();
-        user.setUsername("");
+        user.setUsername(oauth2User.getEmail());
         user.setPassword("");
         user.setProviderId(oauth2User.getAttribute("id"));
         user.setProvider(provider);
         user.setLastLoginTime(LocalDateTime.now());
+        user.setRoles(List.of(userRole));
         user.setEnabled(true);
         userService.save(user);
         return user;
@@ -94,7 +104,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         profile.setFirstName(oAuth2User.getName().split(" ")[0]);
         profile.setLastName(oAuth2User.getName().split(" ")[1]);
         profile.setEmail(oAuth2User.getEmail());
-        profile.setMobileNumber("");
+        profile.setMobileNumber("0123456789");
         profile.setUser(user);
         profileService.save(profile);
     }
